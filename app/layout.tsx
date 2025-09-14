@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import NavbarHero from "@/components/NavbarHero";
 import Footer from "@/components/footer";
+import BackToTop from "@/components/BackToTop";
 
 export const metadata: Metadata = {
   title: "IDesign Immobilien",
@@ -26,6 +27,7 @@ export default function RootLayout({
             <main className="min-h-[61vh]">
               {children}
             </main>
+            <BackToTop />
             <Footer />
       </body>
     </html>

@@ -20,9 +20,9 @@ export default function NavbarHero() {
   const navLinks = [
     { name: "Immobilien", href: "/realestate" },
     { name: "Partnerschaften", href: "/partnerships" },
-    { name: "Unternehmen", href: "/partnerships" },
-    { name: "Unsere Leistungen", href: "/services" },
-    { name: "Kontakt", href: "#contact" },
+    { name: "Unternehmen", href: "/enterprise" },
+    { name: "Unsere Leistungen", href: "/performances" },
+    { name: "Kontakt", href: "/contact" },
   ];
 
   // Determine if we are on the homepage

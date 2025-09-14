@@ -3,18 +3,18 @@ import { supabase } from "@/lib/supabaseClient";
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> } // <-- params is a Promise
 ) {
-  const { id } = params;
+  const { id } = await params; // <-- await to get the id
 
   const { data, error } = await supabase
     .from("properties")
     .select("*")
-    .eq("id", id) // UUID is a string, no need to cast
+    .eq("id", id)
     .single();
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 404 });
+  if (error || !data) {
+    return NextResponse.json({ error: error?.message || "Property not found" }, { status: 404 });
   }
 
   return NextResponse.json(data);

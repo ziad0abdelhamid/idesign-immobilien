@@ -1,80 +1,156 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Property {
   id: string;
   title: string;
   description: string;
-  location: string;
   price: number;
+  location_city: string;
+  location_address: string;
   property_type: string;
+  bedrooms: number;
+  bathrooms: number;
   ground_area: number;
   house_area: number;
-  images: string[]; // Array of image URLs
+  status: string;
+  images: string[];
 }
 
-export default function PropertyPage() {
-  const { id } = useParams();
+interface Props {
+  params: Promise<{ id: string }>;
+}
+
+export default function PropertyDetails({ params }: Props) {
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
+  const [currentImage, setCurrentImage] = useState(0);
 
   useEffect(() => {
-    async function fetchProperty() {
+    const fetchProperty = async () => {
       try {
+        const { id } = await params;
         const res = await fetch(`/api/properties/${id}`);
-        const data = await res.json();
-        if (data.error) {
-          console.error(data.error);
-          setProperty(null);
-        } else {
-          setProperty(data);
-        }
+        const data: Property = await res.json();
+        setProperty(data);
       } catch (err) {
         console.error(err);
-        setProperty(null);
       } finally {
         setLoading(false);
       }
-    }
+    };
     fetchProperty();
-  }, [id]);
+  }, [params]);
 
-  if (loading) return <p>Loading property...</p>;
-  if (!property) return <p>Property not found</p>;
+  useEffect(() => {
+    // Auto-slide every 3 seconds
+    const interval = setInterval(() => {
+      if (property && property.images.length > 0) {
+        setCurrentImage((prev) => (prev + 1) % property.images.length);
+      }
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [property]);
+
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+      </div>
+    );
+
+  if (!property) return <div className="text-center py-20">Property not found.</div>;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-4">{property.title}</h1>
-      <p className="text-gray-600 mb-6">{property.location}</p>
+    <div className="pt-24 max-w-6xl mx-auto px-4 pb-16">
+      {/* Main Image Slider */}
+      <div className="mb-6">
+        <div className="relative w-full h-96 md:h-[500px] rounded-xl overflow-hidden shadow-lg">
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={currentImage}
+              src={property.images[currentImage]}
+              alt={`${property.title} ${currentImage + 1}`}
+              className="w-full h-full object-cover"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            />
+          </AnimatePresence>
 
-      {/* Property Images */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        {property.images?.map((img, i) => (
-          <Image
-            key={i}
-            src={img}
-            alt={`Property image ${i + 1}`}
-            width={600}
-            height={400}
-            className="object-cover rounded-md"
-          />
-        ))}
+          {/* Arrows */}
+          <button
+            onClick={() =>
+              setCurrentImage(
+                (prev) => (prev - 1 + property.images.length) % property.images.length
+              )
+            }
+            className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-40 text-white p-3 rounded-full hover:bg-opacity-60 transition cursor-pointer"
+          >
+            ‹
+          </button>
+          <button
+            onClick={() => setCurrentImage((prev) => (prev + 1) % property.images.length)}
+            className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-40 text-white p-3 rounded-full hover:bg-opacity-60 transition cursor-pointer"
+          >
+            ›
+          </button>
+        </div>
+
+        {/* Thumbnails */}
+        <div className="flex mt-4 gap-2 overflow-x-auto">
+          {property.images.map((img, idx) => (
+            <img
+              key={idx}
+              src={img}
+              alt={`Thumbnail ${idx + 1}`}
+              className={`w-20 h-20 object-cover rounded cursor-pointer border-2 ${
+                idx === currentImage ? "border-blue-500" : "border-transparent"
+              } hover:border-blue-400 transition`}
+              onClick={() => setCurrentImage(idx)}
+            />
+          ))}
+        </div>
       </div>
 
-      {/* Property Details */}
-      <div className="space-y-2 mb-6">
-        <p><strong>Price:</strong> €{property.price.toLocaleString()}</p>
-        <p><strong>Property Type:</strong> {property.property_type}</p>
-        <p><strong>Ground Area:</strong> {property.ground_area} m²</p>
-        <p><strong>House Area:</strong> {property.house_area} m²</p>
+      {/* Property Info */}
+      <h1 className="text-4xl font-bold mb-2">{property.title}</h1>
+      <p className="text-gray-600 mb-4 text-lg">
+        {property.location_city}, {property.location_address}
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 p-6 bg-gray-50 rounded-xl shadow-sm">
+        <p>
+          <span className="font-semibold">Price:</span>{" "}
+          <span className="text-blue-600">${property.price}</span>
+        </p>
+        <p>
+          <span className="font-semibold">Type:</span> {property.property_type}
+        </p>
+        <p>
+          <span className="font-semibold">Status:</span> {property.status}
+        </p>
+        <p>
+          <span className="font-semibold">Bedrooms:</span> {property.bedrooms}
+        </p>
+        <p>
+          <span className="font-semibold">Bathrooms:</span> {property.bathrooms}
+        </p>
+        <p>
+          <span className="font-semibold">Ground Area:</span> {property.ground_area} m²
+        </p>
+        <p>
+          <span className="font-semibold">House Area:</span> {property.house_area} m²
+        </p>
       </div>
 
-      <div>
+      {/* Description */}
+      <div className="prose max-w-full">
         <h2 className="text-2xl font-semibold mb-2">Description</h2>
-        <p className="text-gray-700">{property.description}</p>
+        <p>{property.description}</p>
       </div>
     </div>
   );
