@@ -24,7 +24,7 @@ export default function MeetOurTeam() {
         name: "John Doe",
         position: "CEO",
         bio: "John leads the company with 20 years of experience in real estate.",
-        photo: "/team/john.jpg",
+        photo: "/team-1.jpg",
         linkedin: "https://linkedin.com/in/johndoe",
         email: "john@example.com",
       },
@@ -33,7 +33,7 @@ export default function MeetOurTeam() {
         name: "Jane Smith",
         position: "COO",
         bio: "Jane manages operations and ensures smooth workflow across teams.",
-        photo: "/team/jane.jpg",
+        photo: "/team-1.jpg",
         linkedin: "https://linkedin.com/in/janesmith",
         email: "jane@example.com",
       },
@@ -42,7 +42,7 @@ export default function MeetOurTeam() {
         name: "Mark Wilson",
         position: "Head of Marketing",
         bio: "Mark drives marketing strategy and brand growth for the company.",
-        photo: "/team/mark.jpg",
+        photo: "/team-1.jpg",
         email: "mark@example.com",
       },
       {
@@ -50,7 +50,7 @@ export default function MeetOurTeam() {
         name: "Emily Brown",
         position: "Lead Designer",
         bio: "Emily creates beautiful and user-friendly designs for our projects.",
-        photo: "/team/emily.jpg",
+        photo: "/team-1.jpg",
       },
     ];
 
@@ -90,7 +90,7 @@ export default function MeetOurTeam() {
                   alt={member.name}
                   className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-70 transition-opacity duration-500"></div>
 
                 {/* Floating social icons */}
                 <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">

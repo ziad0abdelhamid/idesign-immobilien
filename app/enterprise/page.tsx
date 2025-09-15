@@ -45,26 +45,6 @@ export default function PremiumHomePageDE() {
     },
   ];
 
-  const team = [
-    {
-      name: "Zeyad Abdelhamid",
-      role: "Gründer & CEO",
-      image: "/team-1.jpg",
-      bio: "Mit über 5 Jahren Erfahrung im Immobilienbereich bringt Zeyad Expertise und Leidenschaft, um Kunden bei der Erreichung ihrer Ziele zu unterstützen.",
-    },
-    {
-      name: "Sara Mohamed",
-      role: "Verkaufsleiterin",
-      image: "/team-1.jpg",
-      bio: "Spezialisiert auf Wohnimmobilien sorgt Sara dafür, dass Kunden Häuser finden, die zu ihrem Lebensstil und Budget passen.",
-    },
-    {
-      name: "Omar Ali",
-      role: "Marketingdirektor",
-      image: "/team-1.jpg",
-      bio: "Omar entwickelt überzeugende Marketingstrategien, um Immobilien einem breiten Publikum zu präsentieren.",
-    },
-  ];
 
   return (
     <div className="relative w-full">
@@ -75,7 +55,6 @@ export default function PremiumHomePageDE() {
 
           <div className="absolute inset-0 bg-gradient-to-r from-blue-300 via-blue-600 to-white opacity-40"></div>
         </div>
-
         {/* Hero Section */}
         <section className="relative h-[30vh] w-full flex items-center justify-center text-center">
           <div className="relative z-10 px-4 text-white">
@@ -169,112 +148,27 @@ export default function PremiumHomePageDE() {
           </ul>
         </div>
         <div className="relative w-full h-80 md:h-96 rounded-3xl overflow-hidden shadow-lg">
-          <Image src="/office.jpg" alt="Büro" fill className="object-cover" />
+          <Image src="/office.jpeg" alt="Büro" fill className="object-cover" />
         </div>
       </motion.section>
 
-      {/* Team Section */}
-      <motion.section
-        className="max-w-7xl mx-auto px-4 py-20"
-        variants={sectionVariant}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        <h2 className="text-3xl font-bold mb-12 text-center text-gray-800">Unser Team</h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          {team.map((member) => (
-            <motion.div
-              key={member.name}
-              className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition"
-              variants={cardVariant}
-            >
-              <div className="relative w-full h-64">
-                <Image src={member.image} alt={member.name} fill className="object-cover" />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-1">{member.name}</h3>
-                <p className="text-blue-400 font-semibold mb-2">{member.role}</p>
-                <p className="text-gray-700 text-sm">{member.bio}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </motion.section>
 
       {/* Call to Action */}
       <motion.section
-        className="relative py-24 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-800 text-white overflow-hidden"
+        className="flex justify-center py-20"
         variants={sectionVariant}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
       >
-        <div className="absolute inset-0">
-          {/* Background image for real estate vibes */}
-          <div className="absolute inset-0 bg-[url('/house-bg.jpg')] bg-cover bg-center opacity-70"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-800 opacity-80"></div>
-        </div>
-
-        <div className="relative z-10 max-w-4xl mx-auto text-center px-6">
-          {/* Icon / Illustration */}
-          <div className="flex justify-center mb-6">
-            <div className="p-4 bg-white/20 backdrop-blur-lg rounded-full shadow-lg">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-14 w-14 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.5}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 9.75L12 3l9 6.75M4.5 10.5v9.75h15V10.5M9 21V12h6v9"
-                />
-              </svg>
-            </div>
-          </div>
-
-          {/* Heading */}
-          <h2 className="text-4xl font-extrabold mb-4 drop-shadow-lg">
-            Traumimmobilien warten auf Sie
-          </h2>
-          <p className="text-lg md:text-xl mb-8 opacity-90">
-            Entdecken Sie unsere exklusive Auswahl an Häusern, Wohnungen und
-            Investitionsmöglichkeiten in Top-Lagen.
-          </p>
-
-          {/* Button */}
-          <a
-            href="/realestate"
-            className="inline-block px-10 py-4 bg-white text-blue-700 font-bold rounded-full shadow-2xl hover:scale-110 hover:bg-gray-100 transition transform duration-300"
-          >
-            Immobilien entdecken
-          </a>
-        </div>
+        <a
+          href="/realestate"
+          className="px-8 py-4 bg-blue-400 text-white font-semibold rounded-3xl shadow-xl hover:bg-blue-600 hover:scale-105 transition transform"
+        >
+          Unsere Immobilien Entdecken
+        </a>
       </motion.section>
 
-
-      {/* Kontakt Section */}
-      <motion.section
-        className="bg-gradient-to-r from-blue-200 to-blue-500 py-20 text-white"
-        variants={sectionVariant}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Kontaktieren Sie Uns</h2>
-          <p className="mb-8 text-lg">Bereit, Ihre Immobilienreise zu starten? Kontaktieren Sie uns noch heute!</p>
-          <div className="flex flex-col md:flex-row justify-center gap-6 font-semibold">
-            <p>📞 Telefon: +20 123 456 789</p>
-            <p>📧 E-Mail: info@yourcompany.com</p>
-            <p>📍 Büro: Alexandria, Ägypten</p>
-          </div>
-        </div>
-      </motion.section>
     </div>
   );
 }

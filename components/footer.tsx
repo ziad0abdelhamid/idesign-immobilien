@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { FaLinkedin, FaEnvelope } from "react-icons/fa";
 
 export default function Footer() {
   return (
@@ -36,9 +37,6 @@ export default function Footer() {
           </Link>
           <Link href="/partnerships" className="hover:text-blue-400 transition-colors">
             Partnerschaften
-          </Link>
-          <Link href="/services" className="hover:text-blue-400 transition-colors">
-            Unsere Leistungen
           </Link>
           <Link href="/about" className="hover:text-blue-400 transition-colors">
             Unternehmen

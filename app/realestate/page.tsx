@@ -25,7 +25,7 @@ export default function RealEstatePage() {
   const [loading, setLoading] = useState(true);
 
   // Filters
-  const [typeFilter, setTypeFilter] = useState("");
+  const [typeFilter, setTypeFilter] = useState<string[]>([]);
   const [groundFilter, setGroundFilter] = useState<[number, number] | null>(null);
   const [houseFilter, setHouseFilter] = useState<[number, number] | null>(null);
   const [typeOptions, setTypeOptions] = useState<string[]>([]); // dynamic options
@@ -38,7 +38,6 @@ export default function RealEstatePage() {
         setFiltered(data);
         setLoading(false);
 
-        // Extract unique property types from database
         const types = Array.from(new Set(data.map((p) => p.property_type)));
         setTypeOptions(types);
       })
@@ -47,7 +46,8 @@ export default function RealEstatePage() {
 
   useEffect(() => {
     let temp = [...properties];
-    if (typeFilter) temp = temp.filter((p) => p.property_type === typeFilter);
+
+    if (typeFilter.length > 0) temp = temp.filter((p) => typeFilter.includes(p.property_type));
     if (groundFilter) {
       const [min, max] = groundFilter;
       temp = temp.filter((p) => p.ground_area >= min && p.ground_area <= max);
@@ -56,11 +56,12 @@ export default function RealEstatePage() {
       const [min, max] = houseFilter;
       temp = temp.filter((p) => p.house_area >= min && p.house_area <= max);
     }
+
     setFiltered(temp);
   }, [typeFilter, groundFilter, houseFilter, properties]);
 
   const clearFilters = () => {
-    setTypeFilter("");
+    setTypeFilter([]);
     setGroundFilter(null);
     setHouseFilter(null);
   };
@@ -78,6 +79,7 @@ export default function RealEstatePage() {
     ["500 - 1000m²", [500, 1000]],
     ["über 1000m²", [1000, 999999]],
   ];
+
   const houseOptions: [string, [number, number]][] = [
     ["20 - 45m²", [20, 45]],
     ["45 - 65m²", [45, 65]],
@@ -88,113 +90,120 @@ export default function RealEstatePage() {
   return (
     <div className="pt-32 max-w-7xl mx-auto px-4">
       {/* Page Title */}
-      <h1 className="text-4xl font-bold mb-8 text-center">Available Properties</h1>
+      <h1 className="text-4xl font-bold mb-12 text-center text-gray-800">Available Properties</h1>
 
-      {/* Filters Card */}
-      <div className="bg-white shadow-lg rounded-2xl p-6 mb-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Property Type */}
-          <div>
-            <p className="font-semibold mb-2">Property Type</p>
-            <select
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value)}
-              className="border rounded px-4 py-2 cursor-pointer w-full"
-            >
-              <option value="">All Types</option>
-              {typeOptions.map((t) => (
-                <option key={t} value={t}>
-                  {t}
-                </option>
-              ))}
-            </select>
-          </div>
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* Filters Sidebar */}
+        <div className="lg:w-1/4 p-5">
+          <div className="bg-white shadow-2xl rounded-3xl p-6 sticky top-32 z-50 border border-gray-200">
+            <h2 className="text-2xl font-semibold mb-6 text-gray-700">Filters</h2>
 
-          {/* Ground Area */}
-          <div>
-            <p className="font-semibold mb-2">Ground Area</p>
-            <select
-              value={groundFilter ? groundFilter.join("-") : ""}
-              onChange={(e) => {
-                const val = e.target.value;
-                setGroundFilter(val ? (val.split("-").map(Number) as [number, number]) : null);
-              }}
-              className="border rounded px-4 py-2 cursor-pointer w-full"
-            >
-              <option value="">All Ground Areas</option>
-              {groundOptions.map(([label, range]) => (
-                <option key={label} value={range.join("-")}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </div>
+            {/* Property Type (checkboxes) */}
+            <div className="mb-6">
+              <p className="font-semibold mb-2 text-gray-600">Property Type</p>
+              <div className="flex flex-col gap-2">
+                {typeOptions.map((t) => (
+                  <label key={t} className="inline-flex items-center gap-2 cursor-pointer text-gray-700">
+                    <input
+                      type="checkbox"
+                      value={t}
+                      checked={typeFilter.includes(t)}
+                      onChange={(e) => {
+                        if (e.target.checked) setTypeFilter([...typeFilter, t]);
+                        else setTypeFilter(typeFilter.filter((x) => x !== t));
+                      }}
+                      className="form-checkbox h-5 w-5 text-blue-600 rounded"
+                    />
+                    {t}
+                  </label>
+                ))}
+              </div>
+            </div>
 
-          {/* House Area */}
-          <div>
-            <p className="font-semibold mb-2">House Area</p>
-            <select
-              value={houseFilter ? houseFilter.join("-") : ""}
-              onChange={(e) => {
-                const val = e.target.value;
-                setHouseFilter(val ? (val.split("-").map(Number) as [number, number]) : null);
-              }}
-              className="border rounded px-4 py-2 cursor-pointer w-full"
+            {/* Ground Area */}
+            <div className="mb-6">
+              <p className="font-semibold mb-2 text-gray-600">Ground Area</p>
+              <select
+                value={groundFilter ? groundFilter.join("-") : ""}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setGroundFilter(val ? (val.split("-").map(Number) as [number, number]) : null);
+                }}
+                className="border rounded px-4 py-2 cursor-pointer w-full"
+              >
+                <option value="">All Ground Areas</option>
+                {groundOptions.map(([label, range]) => (
+                  <option key={label} value={range.join("-")}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* House Area */}
+            <div className="mb-6">
+              <p className="font-semibold mb-2 text-gray-600">House Area</p>
+              <select
+                value={houseFilter ? houseFilter.join("-") : ""}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setHouseFilter(val ? (val.split("-").map(Number) as [number, number]) : null);
+                }}
+                className="border rounded px-4 py-2 cursor-pointer w-full"
+              >
+                <option value="">All House Areas</option>
+                {houseOptions.map(([label, range]) => (
+                  <option key={label} value={range.join("-")}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Clear Filters Button */}
+            <button
+              onClick={clearFilters}
+              className="mt-4 w-full px-4 py-2 rounded-xl border bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold transition"
             >
-              <option value="">All House Areas</option>
-              {houseOptions.map(([label, range]) => (
-                <option key={label} value={range.join("-")}>
-                  {label}
-                </option>
-              ))}
-            </select>
+              Reset Filters
+            </button>
           </div>
         </div>
 
-        {/* Clear Filters Button */}
-        <div className="mt-6 text-right">
-          <button
-            onClick={clearFilters}
-            className="px-4 py-2 rounded border bg-gray-200 hover:bg-gray-300 cursor-pointer"
-          >
-            Reset Filters
-          </button>
+        {/* Properties Grid */}
+        <div className="lg:w-3/4 grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 p-4">
+          {filtered.length === 0 ? (
+            <div className="text-center text-gray-600 col-span-full mt-16">No properties found.</div>
+          ) : (
+            filtered.map((p) => (
+              <Link key={p.id} href={`/realestate/${p.id}`}>
+                <div className="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 cursor-pointer bg-white border border-gray-200">
+                  <img
+                    src={p.images?.[0] || "/placeholder.jpg"}
+                    alt={p.title}
+                    className="w-full h-64 object-cover"
+                  />
+                  <div className="p-5">
+                    <h2 className="text-xl font-bold mb-2 text-gray-800">{p.title}</h2>
+                    <p className="text-gray-600 text-sm">{p.location_city}, {p.location_address}</p>
+                    <p className="text-blue-600 font-semibold mt-1 text-lg">€{p.price.toLocaleString()}</p>
+                    <p className="text-gray-500 text-sm mt-1">
+                      Type: {p.property_type} | Status: {p.status}
+                    </p>
+                    <p className="text-gray-500 text-sm mt-1">
+                      Ground: {p.ground_area} m² | House: {p.house_area} m²
+                    </p>
+                    <p className="text-gray-500 text-sm mt-1">
+                      Bedrooms: {p.bedrooms} | Bathrooms: {p.bathrooms}
+                    </p>
+                    <p className="text-gray-500 text-sm mt-2 line-clamp-3">{p.description}</p>
+                  </div>
+                </div>
+              </Link>
+            ))
+          )}
         </div>
       </div>
-
-      {/* Properties Grid */}
-      {filtered.length === 0 ? (
-        <div className="text-center text-gray-600">No properties found.</div>
-      ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 p-2">
-          {filtered.map((p) => (
-            <Link key={p.id} href={`/realestate/${p.id}`}>
-              <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition cursor-pointer">
-                <img
-                  src={p.images?.[0] || "/placeholder.jpg"}
-                  alt={p.title}
-                  className="w-full h-64 object-cover"
-                />
-                <div className="p-4 bg-white">
-                  <h2 className="text-xl font-bold mb-2">{p.title}</h2>
-                  <p className="text-gray-600">{p.location_city}, {p.location_address}</p>
-                  <p className="text-blue-600 font-semibold mt-1">${p.price}</p>
-                  <p className="text-gray-500 text-sm mt-1">
-                    Type: {p.property_type} | Status: {p.status}
-                  </p>
-                  <p className="text-gray-500 text-sm mt-1">
-                    Ground: {p.ground_area} m² | House: {p.house_area} m²
-                  </p>
-                  <p className="text-gray-500 text-sm mt-1">
-                    Bedrooms: {p.bedrooms} | Bathrooms: {p.bathrooms}
-                  </p>
-                  <p className="text-gray-500 text-sm mt-1">{p.description}</p>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
     </div>
   );
 }

@@ -21,7 +21,6 @@ export default function NavbarHero() {
     { name: "Immobilien", href: "/realestate" },
     { name: "Partnerschaften", href: "/partnerships" },
     { name: "Unternehmen", href: "/enterprise" },
-    { name: "Unsere Leistungen", href: "/performances" },
     { name: "Kontakt", href: "/contact" },
   ];
 
@@ -42,8 +41,8 @@ export default function NavbarHero() {
             <Image
               src="/logo.png"
               alt="IDesign Immobilien"
-              width={180}
-              height={50}
+              width={203}
+              height={80}
               className="object-contain"
             />
           </Link>
@@ -102,7 +101,7 @@ export default function NavbarHero() {
       {/* Hero Section */}
       {isHomePage && (
         <section
-          className="relative h-[85vh] bg-cover bg-center flex items-center justify-center"
+          className="relative h-[100vh] bg-cover bg-center flex items-center justify-center"
           style={{ backgroundImage: 'url("./hero-bg.jpg")' }}
         >
           <div className="absolute inset-0 bg-black/40"></div>

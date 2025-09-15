@@ -13,7 +13,9 @@ interface Property {
 
 export default function PropertyCard({ property }: { property: Property }) {
   return (
-    <div className="bg-white shadow-lg rounded-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+<div className="bg-white shadow-lg rounded-xl overflow-hidden 
+            hover:shadow-[0_0_20px_rgba(59,130,246,0.6)] hover:scale-105 
+            transition-all duration-300">
       {property.images?.[0] && (
         <div className="h-64 w-full relative">
           <Image src={property.images[0]} alt={property.title} fill className="object-cover" />

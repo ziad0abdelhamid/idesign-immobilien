@@ -45,7 +45,6 @@ export default function PropertyDetails({ params }: Props) {
   }, [params]);
 
   useEffect(() => {
-    // Auto-slide every 3 seconds
     const interval = setInterval(() => {
       if (property && property.images.length > 0) {
         setCurrentImage((prev) => (prev + 1) % property.images.length);
@@ -64,93 +63,80 @@ export default function PropertyDetails({ params }: Props) {
   if (!property) return <div className="text-center py-20">Property not found.</div>;
 
   return (
-    <div className="pt-24 max-w-6xl mx-auto px-4 pb-16">
-      {/* Main Image Slider */}
-      <div className="mb-6">
-        <div className="relative w-full h-96 md:h-[500px] rounded-xl overflow-hidden shadow-lg">
-          <AnimatePresence mode="wait">
-            <motion.img
-              key={currentImage}
-              src={property.images[currentImage]}
-              alt={`${property.title} ${currentImage + 1}`}
-              className="w-full h-full object-cover"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-            />
-          </AnimatePresence>
+    <div className="pt-24 max-w-7xl mx-auto px-4 pb-16">
+      <div className="flex flex-col md:flex-row gap-8">
+        {/* Left Column - Sticky Info */}
+        <div className="md:w-1/3">
+          <div className="sticky top-24 bg-gray-50 p-6 rounded-xl shadow-sm">
+            <h1 className="text-2xl md:text-3xl font-bold mb-4">{property.title}</h1>
+            <p className="text-gray-600 mb-4">
+              {property.location_city}, {property.location_address}
+            </p>
+            <p><span className="font-semibold">Price:</span> <span className="text-blue-600">€{property.price}</span></p>
+            <p><span className="font-semibold">Type:</span> {property.property_type}</p>
+            <p><span className="font-semibold">Status:</span> {property.status}</p>
+            <p><span className="font-semibold">Bedrooms:</span> {property.bedrooms}</p>
+            <p><span className="font-semibold">Bathrooms:</span> {property.bathrooms}</p>
+            <p><span className="font-semibold">Ground Area:</span> {property.ground_area} m²</p>
+            <p><span className="font-semibold">House Area:</span> {property.house_area} m²</p>
+            <p><span className="font-semibold">House ID:</span> {property.id}</p>
 
-          {/* Arrows */}
-          <button
-            onClick={() =>
-              setCurrentImage(
-                (prev) => (prev - 1 + property.images.length) % property.images.length
-              )
-            }
-            className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-40 text-white p-3 rounded-full hover:bg-opacity-60 transition cursor-pointer"
-          >
-            ‹
-          </button>
-          <button
-            onClick={() => setCurrentImage((prev) => (prev + 1) % property.images.length)}
-            className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-40 text-white p-3 rounded-full hover:bg-opacity-60 transition cursor-pointer"
-          >
-            ›
-          </button>
+          </div>
         </div>
 
-        {/* Thumbnails */}
-        <div className="flex mt-4 gap-2 overflow-x-auto">
-          {property.images.map((img, idx) => (
-            <img
-              key={idx}
-              src={img}
-              alt={`Thumbnail ${idx + 1}`}
-              className={`w-20 h-20 object-cover rounded cursor-pointer border-2 ${
-                idx === currentImage ? "border-blue-500" : "border-transparent"
-              } hover:border-blue-400 transition`}
-              onClick={() => setCurrentImage(idx)}
-            />
-          ))}
+        {/* Right Column - Image slider + description */}
+        <div className="md:w-2/3 flex flex-col gap-6">
+          {/* Image Slider */}
+          <div className="relative w-full h-96 md:h-[500px] rounded-xl overflow-hidden shadow-lg">
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={currentImage}
+                src={property.images[currentImage]}
+                alt={`${property.title} ${currentImage + 1}`}
+                className="w-full h-full object-cover"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+              />
+            </AnimatePresence>
+
+            {/* Arrows */}
+            <button
+              onClick={() => setCurrentImage((prev) => (prev - 1 + property.images.length) % property.images.length)}
+              className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-40 text-white p-3 rounded-full hover:bg-opacity-60 transition cursor-pointer"
+            >
+              ‹
+            </button>
+            <button
+              onClick={() => setCurrentImage((prev) => (prev + 1) % property.images.length)}
+              className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-40 text-white p-3 rounded-full hover:bg-opacity-60 transition cursor-pointer"
+            >
+              ›
+            </button>
+          </div>
+
+          {/* Thumbnails */}
+          <div className="flex mt-4 gap-2 overflow-x-auto">
+            {property.images.map((img, idx) => (
+              <img
+                key={idx}
+                src={img}
+                alt={`Thumbnail ${idx + 1}`}
+                className={`w-20 h-20 object-cover rounded cursor-pointer border-2 ${
+                  idx === currentImage ? "border-blue-500" : "border-transparent"
+                } hover:border-blue-400 transition`}
+                onClick={() => setCurrentImage(idx)}
+              />
+            ))}
+          </div>
+
+          {/* Description */}
+          <div className="prose max-w-full">
+            <h2 className="text-2xl font-semibold mb-2">Description</h2>
+            <p>{property.description}</p>
+          </div>
         </div>
-      </div>
-
-      {/* Property Info */}
-      <h1 className="text-4xl font-bold mb-2">{property.title}</h1>
-      <p className="text-gray-600 mb-4 text-lg">
-        {property.location_city}, {property.location_address}
-      </p>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 p-6 bg-gray-50 rounded-xl shadow-sm">
-        <p>
-          <span className="font-semibold">Price:</span>{" "}
-          <span className="text-blue-600">${property.price}</span>
-        </p>
-        <p>
-          <span className="font-semibold">Type:</span> {property.property_type}
-        </p>
-        <p>
-          <span className="font-semibold">Status:</span> {property.status}
-        </p>
-        <p>
-          <span className="font-semibold">Bedrooms:</span> {property.bedrooms}
-        </p>
-        <p>
-          <span className="font-semibold">Bathrooms:</span> {property.bathrooms}
-        </p>
-        <p>
-          <span className="font-semibold">Ground Area:</span> {property.ground_area} m²
-        </p>
-        <p>
-          <span className="font-semibold">House Area:</span> {property.house_area} m²
-        </p>
-      </div>
-
-      {/* Description */}
-      <div className="prose max-w-full">
-        <h2 className="text-2xl font-semibold mb-2">Description</h2>
-        <p>{property.description}</p>
       </div>
     </div>
   );
