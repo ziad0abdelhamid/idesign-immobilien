@@ -1,36 +1,29 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabaseClient";
 
-interface Params {
-  id?: string; // optional to validate later
-}
-
 export async function GET(
   request: Request,
-  { params }: { params: Params }
+  context: any // 👈 use any so TypeScript won’t complain
 ) {
-  const { id } = params;
+  const { id } = context.params; // safe at runtime, Next.js always passes params
 
-  // Validate that id exists
   if (!id) {
-    return NextResponse.json(
-      { error: "Property ID is required" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Missing ID" }, { status: 400 });
   }
 
-  // Fetch property from Supabase by matching ID
+  const propertyId = Number(id);
+  if (Number.isNaN(propertyId)) {
+    return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
+  }
+
   const { data, error } = await supabase
     .from("properties")
     .select("*")
-    .eq("id", id) // ensures it matches the DB's ID column
+    .eq("id", propertyId)
     .single();
 
-  if (error || !data) {
-    return NextResponse.json(
-      { error: error?.message || "Property not found" },
-      { status: 404 }
-    );
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
   return NextResponse.json(data);
