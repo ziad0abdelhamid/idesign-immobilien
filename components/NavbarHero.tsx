@@ -106,11 +106,19 @@ export default function NavbarHero() {
         >
           <div className="absolute inset-0 bg-black/40"></div>
           <div className="relative z-10 text-center px-4 max-w-3xl">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fade-in-up">
-              Grundstück für Gewerbe und Wohnbau
+            <h1 className="text-4xl md:text-8xl font-bold text-gray-300 mb-6 animate-fade-in-up">
+               DB Immodesign e.U.
             </h1>
+             <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fade-in-up">
+                innovatives <br></br>Immobilienmarketing
+            </h2>
             <p className="text-lg md:text-2xl text-white mb-8 animate-fade-in-up delay-200">
-              Ideal gelegen in Hart bei Graz – vielseitig nutzbar für Wohn- und Gewerbezwecke.
+                Home Staging,
+                Drohnenaufnahmen, 3D 
+                Visualisierung, professionelle 
+                Fotografie, Virtuelle 
+                Innenraumgestalltung, Social 
+                Media Marketing
             </p>
             <a
               href="#contact"

@@ -95,7 +95,7 @@ export default function RealEstatePage() {
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Filters Sidebar */}
         <div className="lg:w-1/4 p-5">
-          <div className="bg-white shadow-2xl rounded-3xl p-6 sticky top-32 z-50 border border-gray-200">
+          <div className="bg-white shadow-2xl rounded-3xl p-6 sticky top-32 z-1 border border-gray-200">
             <h2 className="text-2xl font-semibold mb-6 text-gray-700">Filters</h2>
 
             {/* Property Type (checkboxes) */}
