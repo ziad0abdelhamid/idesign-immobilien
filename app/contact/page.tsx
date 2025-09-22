@@ -44,7 +44,7 @@ export default function ContactPage() {
       <div className="absolute top-0 left-0 w-full h-full bg-black opacity-30 -z-10"></div>
 
       {/* Form Container */}
-      <div className="pt-24 flex items-center justify-center min-h-screen px-4">
+      <div className="pt-24 flex items-center justify-center min-h-screen px-4 ">
         <div
           className={`w-full max-w-5xl md:max-w-4xl lg:max-w-3xl mx-auto py-16 md:py-20 px-8 md:px-12 bg-white bg-opacity-95 shadow-xl rounded-xl backdrop-blur-md transition-transform transform ${
             animate ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"

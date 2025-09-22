@@ -11,11 +11,9 @@ interface Property {
   location_city: string;
   location_address: string;
   property_type: string;
-  bedrooms: number;
-  bathrooms: number;
+  rooms: number;
   ground_area: number;
   house_area: number;
-  status: string;
   images: string[];
 }
 
@@ -64,28 +62,35 @@ export default function PropertyDetails({ params }: Props) {
 
   return (
     <div className="pt-24 max-w-7xl mx-auto px-4 pb-16">
-      <div className="flex flex-col md:flex-row gap-8">
+      <div className="flex flex-col lg:flex-row gap-8">
         {/* Left Column - Sticky Info */}
-        <div className="md:w-1/3">
-          <div className="sticky top-24 bg-gray-50 p-6 rounded-xl shadow-sm">
-            <h1 className="text-2xl md:text-3xl font-bold mb-4">{property.title}</h1>
+        <div className="lg:w-1/3">
+          <div className="sticky top-24 bg-gray-50 p-6 rounded-xl shadow-md border border-gray-200">
+            <h1 className="text-2xl lg:text-3xl font-bold mb-4">{property.title}</h1>
             <p className="text-gray-600 mb-4">
               {property.location_city}, {property.location_address}
             </p>
-            <p><span className="font-semibold">Price:</span> <span className="text-blue-600">€{property.price}</span></p>
-            <p><span className="font-semibold">Type:</span> {property.property_type}</p>
-            <p><span className="font-semibold">Status:</span> {property.status}</p>
-            <p><span className="font-semibold">Bedrooms:</span> {property.bedrooms}</p>
-            <p><span className="font-semibold">Bathrooms:</span> {property.bathrooms}</p>
-            <p><span className="font-semibold">Ground Area:</span> {property.ground_area} m²</p>
-            <p><span className="font-semibold">House Area:</span> {property.house_area} m²</p>
-            <p><span className="font-semibold">House ID:</span> {property.id}</p>
-
+            <p>
+              <span className="font-semibold">Price:</span>{" "}
+              <span className="text-blue-600">€{property.price.toLocaleString()}</span>
+            </p>
+            <p>
+              <span className="font-semibold">Type:</span> {property.property_type}
+            </p>
+            <p>
+              <span className="font-semibold">Rooms:</span> {property.rooms}
+            </p>
+            <p>
+              <span className="font-semibold">Ground Area:</span> {property.ground_area} m²
+            </p>
+            <p>
+              <span className="font-semibold">House Area:</span> {property.house_area} m²
+            </p>
           </div>
         </div>
 
-        {/* Right Column - Image slider + description */}
-        <div className="md:w-2/3 flex flex-col gap-6">
+        {/* Right Column - Slider + Description */}
+        <div className="lg:w-2/3 flex flex-col gap-6">
           {/* Image Slider */}
           <div className="relative w-full h-96 md:h-[500px] rounded-xl overflow-hidden shadow-lg">
             <AnimatePresence mode="wait">
@@ -103,7 +108,11 @@ export default function PropertyDetails({ params }: Props) {
 
             {/* Arrows */}
             <button
-              onClick={() => setCurrentImage((prev) => (prev - 1 + property.images.length) % property.images.length)}
+              onClick={() =>
+                setCurrentImage(
+                  (prev) => (prev - 1 + property.images.length) % property.images.length
+                )
+              }
               className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-40 text-white p-3 rounded-full hover:bg-opacity-60 transition cursor-pointer"
             >
               ‹
