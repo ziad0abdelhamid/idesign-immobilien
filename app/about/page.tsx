@@ -15,7 +15,7 @@ interface TeamMember {
   email?: string;
 }
 
-export default function MeetOurTeam() {
+export default function AboutUs() {
   const [team, setTeam] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -55,7 +55,6 @@ export default function MeetOurTeam() {
         photo: "/team-1.jpg",
       },
     ];
-
     setTeam(data);
     setLoading(false);
   }, []);
@@ -78,79 +77,81 @@ export default function MeetOurTeam() {
 
   return (
     <div className="w-full flex flex-col">
-      {/* Full-width Intro Section */}
+      {/* Hero Section */}
       <section className="relative w-full h-[50vh] flex items-center justify-center text-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-700 opacity-90"></div>
         <Image
           src="/team-bg.jpg"
-          alt="Team Background"
+          alt="About Us Background"
           fill
-          className="object-cover mix-blend-overlay opacity-40"
+          className="object-cover"
         />
-        <div className="relative z-10 max-w-4xl px-6 text-white">
-          <h1 className="text-5xl md:text-6xl font-extrabold mb-6 drop-shadow-lg">
-            Meet Our Team
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-indigo-700/80"></div>
+        <div className="relative z-10 max-w-4xl px-4 sm:px-6 text-white">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold mb-4 drop-shadow-lg">
+            About Us
           </h1>
-          <p className="text-xl md:text-2xl leading-relaxed drop-shadow-md">
-            Our team is composed of dedicated professionals with extensive expertise in real estate.
-            We combine knowledge, creativity, and strategy to deliver exceptional results for buyers, 
-            sellers, and investors alike. Each member is committed to excellence, innovation, and 
-            providing a premium client experience.
+          <p className="text-base sm:text-lg md:text-xl leading-relaxed drop-shadow-md">
+            We are a team of passionate professionals redefining real estate
+            through creativity, innovation, and client-focused solutions.
           </p>
         </div>
       </section>
 
-      {/* Team Member Cards */}
-      {team.map((member, idx) => (
-        <motion.div
-          key={member.id}
-          variants={cardVariant}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          className="w-full h-[90vh] flex flex-col md:flex-row overflow-hidden mb-20 rounded-2xl border-2 border-gray-200 shadow-lg"
-        >
-          {/* Image Half */}
-          <div className="relative w-full md:w-1/2 h-1/2 md:h-full overflow-hidden border-b-2 md:border-b-0 md:border-r-2 border-gray-200 group">
-            <Image
-              src={member.photo}
-              alt={member.name}
-              fill
-              className="object-cover transform transition-transform duration-700 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-70 transition-opacity duration-500"></div>
+      {/* Company Story / Mission */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-20 text-center">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-gray-900">
+          Our Mission
+        </h2>
+        <p className="text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed">
+          Our mission is to deliver outstanding real estate services by combining
+          market expertise, creative marketing, and a personalized approach.
+          We believe in building long-term relationships with clients through
+          trust, transparency, and exceptional results.
+        </p>
+      </section>
+{/* Team Section */}
+<section className="px-4 sm:px-6 py-12 sm:py-20 bg-gray-50">
+  <h2 className="text-center text-2xl sm:text-3xl md:text-4xl font-bold mb-12 text-gray-900">
+    Meet Our Team
+  </h2>
+  <div className="flex flex-col gap-16">
+    {team.map((member) => (
+      <motion.div
+        key={member.id}
+        variants={cardVariant}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        className="flex flex-col md:flex-row w-full overflow-hidden rounded-2xl border border-gray-200 shadow-lg"
+      >
+        {/* Image */}
+        <div className="relative w-full md:w-1/2 bg-black flex items-center justify-center p-4">
+          <Image
+            src={member.photo}
+            alt={member.name}
+            width={600}
+            height={800}
+            className="max-h-[90vh] w-auto object-contain rounded-lg"
+          />
+        </div>
 
-            {/* Floating social icons */}
-            <div className="absolute inset-0 flex items-center justify-center gap-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              {member.linkedin && (
-                <a
-                  href={member.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white text-3xl hover:text-blue-400 transition-colors duration-300"
-                >
-                  <FaLinkedin />
-                </a>
-              )}
-              {member.email && (
-                <a
-                  href={`mailto:${member.email}`}
-                  className="text-white text-3xl hover:text-yellow-400 transition-colors duration-300"
-                >
-                  <FaEnvelope />
-                </a>
-              )}
-            </div>
-          </div>
+        {/* Info */}
+        <div className="w-full md:w-1/2 flex flex-col justify-center p-8 sm:p-14 bg-white">
+          <h3 className="text-3xl sm:text-4xl font-bold mb-3">
+            {member.name}
+          </h3>
+          <p className="text-xl sm:text-2xl text-blue-600 font-medium mb-6">
+            {member.position}
+          </p>
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed">
+            {member.bio}
+          </p>
+        </div>
+      </motion.div>
+    ))}
+  </div>
+</section>
 
-          {/* Info Half */}
-          <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col justify-center p-12 bg-white border-t-2 md:border-t-0 md:border-l-2 border-gray-200">
-            <h2 className="text-5xl font-bold mb-4">{member.name}</h2>
-            <p className="text-2xl text-blue-600 font-medium mb-6">{member.position}</p>
-            <p className="text-gray-700 text-xl leading-relaxed">{member.bio}</p>
-          </div>
-        </motion.div>
-      ))}
     </div>
   );
 }

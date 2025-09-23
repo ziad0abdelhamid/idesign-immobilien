@@ -122,7 +122,13 @@ export default function NavbarHero() {
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/20"></div>
 
           {/* White angled slash overlay */}
-          <div className="absolute inset-0 bg-white [clip-path:polygon(0_0,70%_0,40%_100%,0_100%)]"></div>
+          <div
+            className="
+              absolute inset-0 bg-white
+              [clip-path:polygon(0_0,100%_0,100%_100%,0_100%)] 
+              sm:[clip-path:polygon(0_0,70%_0,40%_100%,0_100%)]
+            "
+          ></div>
 
           {/* Hero Content */}
           <div className="relative z-10 px-4 sm:px-6 md:px-12 max-w-2xl sm:max-w-3xl lg:max-w-4xl text-left">
@@ -150,31 +156,36 @@ export default function NavbarHero() {
               to={{ opacity: 1, y: 0 }}
             />
 
-            {/* Info Text List */}
-            <ul className="list-none text-gray-700 space-y-2 mb-6 sm:mb-8">
-              {[
-                "Maßgeschneiderte Immobilienpräsentationen für maximale Wirkung:",
-                "Home Staging",
-                "Drohnenaufnahmen",
-                "3D Visualisierung",
-                "Fotografie",
-                "Virtuelle Gestaltung",
-                "Social Media Marketing",
-              ].map((item, i) => (
-                <li key={i}>
-                  <SplitText
-                    text={item}
-                    className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed"
-                    delay={1000 + i * 200}
-                    duration={0.6}
-                    ease="power3.out"
-                    splitType="words"
-                    from={{ opacity: 0, y: 20 }}
-                    to={{ opacity: 1, y: 0 }}
-                  />
-                </li>
-              ))}
-            </ul>
+<ul className="list-none space-y-3 mb-6 sm:mb-8">
+  {[
+    "Maßgeschneiderte Immobilienpräsentationen für maximale Wirkung:",
+    "Home Staging",
+    "Drohnenaufnahmen",
+    "3D Visualisierung",
+    "Fotografie",
+    "Virtuelle Gestaltung",
+    "Social Media Marketing",
+  ].map((item, i) => (
+    <li key={i} className="flex items-start space-x-3">
+      <span className="mt-1 text-blue-600">
+        {/* Small check icon */}
+        ✓
+      </span>
+      <SplitText
+        text={item}
+        className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-gray-800"
+        delay={1000 + i * 200}
+        duration={0.6}
+        ease="power3.out"
+        splitType="words"
+        from={{ opacity: 0, y: 20 }}
+        to={{ opacity: 1, y: 0 }}
+      />
+    </li>
+  ))}
+</ul>
+
+
 
             {/* CTA Button */}
             <a

@@ -1,62 +1,51 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FaLinkedin, FaEnvelope } from "react-icons/fa";
+import { FaGlobe } from "react-icons/fa";
 import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 
-interface TeamMember {
+interface Partner {
   id: string;
   name: string;
-  position: string;
-  bio: string;
-  photo: string;
-  linkedin?: string;
-  email?: string;
+  description: string;
+  logo: string;
+  website?: string;
 }
 
-export default function MeetOurTeam() {
-  const [team, setTeam] = useState<TeamMember[]>([]);
+export default function OurPartners() {
+  const [partners, setPartners] = useState<Partner[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const data: TeamMember[] = [
+    const data: Partner[] = [
       {
         id: "1",
-        name: "John Doe",
-        position: "CEO",
-        bio: "John leads the company with 20 years of experience in real estate.",
-        photo: "/team-1.jpg",
-        linkedin: "https://linkedin.com/in/johndoe",
-        email: "john@example.com",
+        name: "Krate Tactical",
+        description:
+          "A trusted supplier of tactical equipment and gear, providing innovative solutions for professionals worldwide.",
+        logo: "/partners/krate-logo.png",
+        website: "https://kratetactical.com",
       },
       {
         id: "2",
-        name: "Jane Smith",
-        position: "COO",
-        bio: "Jane manages operations and ensures smooth workflow across teams.",
-        photo: "/team-1.jpg",
-        linkedin: "https://linkedin.com/in/janesmith",
-        email: "jane@example.com",
+        name: "Evike",
+        description:
+          "Global leader in airsoft and tactical equipment, delivering reliable products and strong distribution networks.",
+        logo: "/partners/evike-logo.png",
+        website: "https://www.evike.com",
       },
       {
         id: "3",
-        name: "Mark Wilson",
-        position: "Head of Marketing",
-        bio: "Mark drives marketing strategy and brand growth for the company.",
-        photo: "/team-1.jpg",
-        email: "mark@example.com",
-      },
-      {
-        id: "4",
-        name: "Emily Brown",
-        position: "Lead Designer",
-        bio: "Emily creates beautiful and user-friendly designs for our projects.",
-        photo: "/team-1.jpg",
+        name: "Specna Arms",
+        description:
+          "Renowned manufacturer of airsoft replicas, offering cutting-edge designs and high-performance solutions.",
+        logo: "/partners/specna-logo.png",
+        website: "https://specnaarms.com",
       },
     ];
 
-    setTeam(data);
+    setPartners(data);
     setLoading(false);
   }, []);
 
@@ -78,79 +67,70 @@ export default function MeetOurTeam() {
 
   return (
     <div className="w-full flex flex-col">
-      {/* Full-width Intro Section */}
+      {/* Hero Section */}
       <section className="relative w-full h-[50vh] flex items-center justify-center text-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-700 opacity-90"></div>
         <Image
-          src="/team-bg.jpg"
-          alt="Team Background"
+          src="/partners-bg.jpg"
+          alt="Partners Background"
           fill
           className="object-cover mix-blend-overlay opacity-40"
         />
         <div className="relative z-10 max-w-4xl px-6 text-white">
           <h1 className="text-5xl md:text-6xl font-extrabold mb-6 drop-shadow-lg">
-            Meet Our Team
+            Our Partners
           </h1>
           <p className="text-xl md:text-2xl leading-relaxed drop-shadow-md">
-            Our team is composed of dedicated professionals with extensive expertise in real estate.
-            We combine knowledge, creativity, and strategy to deliver exceptional results for buyers, 
-            sellers, and investors alike. Each member is committed to excellence, innovation, and 
-            providing a premium client experience.
+            We proudly collaborate with industry-leading companies who share our
+            commitment to innovation, quality, and customer success.
           </p>
         </div>
       </section>
 
-      {/* Team Member Cards */}
-      {team.map((member, idx) => (
-        <motion.div
-          key={member.id}
-          variants={cardVariant}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          className="w-full h-[90vh] flex flex-col md:flex-row overflow-hidden mb-20 rounded-2xl border-2 border-gray-200 shadow-lg"
-        >
-          {/* Image Half */}
-          <div className="relative w-full md:w-1/2 h-1/2 md:h-full overflow-hidden border-b-2 md:border-b-0 md:border-r-2 border-gray-200 group">
-            <Image
-              src={member.photo}
-              alt={member.name}
-              fill
-              className="object-cover transform transition-transform duration-700 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-70 transition-opacity duration-500"></div>
+      {/* Partner Cards */}
+      <section className="max-w-7xl mx-auto w-full px-6 py-16 grid gap-12">
+        {partners.map((partner) => (
+          <motion.div
+            key={partner.id}
+            variants={cardVariant}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            className="flex flex-col md:flex-row items-center bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200"
+          >
+            {/* Logo */}
+            <div className="relative w-full md:w-1/3 h-64 flex items-center justify-center bg-gray-50 p-6">
+              <Image
+                src={partner.logo}
+                alt={partner.name}
+                width={250}
+                height={150}
+                className="object-contain max-h-40"
+              />
+            </div>
 
-            {/* Floating social icons */}
-            <div className="absolute inset-0 flex items-center justify-center gap-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              {member.linkedin && (
+            {/* Info */}
+            <div className="w-full md:w-2/3 p-8 text-center md:text-left">
+              <h2 className="text-3xl font-bold mb-4 text-gray-900">
+                {partner.name}
+              </h2>
+              <p className="text-gray-700 text-lg mb-6">
+                {partner.description}
+              </p>
+              {partner.website && (
                 <a
-                  href={member.linkedin}
+                  href={partner.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white text-3xl hover:text-blue-400 transition-colors duration-300"
+                  className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-800 transition-colors"
                 >
-                  <FaLinkedin />
-                </a>
-              )}
-              {member.email && (
-                <a
-                  href={`mailto:${member.email}`}
-                  className="text-white text-3xl hover:text-yellow-400 transition-colors duration-300"
-                >
-                  <FaEnvelope />
+                  <FaGlobe /> Visit Website
                 </a>
               )}
             </div>
-          </div>
-
-          {/* Info Half */}
-          <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col justify-center p-12 bg-white border-t-2 md:border-t-0 md:border-l-2 border-gray-200">
-            <h2 className="text-5xl font-bold mb-4">{member.name}</h2>
-            <p className="text-2xl text-blue-600 font-medium mb-6">{member.position}</p>
-            <p className="text-gray-700 text-xl leading-relaxed">{member.bio}</p>
-          </div>
-        </motion.div>
-      ))}
+          </motion.div>
+        ))}
+      </section>
     </div>
   );
 }
