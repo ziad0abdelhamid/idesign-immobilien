@@ -109,48 +109,65 @@ export default function AboutUs() {
           trust, transparency, and exceptional results.
         </p>
       </section>
-{/* Team Section */}
-<section className="px-4 sm:px-6 py-12 sm:py-20 bg-gray-50">
-  <h2 className="text-center text-2xl sm:text-3xl md:text-4xl font-bold mb-12 text-gray-900">
-    Meet Our Team
-  </h2>
-  <div className="flex flex-col gap-16">
-    {team.map((member) => (
-      <motion.div
-        key={member.id}
-        variants={cardVariant}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-        className="flex flex-col md:flex-row w-full overflow-hidden rounded-2xl border border-gray-200 shadow-lg"
-      >
-        {/* Image */}
-        <div className="relative w-full md:w-1/2 bg-black flex items-center justify-center p-4">
-          <Image
-            src={member.photo}
-            alt={member.name}
-            width={600}
-            height={800}
-            className="max-h-[90vh] w-auto object-contain rounded-lg"
-          />
-        </div>
 
-        {/* Info */}
-        <div className="w-full md:w-1/2 flex flex-col justify-center p-8 sm:p-14 bg-white">
-          <h3 className="text-3xl sm:text-4xl font-bold mb-3">
-            {member.name}
-          </h3>
-          <p className="text-xl sm:text-2xl text-blue-600 font-medium mb-6">
-            {member.position}
-          </p>
-          <p className="text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed">
-            {member.bio}
-          </p>
+      {/* Team Section */}
+      <section className="py-12 sm:py-20 bg-white">
+        <h2 className="text-center text-3xl sm:text-4xl font-bold mb-12 text-gray-900">
+          Our Team
+        </h2>
+        <div className="flex flex-col gap-12">
+          {team.map((member) => (
+            <motion.div
+              key={member.id}
+              variants={cardVariant}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              className="flex flex-col md:flex-row items-center w-full rounded-none overflow-hidden shadow-none border-none transition-shadow duration-300"
+            >
+              {/* Image */}
+              <div className="w-full md:w-1/2">
+                <Image
+                  src={member.photo}
+                  alt={member.name}
+                  width={600}
+                  height={600}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Info */}
+              <div className="w-full md:w-1/2 p-6 sm:p-10 flex flex-col justify-center text-center md:text-left">
+                <h3 className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">
+                  {member.name}
+                </h3>
+                <p className="text-lg sm:text-xl text-blue-600 font-medium mb-4">
+                  {member.position}
+                </p>
+                <p className="text-gray-700 text-base sm:text-lg leading-relaxed">
+                  {member.bio}
+                </p>
+                <div className="flex justify-center md:justify-start mt-4 space-x-4">
+                  {member.linkedin && (
+                    <a
+                      href={member.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FaLinkedin className="text-blue-700 hover:text-blue-800 transition-colors" />
+                    </a>
+                  )}
+                  {member.email && (
+                    <a href={`mailto:${member.email}`}>
+                      <FaEnvelope className="text-gray-600 hover:text-gray-800 transition-colors" />
+                    </a>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
-      </motion.div>
-    ))}
-  </div>
-</section>
+      </section>
 
     </div>
   );
