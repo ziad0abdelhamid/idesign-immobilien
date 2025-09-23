@@ -12,8 +12,7 @@ interface Property {
   location_city: string;
   location_address: string;
   property_type: string;
-  bedrooms: number;
-  bathrooms: number;
+  rooms: number;
   ground_area: number;
   house_area: number;
   status: string;
@@ -204,7 +203,7 @@ export default function RealEstatePage() {
         )}
 
         {/* Properties Grid */}
-        <div className="lg:w-3/4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="lg:w-3/4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 p-4">
           {filtered.length === 0 ? (
             <div className="text-center text-gray-600 col-span-full mt-16">No properties found.</div>
           ) : (
@@ -229,7 +228,7 @@ export default function RealEstatePage() {
                       Ground: {p.ground_area} m² | House: {p.house_area} m²
                     </p>
                     <p className="text-gray-500 text-sm mt-1">
-                      Bedrooms: {p.bedrooms} | Bathrooms: {p.bathrooms}
+                      Rooms: {p.rooms} 
                     </p>
                     <p className="text-gray-500 text-sm mt-2 line-clamp-3">{p.description}</p>
                   </div>

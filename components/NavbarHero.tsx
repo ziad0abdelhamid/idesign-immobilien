@@ -155,10 +155,19 @@ export default function NavbarHero() {
               from={{ opacity: 0, y: 20 }}
               to={{ opacity: 1, y: 0 }}
             />
+             <SplitText
+              text="Maßgeschneiderte Immobilienpräsentationen für maximale Wirkung:"
+              className="text-m sm:text-m md:text-xl lg:text-2xl font-semibold text-blue-600 mb-4 sm:mb-6"
+              delay={700}
+              duration={0.6}
+              ease="power3.out"
+              splitType="words"
+              from={{ opacity: 0, y: 20 }}
+              to={{ opacity: 1, y: 0 }}
+            />
 
 <ul className="list-none space-y-3 mb-6 sm:mb-8">
   {[
-    "Maßgeschneiderte Immobilienpräsentationen für maximale Wirkung:",
     "Home Staging",
     "Drohnenaufnahmen",
     "3D Visualisierung",
