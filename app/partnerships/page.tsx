@@ -68,15 +68,17 @@ export default function OurPartners() {
   return (
     <div className="w-full flex flex-col">
       {/* Hero Section */}
-      <section className="relative w-full h-[50vh] flex items-center justify-center text-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-700 opacity-90"></div>
-        <Image
-          src="/partners-bg.jpg"
-          alt="Partners Background"
-          fill
-          className="object-cover mix-blend-overlay opacity-40"
-        />
-        <div className="relative z-10 max-w-4xl px-6 text-white">
+
+                  <section className="relative w-full h-[60vh] flex items-center justify-center text-center overflow-hidden">
+                    <Image
+                      src="/hero-meow.jpg"
+                      alt="Immobilien Dienstleistungen"
+                      fill
+                      priority
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/60"></div>
+                    <div className="relative z-10 max-w-4xl px-6 text-white">
           <h1 className="text-5xl md:text-6xl font-extrabold mb-6 drop-shadow-lg">
             Our Partners
           </h1>
@@ -84,8 +86,8 @@ export default function OurPartners() {
             We proudly collaborate with industry-leading companies who share our
             commitment to innovation, quality, and customer success.
           </p>
-        </div>
-      </section>
+                    </div>
+                  </section>
 
       {/* Partner Cards */}
       <section className="max-w-7xl mx-auto w-full px-6 py-16 grid gap-12">

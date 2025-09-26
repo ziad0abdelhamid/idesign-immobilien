@@ -40,43 +40,55 @@ export default function NavbarHero() {
             : "bg-white/30"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 flex justify-between items-center h-16 md:h-20">
-          {/* Logo */}
-          <Link href="/">
-            <Image
-              src="/logo.png"
-              alt="iDesign Immobilien"
-              width={198}
-              height={50}
-              className="transition-transform duration-300 hover:scale-105"
-            />
+<nav
+  className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 backdrop-blur-md ${
+    scrolled || !isHomePage ? "bg-white/95 shadow-md" : ""
+  }`}
+>
+  {/* Gradient only on homepage, reversed direction */}
+  {isHomePage && (
+    <div className="absolute inset-0 bg-gradient-to-r from-white/60 via-white/70 to-white/95 pointer-events-none"></div>
+  )}
+
+  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-12 flex justify-between items-center h-16 md:h-20">
+    {/* Logo */}
+    <Link href="/">
+      <Image
+        src="/logo.png"
+        alt="iDesign Immobilien"
+        width={198}
+        height={50}
+        className="transition-transform duration-300 hover:scale-105"
+      />
+    </Link>
+
+    {/* Desktop Nav */}
+    <ul className="hidden md:flex space-x-6 lg:space-x-10 text-base lg:text-lg font-semibold">
+      {navLinks.map((link) => (
+        <li key={link.name} className="relative group">
+          <Link
+            href={link.href}
+            className="text-gray-800 hover:text-blue-600 transition-colors duration-300 font-medium"
+          >
+            {link.name}
+            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-blue-500 transition-all group-hover:w-full"></span>
           </Link>
+        </li>
+      ))}
+    </ul>
 
-          {/* Desktop Nav */}
-          <ul className="hidden md:flex space-x-6 lg:space-x-10 text-base lg:text-lg font-semibold">
-            {navLinks.map((link) => (
-              <li key={link.name} className="relative group">
-                <Link
-                  href={link.href}
-                  className="text-gray-800 hover:text-blue-600 transition-colors duration-300 font-medium"
-                >
-                  {link.name}
-                  <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-blue-500 transition-all group-hover:w-full"></span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+    {/* Mobile Toggle */}
+    <div className="md:hidden flex items-center">
+      <button
+        onClick={() => setOpen(!open)}
+        className="focus:outline-none text-gray-800"
+      >
+        {open ? <X size={28} /> : <Menu size={28} />}
+      </button>
+    </div>
+  </div>
+</nav>
 
-          {/* Mobile Toggle */}
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={() => setOpen(!open)}
-              className={`focus:outline-none text-gray-800`}
-            >
-              {open ? <X size={28} /> : <Menu size={28} />}
-            </button>
-          </div>
-        </div>
 
         {/* Mobile Menu */}
         <AnimatePresence>
@@ -109,8 +121,7 @@ export default function NavbarHero() {
       {/* Hero Section */}
       {isHomePage && (
         <section className="relative h-[85vh] sm:h-[90vh] md:h-[95vh] flex items-center overflow-hidden">
-          {/* LiquidChrome Background */}
-          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/hero-bg-new.jpg')" }} />
+          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/hero-bg-wp.jpg')" }} />
 
           {/* Dark Overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/20"></div>
@@ -129,7 +140,7 @@ export default function NavbarHero() {
             {/* Hero Title */}
             <SplitText
               text="IDesign Immobilien eu"
-              className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 mb-4 sm:mb-6 leading-tight"
+              className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 mb-4 sm:mb-6 leading-tight pt-4"
               delay={100}
               duration={0}
               ease="power3.out"
@@ -141,7 +152,7 @@ export default function NavbarHero() {
             {/* Subheading */}
             <SplitText
               text="Innovatives Immobilienmarketing"
-              className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-blue-600 mb-4 sm:mb-6"
+              className="text-2xl sm:text-md md:text-xl lg:text-2xl font-extrabold text-gray-900 mb-4 sm:mb-6 leading-tight pt-4"
               delay={100}
               duration={0.2}
               ease="power3.out"
