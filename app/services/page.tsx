@@ -157,7 +157,7 @@ export default function PremiumServicesDE() {
         </div>
 
         {/* Service Card */}
-        <div className="relative bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div className="relative bg-white rounded-2xl overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={selectedIndex}
@@ -226,7 +226,7 @@ export default function PremiumServicesDE() {
               {testimonials.map((testimonial, idx) => (
                 <div
                   key={idx}
-                  className="bg-white shadow-lg rounded-2xl p-6 md:w-1/3 flex flex-col items-center text-center hover:shadow-xl transition"
+                  className="bg-white rounded-2xl p-6 md:w-1/3 flex flex-col items-center text-center hover:shadow-xl transition"
                 >
                   <Image
                     src={testimonial.avatar}

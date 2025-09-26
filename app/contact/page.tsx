@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -8,12 +8,6 @@ export default function ContactPage() {
     email: "",
     message: "",
   });
-
-  const [animate, setAnimate] = useState(false);
-
-  useEffect(() => {
-    setAnimate(true);
-  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -33,42 +27,40 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Parallax Background */}
-      <div
-        className="absolute top-0 left-0 w-full h-full bg-fixed bg-cover bg-center -z-10"
-        style={{ backgroundImage: "url('/contact.jpg')" }}
-      ></div>
+    <div className="min-h-screen bg-gray-50">
+      {/* Page Header */}
+      <div className="bg-blue-600 text-white py-20 text-center shadow-md">
+        <h1 className="text-4xl font-bold">Kontaktieren Sie uns</h1>
+        <p className="mt-4 text-lg text-blue-100">
+          Wir freuen uns, von Ihnen zu hören
+        </p>
+      </div>
 
-      {/* Overlay */}
-      <div className="absolute top-0 left-0 w-full h-full bg-black opacity-30 -z-10"></div>
-
-      {/* Form Container */}
-      <div className="pt-24 flex items-center justify-center min-h-screen px-4 ">
-        <div
-          className={`w-full max-w-5xl md:max-w-4xl lg:max-w-3xl mx-auto py-16 md:py-20 px-8 md:px-12 bg-white bg-opacity-95 shadow-xl rounded-xl backdrop-blur-md transition-transform transform ${
-            animate ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"
-          } duration-700`}
-        >
-          <h1
-            className={`text-4xl font-bold mb-8 text-center text-gray-800 transition-all duration-700 delay-100 ${
-              animate ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-5"
-            }`}
-          >
-            Kontaktieren Sie uns
-          </h1>
-          <p
-            className={`text-center text-gray-600 mb-10 transition-all duration-700 delay-200 ${
-              animate ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-5"
-            }`}
-          >
-            Haben Sie Fragen oder möchten Sie mehr Informationen? Schreiben Sie uns eine Nachricht!
+      {/* Main Content */}
+      <div className="max-w-6xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 gap-12">
+        {/* Contact Info */}
+        <div className="space-y-6">
+          <h2 className="text-2xl font-semibold text-gray-800">Unsere Kontaktdaten</h2>
+          <p className="text-gray-600">
+            Haben Sie Fragen oder benötigen Sie Unterstützung? 
+            Kontaktieren Sie uns gerne über das Formular oder direkt.
           </p>
+          <div className="space-y-4">
+            <p className="text-gray-700">
+              📍 Musterstraße 123, 10115 Berlin
+            </p>
+            <p className="text-gray-700">
+              📞 +49 30 123 456 78
+            </p>
+            <p className="text-gray-700">
+              ✉️ info@beispiel.de
+            </p>
+          </div>
+        </div>
 
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-8 transition-all duration-700 delay-300"
-          >
+        {/* Contact Form */}
+        <div className="bg-white p-8 rounded-xl shadow-md border border-gray-100">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="flex flex-col md:flex-row md:space-x-6 gap-6">
               <input
                 type="text"
@@ -77,9 +69,7 @@ export default function ContactPage() {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className={`flex-1 px-6 py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none text-lg transition-all duration-700 delay-400 ${
-                  animate ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-5"
-                }`}
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
               />
               <input
                 type="email"
@@ -88,9 +78,7 @@ export default function ContactPage() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className={`flex-1 px-6 py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none text-lg transition-all duration-700 delay-500 ${
-                  animate ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-5"
-                }`}
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
               />
             </div>
 
@@ -100,18 +88,14 @@ export default function ContactPage() {
               value={formData.message}
               onChange={handleChange}
               required
-              rows={8}
-              className={`w-full px-6 py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none text-lg transition-all duration-700 delay-600 ${
-                animate ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-5"
-              }`}
+              rows={6}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
             ></textarea>
 
-            <div className="text-center">
+            <div className="text-right">
               <button
                 type="submit"
-                className={`bg-blue-400 text-white font-semibold px-10 py-4 rounded-lg hover:bg-blue-500 transition-colors duration-200 cursor-pointer transition-all duration-700 delay-700 ${
-                  animate ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-5"
-                }`}
+                className="bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
               >
                 Nachricht senden
               </button>

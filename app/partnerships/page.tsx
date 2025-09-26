@@ -96,7 +96,7 @@ export default function OurPartners() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
-            className="flex flex-col md:flex-row items-center bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200"
+            className="flex flex-col md:flex-row items-center bg-white rounded-2xl overflow-hidden"
           >
             {/* Logo */}
             <div className="relative w-full md:w-1/3 h-64 flex items-center justify-center bg-gray-50 p-6">

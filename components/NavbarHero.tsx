@@ -110,13 +110,7 @@ export default function NavbarHero() {
       {isHomePage && (
         <section className="relative h-[85vh] sm:h-[90vh] md:h-[95vh] flex items-center overflow-hidden">
           {/* LiquidChrome Background */}
-          <LiquidChrome
-            className="absolute inset-0 w-full h-full"
-            baseColor={[0.05, 0.1, 0.2]}
-            speed={1}
-            amplitude={0.6}
-            interactive={true}
-          />
+          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/hero-bg-new.jpg')" }} />
 
           {/* Dark Overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/20"></div>
@@ -137,7 +131,7 @@ export default function NavbarHero() {
               text="IDesign Immobilien eu"
               className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 mb-4 sm:mb-6 leading-tight"
               delay={100}
-              duration={0.6}
+              duration={0}
               ease="power3.out"
               splitType="chars"
               from={{ opacity: 0, y: 40 }}
@@ -148,51 +142,51 @@ export default function NavbarHero() {
             <SplitText
               text="Innovatives Immobilienmarketing"
               className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-blue-600 mb-4 sm:mb-6"
-              delay={700}
-              duration={0.6}
+              delay={100}
+              duration={0.2}
               ease="power3.out"
-              splitType="words"
+              splitType="chars"
               from={{ opacity: 0, y: 20 }}
               to={{ opacity: 1, y: 0 }}
             />
              <SplitText
               text="Maßgeschneiderte Immobilienpräsentationen für maximale Wirkung:"
               className="text-m sm:text-m md:text-xl lg:text-2xl font-semibold text-blue-600 mb-4 sm:mb-6"
-              delay={700}
-              duration={0.6}
+              delay={1200}
+              duration={0.3}
               ease="power3.out"
               splitType="words"
               from={{ opacity: 0, y: 20 }}
               to={{ opacity: 1, y: 0 }}
             />
 
-<ul className="list-none space-y-3 mb-6 sm:mb-8">
-  {[
-    "Home Staging",
-    "Drohnenaufnahmen",
-    "3D Visualisierung",
-    "Fotografie",
-    "Virtuelle Gestaltung",
-    "Social Media Marketing",
-  ].map((item, i) => (
-    <li key={i} className="flex items-start space-x-3">
-      <span className="mt-1 text-blue-600">
-        {/* Small check icon */}
-        ✓
-      </span>
-      <SplitText
-        text={item}
-        className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-gray-800"
-        delay={1000 + i * 200}
-        duration={0.6}
-        ease="power3.out"
-        splitType="words"
-        from={{ opacity: 0, y: 20 }}
-        to={{ opacity: 1, y: 0 }}
-      />
-    </li>
-  ))}
-</ul>
+            <ul className="list-none space-y-3 mb-6 sm:mb-8">
+              {[
+                "Home Staging",
+                "Drohnenaufnahmen",
+                "3D Visualisierung",
+                "Fotografie",
+                "Virtuelle Gestaltung",
+                "Social Media Marketing",
+              ].map((item, i) => (
+                <li key={i} className="flex items-start space-x-3">
+                  <span className="mt-1 text-blue-600">
+                    {/* Small check icon */}
+                    ✓
+                  </span>
+                  <SplitText
+                    text={item}
+                    className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-gray-800"
+                    delay={100+ i* 200}
+                    duration={1.2}
+                    ease="power3.out"
+                    splitType="lines"
+                    from={{ opacity: 0, y: 20 }}
+                    to={{ opacity: 1, y: 0 }}
+                  />
+                </li>
+              ))}
+            </ul>
 
 
 
