@@ -96,29 +96,31 @@ export default function OurPartners() {
           priority
           className="object-cover"
         />
-<div className="relative z-10 max-w-4xl px-6 text-white">
-  <h1 className="text-5xl md:text-6xl font-extrabold mb-8 drop-shadow-lg">
-    Unsere Partner
-  </h1>
+        <div className="absolute inset-0 bg-black/60"></div>
+        <div className="relative z-10 max-w-4xl px-6 text-white">
+          <h1 className="text-5xl md:text-6xl font-extrabold mb-8 drop-shadow-lg">
+            Unsere Partner
+          </h1>
 
-  {/* Quote Block */}
-  <blockquote className="text-2xl md:text-3xl italic font-light leading-relaxed drop-shadow-md text-center mb-6">
-    „Große Dinge werden nie von einer Person allein erreicht, 
-    sie sind das Ergebnis eines Teams.“
-    <footer className="mt-4 text-lg md:text-xl not-italic font-semibold">
-      – Steve Jobs
-    </footer>
-  </blockquote>
+          {/* Quote Block */}
+          <blockquote className="text-2xl md:text-3xl italic font-light leading-relaxed drop-shadow-md text-center mb-6">
+            „Große Dinge werden nie von einer Person allein erreicht,
+            sie sind das Ergebnis eines Teams.“
+            <footer className="mt-4 text-lg md:text-xl not-italic font-semibold">
+              – Steve Jobs
+            </footer>
+          </blockquote>
 
-  {/* Separator */}
-  <div className="w-16 h-1 bg-blue-500 mx-auto mb-6 rounded-full"></div>
+          {/* Separator */}
+          <div className="w-16 h-1 bg-blue-500 mx-auto mb-6 rounded-full"></div>
 
-  {/* Follow-up Text */}
-  <p className="text-lg md:text-xl leading-relaxed drop-shadow-md text-center">
-    Wir sind stolz darauf, mit einem Netzwerk engagierter Partner 
-    zusammenzuarbeiten, die mit ihrem Fachwissen jedes Projekt bereichern.
-  </p>
-</div>
+          {/* Follow-up Text */}
+          <p className="text-lg md:text-xl leading-relaxed drop-shadow-md text-center">
+            Wir sind stolz darauf, mit einem Netzwerk engagierter Partner
+            zusammenzuarbeiten, die mit ihrem Fachwissen jedes Projekt bereichern.
+          </p>
+        </div>
+      </section>
 
       {/* Partner Cards */}
       <section className="max-w-7xl mx-auto w-full px-6 py-16 grid gap-12">
