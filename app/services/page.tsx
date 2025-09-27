@@ -130,7 +130,7 @@ export default function PremiumServicesDE() {
       {/* Hero Section */}
       <section className="relative w-full h-[60vh] flex items-center justify-center text-center overflow-hidden">
         <Image
-          src="/hero-meow.jpg"
+          src="/headers-bg.jpg"
           alt="Immobilien Dienstleistungen"
           fill
           priority

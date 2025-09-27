@@ -5,6 +5,19 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabaseClient";
 
+// 🖋️ Tiptap imports
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import Link from "@tiptap/extension-link";
+import TextAlign from "@tiptap/extension-text-align";
+import Image from "@tiptap/extension-image";
+import {Table} from "@tiptap/extension-table";
+import TableRow from "@tiptap/extension-table-row";
+import TableHeader from "@tiptap/extension-table-header";
+import TableCell from "@tiptap/extension-table-cell";
+import { Level } from "@tiptap/extension-heading";
+
 export default function EditPropertyDialog({
   record,
   onRecordUpdated,
@@ -18,7 +31,7 @@ export default function EditPropertyDialog({
   const [uploadProgress, setUploadProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -32,6 +45,26 @@ export default function EditPropertyDialog({
     updatedImages.splice(index, 1);
     setForm({ ...form, images: updatedImages });
   };
+
+  // 🖋️ Tiptap Editor for description (same as AddPropertyDialog)
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Underline,
+      Link,
+      Image,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Table.configure({ resizable: true }),
+      TableRow,
+      TableHeader,
+      TableCell,
+    ],
+    content: form.description,
+    immediatelyRender: false, // ✅ avoids hydration issues
+    onUpdate: ({ editor }) => {
+      setForm((prev: any) => ({ ...prev, description: editor.getHTML() }));
+    },
+  });
 
   const handleSubmit = async () => {
     setIsUploading(true);
@@ -91,13 +124,12 @@ export default function EditPropertyDialog({
       <DialogTrigger asChild>
         <Button variant="outline">Edit</Button>
       </DialogTrigger>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Edit Property</DialogTitle>
         </DialogHeader>
         <form className="space-y-3">
           <input name="title" value={form.title} onChange={handleChange} className="w-full border p-2 rounded" />
-          <textarea name="description" value={form.description} onChange={handleChange} className="w-full border p-2 rounded" />
           <input name="price" type="number" value={form.price} onChange={handleChange} className="w-full border p-2 rounded" />
           <input name="location_city" value={form.location_city} onChange={handleChange} className="w-full border p-2 rounded" />
           <input name="location_address" value={form.location_address} onChange={handleChange} className="w-full border p-2 rounded" />
@@ -105,6 +137,87 @@ export default function EditPropertyDialog({
           <input name="rooms" type="number" value={form.rooms} onChange={handleChange} className="w-full border p-2 rounded" />
           <input name="ground_area" type="number" value={form.ground_area} onChange={handleChange} className="w-full border p-2 rounded" />
           <input name="house_area" type="number" value={form.house_area} onChange={handleChange} className="w-full border p-2 rounded" />
+          
+          {/* Rich Text Editor */}
+          <div>
+            <label className="block text-sm font-medium mb-1">Description</label>
+
+            {/* Toolbar */}
+            {editor && (
+              <div className="flex flex-wrap gap-2 mb-2 border rounded p-2 bg-gray-50">
+                {/* Basic */}
+                <Button size="sm" variant="outline" type="button" onClick={() => editor.chain().focus().toggleBold().run()} className={editor.isActive("bold") ? "bg-blue-100" : ""}>B</Button>
+                <Button size="sm" variant="outline" type="button" onClick={() => editor.chain().focus().toggleItalic().run()} className={editor.isActive("italic") ? "bg-blue-100" : ""}><i>I</i></Button>
+                <Button size="sm" variant="outline" type="button" onClick={() => editor.chain().focus().toggleUnderline().run()} className={editor.isActive("underline") ? "bg-blue-100" : ""}>U</Button>
+                <Button size="sm" variant="outline" type="button" onClick={() => editor.chain().focus().toggleStrike().run()} className={editor.isActive("strike") ? "bg-blue-100" : ""}>S</Button>
+
+                {/* Headings */}
+                {([1, 2, 3] as Level[]).map((level) => (
+                  <Button
+                    key={level}
+                    size="sm"
+                    variant="outline"
+                    type="button"
+                    onClick={() => editor.chain().focus().toggleHeading({ level }).run()}
+                    className={editor.isActive("heading", { level }) ? "bg-blue-100" : ""}
+                  >
+                    H{level}
+                  </Button>
+                ))}
+
+                {/* Lists */}
+                <Button size="sm" variant="outline" type="button" onClick={() => editor.chain().focus().toggleBulletList().run()} className={editor.isActive("bulletList") ? "bg-blue-100" : ""}>• List</Button>
+                <Button size="sm" variant="outline" type="button" onClick={() => editor.chain().focus().toggleOrderedList().run()} className={editor.isActive("orderedList") ? "bg-blue-100" : ""}>1. List</Button>
+
+                {/* Quote & Code */}
+                <Button size="sm" variant="outline" type="button" onClick={() => editor.chain().focus().toggleBlockquote().run()} className={editor.isActive("blockquote") ? "bg-blue-100" : ""}>❝</Button>
+                <Button size="sm" variant="outline" type="button" onClick={() => editor.chain().focus().toggleCodeBlock().run()} className={editor.isActive("codeBlock") ? "bg-blue-100" : ""}>{`</>`}</Button>
+
+                {/* Align */}
+                {["left", "center", "right", "justify"].map((align) => (
+                  <Button key={align} size="sm" variant="outline" type="button"
+                    onClick={() => editor.chain().focus().setTextAlign(align).run()}
+                    className={editor.isActive({ textAlign: align }) ? "bg-blue-100" : ""}>
+                    {align[0].toUpperCase()}
+                  </Button>
+                ))}
+
+                {/* Link */}
+                <Button size="sm" variant="outline" type="button"
+                  onClick={() => {
+                    const url = prompt("Enter URL");
+                    if (url) editor.chain().focus().setLink({ href: url }).run();
+                  }}
+                  className={editor.isActive("link") ? "bg-blue-100" : ""}>
+                  🔗
+                </Button>
+                <Button size="sm" variant="outline" type="button" onClick={() => editor.chain().focus().unsetLink().run()}>❌</Button>
+
+                {/* Images */}
+                <Button size="sm" variant="outline" type="button"
+                  onClick={() => {
+                    const url = prompt("Enter image URL");
+                    if (url) editor.chain().focus().setImage({ src: url }).run();
+                  }}>
+                  🖼️
+                </Button>
+
+                {/* Tables */}
+                <Button size="sm" variant="outline" type="button"
+                  onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}>
+                  ▦ Table
+                </Button>
+
+                {/* Undo / Redo */}
+                <Button size="sm" variant="outline" type="button" onClick={() => editor.chain().focus().undo().run()}>↶</Button>
+                <Button size="sm" variant="outline" type="button" onClick={() => editor.chain().focus().redo().run()}>↷</Button>
+              </div>
+            )}
+
+            <div className="border rounded p-2 min-h-[150px]">
+              <EditorContent editor={editor} />
+            </div>
+          </div>
 
           {/* Hidden input + Browse button */}
           <input type="file" multiple className="hidden" ref={fileInputRef} onChange={handleFileSelect} />

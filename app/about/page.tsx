@@ -28,7 +28,7 @@ export default function UnternehmenFullSplit() {
       {/* Hero Section */}
       <section className="relative w-full h-[60vh] flex items-center justify-center text-center overflow-hidden p-5">
         <Image
-          src="/hero-meow.jpg"
+          src="/headers-bg.jpg"
           alt="Über Uns"
           fill
           priority

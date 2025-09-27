@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react"; // ✅ clean modern icons
+
 
 interface Property {
   id: string;
@@ -26,6 +28,9 @@ export default function PropertyDetails({ params }: Props) {
   const [loading, setLoading] = useState(true);
   const [currentImage, setCurrentImage] = useState(0);
 
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Fetch property
   useEffect(() => {
     const fetchProperty = async () => {
       try {
@@ -42,13 +47,16 @@ export default function PropertyDetails({ params }: Props) {
     fetchProperty();
   }, [params]);
 
+  // Auto-slide
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (property && property.images.length > 0) {
-        setCurrentImage((prev) => (prev + 1) % property.images.length);
-      }
-    }, 3000);
-    return () => clearInterval(interval);
+    if (!property) return;
+    intervalRef.current = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % property.images.length);
+    }, 5000);
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
   }, [property]);
 
   if (loading)
@@ -63,78 +71,108 @@ export default function PropertyDetails({ params }: Props) {
   return (
     <div className="pt-24 max-w-7xl mx-auto px-4 pb-16">
       <div className="flex flex-col lg:flex-row gap-8">
-        {/* Left Column - Sticky Info */}
+        {/* Left Column - Info Card */}
         <div className="lg:w-1/3">
-          <div className="sticky top-24 bg-gray-50 p-6 rounded-xl shadow-md border border-gray-200">
-            <h1 className="text-2xl lg:text-3xl font-bold mb-4">{property.title}</h1>
-            <p className="text-gray-600 mb-4">
+          <div className="sticky top-24 bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+            <h1 className="text-3xl font-bold mb-2 text-gray-800">{property.title}</h1>
+            <p className="text-gray-500 mb-6">
               {property.location_city}, {property.location_address}
             </p>
-            <p>
-              <span className="font-semibold">Price:</span>{" "}
-              <span className="text-blue-600">€{property.price.toLocaleString()}</span>
-            </p>
-            <p>
-              <span className="font-semibold">Type:</span> {property.property_type}
-            </p>
-            <p>
-              <span className="font-semibold">Rooms:</span> {property.rooms}
-            </p>
-            <p>
-              <span className="font-semibold">Ground Area:</span> {property.ground_area} m²
-            </p>
-            <p>
-              <span className="font-semibold">House Area:</span> {property.house_area} m²
-            </p>
+
+            <div className="space-y-3 text-gray-700">
+              <p>
+                <span className="font-semibold text-gray-900">💰 Price:</span>{" "}
+                <span className="text-blue-600 text-xl font-bold">
+                  €{property.price.toLocaleString()}
+                </span>
+              </p>
+              <p>
+                <span className="font-semibold">🏡 Type:</span> {property.property_type}
+              </p>
+              <p>
+                <span className="font-semibold">🛏️ Rooms:</span> {property.rooms}
+              </p>
+              <p>
+                <span className="font-semibold">🌳 Ground Area:</span> {property.ground_area} m²
+              </p>
+              <p>
+                <span className="font-semibold">🏠 House Area:</span> {property.house_area} m²
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Right Column - Slider + Description */}
+        {/* Right Column - Gallery + Description */}
         <div className="lg:w-2/3 flex flex-col gap-6">
-          {/* Image Slider */}
-          <div className="relative w-full h-96 md:h-[500px] rounded-xl overflow-hidden shadow-lg">
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={currentImage}
-                src={property.images[currentImage]}
-                alt={`${property.title} ${currentImage + 1}`}
-                className="w-full h-full object-cover"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
+        {/* Image Slider */}
+        <div
+          className="relative w-full h-96 md:h-[500px] rounded-2xl overflow-hidden shadow-xl bg-gray-100"
+        >
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={currentImage}
+              src={property.images[currentImage]}
+              alt={`${property.title} ${currentImage + 1}`}
+              className="w-full h-full object-cover"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              onDragEnd={(_, info) => {
+                if (info.offset.x < -100) {
+                  setCurrentImage((prev) => (prev + 1) % property.images.length); // swipe left
+                } else if (info.offset.x > 100) {
+                  setCurrentImage(
+                    (prev) => (prev - 1 + property.images.length) % property.images.length
+                  ); // swipe right
+                }
+              }}
+            />
+          </AnimatePresence>
+
+          {/* Sleek Arrows */}
+          <button
+            onClick={() =>
+              setCurrentImage(
+                (prev) => (prev - 1 + property.images.length) % property.images.length
+              )
+            }
+            className="absolute top-1/2 left-4 -translate-y-1/2 bg-white/70 text-gray-700 rounded-full shadow-lg p-2 hover:bg-white transition cursor-pointer"
+          >
+            <ChevronLeft size={28} strokeWidth={2.5} />
+          </button>
+          <button
+            onClick={() => setCurrentImage((prev) => (prev + 1) % property.images.length)}
+            className="absolute top-1/2 right-4 -translate-y-1/2 bg-white/70 text-gray-700 rounded-full shadow-lg p-2 hover:bg-white transition cursor-pointer"
+          >
+            <ChevronRight size={28} strokeWidth={2.5} />
+          </button>
+
+          {/* Dot Indicators */}
+          <div className="absolute bottom-4 w-full flex justify-center gap-2">
+            {property.images.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentImage(idx)}
+                className={`w-3 h-3 rounded-full transition ${
+                  idx === currentImage ? "bg-blue-500 scale-110" : "bg-gray-300 hover:bg-gray-400"
+                }`}
               />
-            </AnimatePresence>
-
-            {/* Arrows */}
-            <button
-              onClick={() =>
-                setCurrentImage(
-                  (prev) => (prev - 1 + property.images.length) % property.images.length
-                )
-              }
-              className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-40 text-white p-3 rounded-full hover:bg-opacity-60 transition cursor-pointer"
-            >
-              ‹
-            </button>
-            <button
-              onClick={() => setCurrentImage((prev) => (prev + 1) % property.images.length)}
-              className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-40 text-white p-3 rounded-full hover:bg-opacity-60 transition cursor-pointer"
-            >
-              ›
-            </button>
+            ))}
           </div>
-
+        </div>
           {/* Thumbnails */}
-          <div className="flex mt-4 gap-2 overflow-x-auto">
+          <div className="flex mt-4 gap-3 overflow-x-auto pb-2">
             {property.images.map((img, idx) => (
               <img
                 key={idx}
                 src={img}
                 alt={`Thumbnail ${idx + 1}`}
-                className={`w-20 h-20 object-cover rounded cursor-pointer border-2 ${
-                  idx === currentImage ? "border-blue-500" : "border-transparent"
-                } hover:border-blue-400 transition`}
+                className={`w-24 h-20 object-cover rounded-lg cursor-pointer border-2 transition ${
+                  idx === currentImage ? "border-blue-500 shadow-md" : "border-gray-200"
+                } hover:border-blue-400`}
                 onClick={() => setCurrentImage(idx)}
               />
             ))}
@@ -142,8 +180,13 @@ export default function PropertyDetails({ params }: Props) {
 
           {/* Description */}
           <div className="prose max-w-full">
-            <h2 className="text-2xl font-semibold mb-2">Description</h2>
-            <p>{property.description}</p>
+            <h2 className="text-2xl font-semibold mb-3 text-gray-800">Property Description</h2>
+            <div
+              className="text-gray-700 leading-relaxed"
+              dangerouslySetInnerHTML={{
+                __html: property.description.replace(/\n/g, "<br />"),
+              }}
+            />
           </div>
         </div>
       </div>

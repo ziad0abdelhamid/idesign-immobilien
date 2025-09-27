@@ -153,10 +153,10 @@ export default function NavbarHero() {
             <SplitText
               text="Innovatives Immobilienmarketing"
               className="text-2xl sm:text-md md:text-xl lg:text-2xl font-extrabold text-gray-900 mb-4 sm:mb-6 leading-tight pt-4"
-              delay={100}
+              delay={1000}
               duration={0.2}
               ease="power3.out"
-              splitType="chars"
+              splitType="words"
               from={{ opacity: 0, y: 20 }}
               to={{ opacity: 1, y: 0 }}
             />
@@ -164,9 +164,9 @@ export default function NavbarHero() {
               text="Maßgeschneiderte Immobilienpräsentationen für maximale Wirkung:"
               className="text-m sm:text-m md:text-xl lg:text-2xl font-semibold text-blue-600 mb-4 sm:mb-6"
               delay={1200}
-              duration={0.3}
+              duration={4}
               ease="power3.out"
-              splitType="words"
+              splitType="lines"
               from={{ opacity: 0, y: 20 }}
               to={{ opacity: 1, y: 0 }}
             />
@@ -188,8 +188,8 @@ export default function NavbarHero() {
                   <SplitText
                     text={item}
                     className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-gray-800"
-                    delay={100+ i* 200}
-                    duration={1.2}
+                    delay={100000000000000000000000000000000}
+                    duration={6}
                     ease="power3.out"
                     splitType="lines"
                     from={{ opacity: 0, y: 20 }}

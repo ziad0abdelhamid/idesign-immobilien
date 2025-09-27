@@ -5,15 +5,15 @@ import Footer from "../components/footer";
 import BackToTop from "../components/BackToTop";
 
 export const metadata: Metadata = {
-  title: "IDesign Immobilien",
-  description: "",
+  title: "IDesign Immobilien – Luxury Real Estate | Exklusive Immobilien",
+  description:
+    "Discover luxury real estate with IDesign Immobilien. Exclusive properties, tailored investments, and visionary concepts with style. | Entdecken Sie exklusive Immobilien mit IDesign Immobilien. Luxusobjekte, maßgeschneiderte Investments und visionäre Konzepte mit Stil.",
   icons: {
-    icon: "./favicon.ico", // this will show in the tab
+    icon: "./favicon.ico",
     shortcut: "./favicon.ico",
-    apple: "./favicon.png", // for Apple devices
+    apple: "./favicon.png",
   },
 };
-
 
 export default function RootLayout({
   children,
@@ -22,13 +22,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="de" dir="ltr">
-      <body>
-            <NavbarHero />
-            <main className="min-h-[61vh]">
-              {children}
-            </main>
-            <BackToTop />
-            <Footer />
+      <body className="flex flex-col min-h-screen relative">
+        <NavbarHero />
+
+        {/* Main content */}
+        <main className="flex-1">{children}</main>
+
+        {/* Footer */}
+        <Footer />
+
+        {/* BackToTop button */}
+        <BackToTop />
       </body>
     </html>
   );
