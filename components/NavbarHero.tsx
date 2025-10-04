@@ -35,93 +35,103 @@ export default function NavbarHero() {
       {/* Navbar */}
       <nav
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 backdrop-blur-md ${
-          scrolled || !isHomePage
-            ? "bg-white/95 shadow-md"
-            : "bg-white/30"
+          scrolled || !isHomePage ? "bg-white/95 shadow-md" : ""
         }`}
       >
-<nav
-  className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 backdrop-blur-md ${
-    scrolled || !isHomePage ? "bg-white/95 shadow-md" : ""
-  }`}
->
-  {/* Gradient only on homepage, reversed direction */}
-  {isHomePage && (
-    <div className="absolute inset-0 bg-gradient-to-r from-white/60 via-white/70 to-white/95 pointer-events-none"></div>
-  )}
+        {/* Gradient only on homepage */}
+        {isHomePage && (
+          <div className="absolute inset-0 bg-gradient-to-r from-white/60 via-white/70 to-white/95 pointer-events-none"></div>
+        )}
 
-  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-12 flex justify-between items-center h-16 md:h-20">
-    {/* Logo */}
-    <Link href="/">
-      <Image
-        src="/logo.png"
-        alt="iDesign Immobilien"
-        width={198}
-        height={50}
-        className="transition-transform duration-300 hover:scale-105"
-      />
-    </Link>
-
-    {/* Desktop Nav */}
-    <ul className="hidden md:flex space-x-6 lg:space-x-10 text-base lg:text-lg font-semibold">
-      {navLinks.map((link) => (
-        <li key={link.name} className="relative group">
-          <Link
-            href={link.href}
-            className="text-gray-800 hover:text-blue-600 transition-colors duration-300 font-medium"
-          >
-            {link.name}
-            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-blue-500 transition-all group-hover:w-full"></span>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-12 flex justify-between items-center h-16 md:h-20">
+          {/* Logo */}
+          <Link href="/">
+            <Image
+              src="/logo.png"
+              alt="iDesign Immobilien"
+              width={198}
+              height={50}
+              className="transition-transform duration-300 hover:scale-105"
+            />
           </Link>
-        </li>
-      ))}
-    </ul>
 
-    {/* Mobile Toggle */}
-    <div className="md:hidden flex items-center">
-      <button
-        onClick={() => setOpen(!open)}
-        className="focus:outline-none text-gray-800"
-      >
-        {open ? <X size={28} /> : <Menu size={28} />}
-      </button>
-    </div>
-  </div>
-</nav>
+          {/* Desktop Nav */}
+          <ul className="hidden md:flex space-x-6 lg:space-x-10 text-base lg:text-lg font-semibold">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <li key={link.name} className="relative group">
+                  <Link
+                    href={link.href}
+                    className={`transition-colors duration-300 font-medium ${
+                      isActive
+                        ? "text-blue-600"
+                        : "text-gray-800 hover:text-blue-600"
+                    }`}
+                  >
+                    {link.name}
+                    <span
+                      className={`absolute left-0 -bottom-1 h-[2px] bg-blue-500 transition-all duration-300 ${
+                        isActive ? "w-full" : "w-0 group-hover:w-full"
+                      }`}
+                    ></span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
 
-
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden bg-white/95 backdrop-blur-md w-full absolute top-16 left-0 shadow-lg"
+          {/* Mobile Toggle */}
+          <div className="md:hidden flex items-center">
+            <button
+              onClick={() => setOpen(!open)}
+              className="focus:outline-none text-gray-800"
             >
-              <ul className="flex flex-col items-center py-6 space-y-4 text-base font-semibold text-gray-800">
-                {navLinks.map((link) => (
+              {open ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden bg-white/95 backdrop-blur-md w-full absolute top-16 left-0 shadow-lg"
+          >
+            <ul className="flex flex-col items-center py-6 space-y-4 text-base font-semibold text-gray-800">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
                   <li key={link.name}>
                     <Link
                       href={link.href}
                       onClick={() => setOpen(false)}
-                      className="hover:text-blue-500 transition-colors duration-300"
+                      className={`transition-colors duration-300 ${
+                        isActive ? "text-blue-600" : "hover:text-blue-500"
+                      }`}
                     >
                       {link.name}
                     </Link>
                   </li>
-                ))}
-              </ul>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
+                );
+              })}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Hero Section */}
       {isHomePage && (
         <section className="relative h-[85vh] sm:h-[90vh] md:h-[95vh] flex items-center overflow-hidden">
-          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/hero-bg-wp.jpg')" }} />
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: "url('/hero-bg-wp.jpg')" }}
+          />
 
           {/* Dark Overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/20"></div>
@@ -160,7 +170,7 @@ export default function NavbarHero() {
               from={{ opacity: 0, y: 20 }}
               to={{ opacity: 1, y: 0 }}
             />
-             <SplitText
+            <SplitText
               text="Maßgeschneiderte Immobilienpräsentationen für maximale Wirkung:"
               className="text-m sm:text-m md:text-xl lg:text-2xl font-semibold text-blue-600 mb-4 sm:mb-6"
               delay={1200}
@@ -181,15 +191,12 @@ export default function NavbarHero() {
                 "Social Media Marketing",
               ].map((item, i) => (
                 <li key={i} className="flex items-start space-x-3">
-                  <span className="mt-1 text-blue-600">
-                    {/* Small check icon */}
-                    ✓
-                  </span>
+                  <span className="mt-1 text-blue-600">✓</span>
                   <SplitText
                     text={item}
                     className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-gray-800"
-                    delay={100000000000000000000000000000000}
-                    duration={6}
+                    delay={300 + i * 200}
+                    duration={0.4}
                     ease="power3.out"
                     splitType="lines"
                     from={{ opacity: 0, y: 20 }}
@@ -198,8 +205,6 @@ export default function NavbarHero() {
                 </li>
               ))}
             </ul>
-
-
 
             {/* CTA Button */}
             <a
