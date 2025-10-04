@@ -13,108 +13,92 @@ interface Service {
   image: string;
 }
 
-interface Testimonial {
-  id: string;
-  name: string;
-  position: string;
-  comment: string;
-  avatar: string;
-}
-
 export default function PremiumServicesDE() {
   const [services, setServices] = useState<Service[]>([]);
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const serviceData: Service[] = [
       {
-        id: "1",
-        title: "Immobilienverkauf & Vermietung",
+        id: "photography",
+        title: "Professionelle Fotografie",
         description:
-          "Wir unterstützen Sie beim Kauf, Verkauf und der Vermietung von Wohn- und Gewerbeimmobilien. Unser Service umfasst umfassende Beratung, Vertragsabwicklung und Marketingstrategien, um den besten Preis und reibungslose Abläufe zu garantieren.",
+          "Hochwertige Fotos rücken Ihre Immobilie ins beste Licht. Mit optimaler Perspektive, Lichtführung und Detailgenauigkeit zeigen wir jedes Objekt von seiner stärksten Seite und steigern so das Interesse potenzieller Käufer",
         details: [
-          "Individuelle Beratung und Betreuung bei Kauf & Verkauf.",
-          "Professionelle Marketingstrategien für Ihre Immobilie.",
-          "Reibungslose Vertragsabwicklung und Übergabe.",
+          "Innen- & Außenaufnahmen in hoher Auflösung",
+          "HDR, Panorama & Detailaufnahmen",
+          "Optimierung und Retusche",
         ],
-        image: "/images/sale.jpg",
+        image: "/services/1.jpg",
       },
       {
-        id: "2",
-        title: "Marktanalyse",
+        id: "home-staging",
+        title: "Home Staging",
         description:
-          "Wir liefern detaillierte Marktanalysen, um aktuelle Trends, Preisschwankungen und Investmentpotenziale zu erkennen. So treffen unsere Kunden fundierte Entscheidungen bei jedem Immobiliengeschäft.",
+          "Laut einer US Amerikanischen Studie wurden Staged Homes 73% schneller verkauft als ungestaltete Immobilien und erzielten in  85% der Fälle höhere Verkaufspreise, Durch gezieltes Einrichten und Dekorieren scha en wir eine einladende Atmosphäre, die das volle Potenzial Ihrer Immobilie hervorhebt und Kaufinteresse weckt ",
         details: [
-          "Detaillierte Preisanalyse von Wohn- und Gewerbeimmobilien.",
-          "Trendanalyse und Prognosen für Investitionsentscheidungen.",
-          "Individuelle Beratung für Ihre Investitionsstrategie.",
+          "Professionelle Möblierung & Accessoires",
+          "Optimale Raumaufteilung & Farbgebung",
+          "Dekoration passend zur Zielgruppe",
         ],
-        image: "/images/market-analysis.jpg",
-      },
+        image: "/services/2.png",      },
       {
-        id: "3",
-        title: "Investitionsberatung",
+        id: "3d-visualization",
+        title: "3D Visualisierung",
         description:
-          "Unsere Experten bieten strategische Beratung für Immobilieninvestitionen, einschließlich Renditeberechnung, Standortbewertung und Portfoliooptimierung, um langfristig profitable Entscheidungen zu treffen.",
+          "Mit unseren 3D-Visualisierungen erleben Interessenten Ihre Immobilie virtuell wie in echt. Räume wirken greifbar, Einrichtungsideen werden sichtbar und Käufer können sich ihr zukünftiges Zuhause bereits digital vorstellen – ein starker Vorteil. ",
         details: [
-          "Analyse von Renditepotenzialen und Risiken.",
-          "Standortbewertung und Marktchancen.",
-          "Strategische Optimierung Ihres Immobilien-Portfolios.",
+          "Exakte Architektur- und Innenraumdarstellungen",
+          "Möblierungsvarianten & Materialwahl",
+          "Begehbare 3D-Rundgänge",
         ],
-        image: "/images/investment.jpg",
-      },
+        image: "/services/3.jpeg",      },
       {
-        id: "4",
-        title: "Immobilienverwaltung",
+        id: "drone-photography",
+        title: "Drohnenaufnahmen",
         description:
-          "Wir kümmern uns um die komplette Verwaltung Ihrer Immobilien – von Mieteinnahmen über Instandhaltung bis hin zu rechtlichen Aspekten – um maximale Rendite und minimale Belastung für Eigentümer zu gewährleisten.",
+          "Mit professionellen Drohnenaufnahmen präsentieren wir Ihre Immobilie und das gesamte Grundstück aus beeindruckenden Perspektiven. Luftaufnahmen zeigen die Umgebung, Nachbarschaft und Besonderheiten Ihres Objekts auf einen Blick und sorgen für einen bleibenden ersten Eindruck. ",
         details: [
-          "Vollständige Verwaltung Ihrer Immobilien.",
-          "Mietmanagement, Instandhaltung und Reporting.",
-          "Rechtliche Betreuung und Sicherheit für Eigentümer.",
+          "Luftaufnahmen & Videos",
+          "Umgebungs- & Grundstücksperspektiven",
+          "Highlight spezieller Merkmale aus der Luft",
         ],
-        image: "/images/property-management.jpg",
-      },
-    ];
-
-    const testimonialData: Testimonial[] = [
+        image: "/services/4.jpg",      },
       {
-        id: "1",
-        name: "Anna Müller",
-        position: "Privatkunden",
-        comment:
-          "Dank des Services konnte ich meine Immobilie schnell und zum besten Preis verkaufen.",
-        avatar: "/images/testimonial1.jpg",
-      },
+        id: "market-analysis",
+        title: "Marktwertanalyse",
+        description:
+          "Eine Software, die den Verkaufspreis berechnet, nutzen wir nicht. Stattdessen setzen wir auf Erfahrung: Wir haben ein Auge für alle großen und kleinen Merkmale Ihrer Immobilie – auch die, die sich nicht in Zahlen fassen lassen – und ermitteln gemeinsam mit Ihnen einen optimalen, marktkonformen und fundierten Verkaufspreis. ",
+        details: [
+          "Analyse vergleichbarer Objekte",
+          "Berücksichtigung individueller Merkmale",
+          "Beratung zur Preispositionierung",
+        ],
+        image: "/services/5.jpg",      },
       {
-        id: "2",
-        name: "Peter Schmidt",
-        position: "Investor",
-        comment:
-          "Professionelle Marktanalyse half mir, profitable Investitionen zu tätigen.",
-        avatar: "/images/testimonial2.jpg",
-      },
-      {
-        id: "3",
-        name: "Laura Fischer",
-        position: "Eigentümerin",
-        comment: "Die Verwaltung meiner Mietobjekte läuft jetzt völlig stressfrei.",
-        avatar: "/images/testimonial3.jpg",
-      },
+        id: "virtual-staging",
+        title: "Virtuelles Staging",
+        description:
+          "Mit modernster Software inszenieren wir Ihre Immobilie digital auf höchstem Niveau. Besonders bei Objekten, bei denen ein herkömmliches Home Staging aus Platzmangel, laufendem Betrieb oder anderen Gründen nicht möglich ist, zeigt virtuelles Staging Räume optimal eingerichtet, vermittelt potenziellen Käufern ein realistisches Wohngefühl und Lust, Ihre Immobilie gleich näher kennenlernen zu wollen. ",
+        details: [
+          "Digitale Möblierung & Dekoration",
+          "Mehrere Stilvarianten & Szenarien",
+          "Realistische Licht- & Schatteneffekte",
+        ],
+        image: "/services/6.jpg",      },
     ];
 
     setServices(serviceData);
-    setTestimonials(testimonialData);
     setLoading(false);
   }, []);
 
-  if (loading)
+  if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
       </div>
     );
+  }
 
   const cardVariant: Variants = {
     hidden: { opacity: 0, y: 50 },
@@ -127,29 +111,40 @@ export default function PremiumServicesDE() {
 
   return (
     <div className="w-full flex flex-col">
-      {/* Hero Section */}
-      <section className="relative w-full h-[60vh] flex items-center justify-center text-center overflow-hidden">
+      {/* Hero / Header */}
+      <section className="relative w-full h-[50vh] flex items-center justify-center text-center overflow-hidden mb-16">
         <Image
           src="/headers-bg.jpg"
-          alt="Immobilien Dienstleistungen"
+          alt="Unsere Dienstleistungen"
           fill
           priority
           className="object-cover"
         />
         <div className="absolute inset-0 bg-black/60"></div>
-        <div className="relative z-10 max-w-4xl px-6 text-white">
-          <h1 className="text-5xl md:text-6xl font-extrabold mb-6 drop-shadow-lg">
+        <div className="relative z-10 px-6 text-white">
+          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
             Unsere Dienstleistungen
           </h1>
-          <p className="text-xl md:text-2xl leading-relaxed drop-shadow-md">
-            Professionelle Lösungen für Verkauf, Analyse, Investition und
-            Verwaltung.
+          {/* Quote Block */}
+          <blockquote className="text-2xl md:text-3xl italic font-light leading-relaxed drop-shadow-md text-center mb-6">
+            „Marketing ist zu wichtig, um es nur der Marketingabteilung zu überlassen.“ 
+            <footer className="mt-4 text-lg md:text-xl not-italic font-semibold">
+              – David Packard 
+            </footer>
+          </blockquote>
+
+          {/* Separator */}
+          <div className="w-16 h-1 bg-blue-500 mx-auto mb-6 rounded-full"></div>
+
+          {/* Follow-up Text */}
+          <p className="text-lg md:text-xl leading-relaxed drop-shadow-md text-center">
+          Unsere Leistungen für einen starken Auftritt ihrer Immobilie:   
           </p>
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="max-w-7xl mx-auto w-full px-6 py-20 grid gap-16">
+      {/* Services Grid */}
+      <section className="max-w-7xl mx-auto px-6 py-20 grid gap-16">
         {services.map((service, i) => (
           <motion.div
             key={service.id}
@@ -158,7 +153,7 @@ export default function PremiumServicesDE() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
             className={`flex flex-col md:flex-row items-center bg-white rounded-2xl overflow-hidden transition-transform hover:scale-[1.02] ${
-              i % 2 === 0 ? "" : "md:flex-row-reverse"
+              i % 2 === 1 ? "md:flex-row-reverse" : ""
             }`}
           >
             {/* Image */}
@@ -191,44 +186,6 @@ export default function PremiumServicesDE() {
             </div>
           </motion.div>
         ))}
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="bg-gradient-to-b from-gray-50 to-white py-20 px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-gray-900 mb-14">
-            Kundenstimmen
-          </h2>
-          <div className="grid gap-10 md:grid-cols-3">
-            {testimonials.map((testimonial) => (
-              <motion.div
-                key={testimonial.id}
-                variants={cardVariant}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                className="bg-white rounded-2xl p-8 shadow-md flex flex-col items-center text-center hover:shadow-lg transition-shadow"
-              >
-                <Image
-                  src={testimonial.avatar}
-                  alt={testimonial.name}
-                  width={90}
-                  height={90}
-                  className="rounded-full mb-6 object-cover ring-4 ring-blue-100"
-                />
-                <p className="text-gray-700 mb-6 italic text-lg leading-relaxed">
-                  "{testimonial.comment}"
-                </p>
-                <h3 className="font-semibold text-xl text-gray-900">
-                  {testimonial.name}
-                </h3>
-                <span className="text-gray-500 text-sm">
-                  {testimonial.position}
-                </span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
       </section>
     </div>
   );

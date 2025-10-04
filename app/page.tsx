@@ -1,28 +1,69 @@
 "use client";
+
 import { useState } from "react";
-import { motion, Variants, AnimatePresence } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import Image from "next/image";
+
+// Define the type
+interface Testimonial {
+  id: number;
+  name: string;
+  comment: string;
+  position: string;
+  avatar: string;
+}
 
 export default function PremiumHomePageDE() {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
+  // Example static testimonials
+  const [testimonials] = useState<Testimonial[]>([
+    {
+      id: 1,
+      name: "Anna Müller",
+      comment: "Ein hervorragender Service! Ich habe mein Traumhaus gefunden.",
+      position: "Kundin",
+      avatar: "/avatars/anna.jpg",
+    },
+    {
+      id: 2,
+      name: "Max Schmidt",
+      comment: "Sehr professionell und zuverlässig. Immer wieder gerne!",
+      position: "Investor",
+      avatar: "/avatars/max.jpg",
+    },
+    {
+      id: 3,
+      name: "Laura Becker",
+      comment: "Tolle Beratung und schnelle Abwicklung. Vielen Dank!",
+      position: "Hauskäuferin",
+      avatar: "/avatars/laura.jpg",
+    },
+  ]);
+
   const toggleExpand = (index: number) =>
     setExpandedIndex(expandedIndex === index ? null : index);
 
   const sectionVariant: Variants = {
     hidden: { opacity: 0, y: 40 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.7, ease: "easeOut" },
+    },
   };
 
   const cardVariant: Variants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5 },
+    },
   };
-
 
   return (
     <div className="relative w-full bg-gray-50">
-
-
       {/* CTA */}
       <motion.section
         className="relative py-24 bg-gradient-to-r from-blue-600 to-blue-800 text-white"
@@ -39,7 +80,8 @@ export default function PremiumHomePageDE() {
             Traumimmobilien warten auf Sie
           </h2>
           <p className="text-lg mb-8 opacity-90">
-            Entdecken Sie unsere exklusive Auswahl an Häusern, Wohnungen und Investitionsmöglichkeiten.
+            Entdecken Sie unsere exklusive Auswahl an Häusern, Wohnungen und
+            Investitionsmöglichkeiten.
           </p>
           <a
             href="/realestate"
@@ -49,6 +91,44 @@ export default function PremiumHomePageDE() {
           </a>
         </div>
       </motion.section>
+
+      {/* Testimonials */}
+      <section className="bg-gradient-to-b from-gray-50 to-white py-20 px-6">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-4xl font-bold text-gray-900 mb-14">
+            Kundenstimmen
+          </h2>
+          <div className="grid gap-10 md:grid-cols-3">
+            {testimonials.map((testimonial) => (
+              <motion.div
+                key={testimonial.id}
+                variants={cardVariant}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.3 }}
+                className="bg-white rounded-2xl p-8 shadow-md flex flex-col items-center text-center hover:shadow-lg transition-shadow"
+              >
+                <Image
+                  src={testimonial.avatar}
+                  alt={testimonial.name}
+                  width={90}
+                  height={90}
+                  className="rounded-full mb-6 object-cover ring-4 ring-blue-100"
+                />
+                <p className="text-gray-700 mb-6 italic text-lg leading-relaxed">
+                  "{testimonial.comment}"
+                </p>
+                <h3 className="font-semibold text-xl text-gray-900">
+                  {testimonial.name}
+                </h3>
+                <span className="text-gray-500 text-sm">
+                  {testimonial.position}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Kontakt */}
       <motion.section
@@ -61,7 +141,8 @@ export default function PremiumHomePageDE() {
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold mb-6">Kontaktieren Sie Uns</h2>
           <p className="mb-8 text-lg opacity-90">
-            Bereit, Ihre Immobilienreise zu starten? Kontaktieren Sie uns noch heute!
+            Bereit, Ihre Immobilienreise zu starten? Kontaktieren Sie uns noch
+            heute!
           </p>
           <div className="flex flex-col md:flex-row justify-center gap-6 font-medium">
             <p>📞 +20 123 456 789</p>
