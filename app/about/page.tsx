@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 
 // ===== GlareHover Component =====
 function GlareHover({
@@ -69,12 +69,11 @@ const fadeInRight: Variants = {
   },
 };
 
-// ===== Page Component =====
 export default function UnternehmenFullSplit() {
   return (
-    <div className="w-full overflow-x-hidden font-sans text-gray-800">
-      {/* Hero Section */}
-      <section className="relative w-full h-[65vh] flex items-center justify-center text-center overflow-hidden p-5">
+    <main className="w-full h-screen overflow-y-scroll overflow-x-hidden snap-y snap-mandatory scroll-smooth text-gray-800 font-sans">
+      {/* ===== Hero Section ===== */}
+      <section className="relative w-full h-screen flex items-center justify-center text-center overflow-hidden snap-start">
         <Image
           src="/headers-bg.jpg"
           alt="Über Uns"
@@ -84,32 +83,29 @@ export default function UnternehmenFullSplit() {
         />
         <div className="absolute inset-0 bg-black/60"></div>
         <div className="relative z-10 max-w-4xl px-6 text-white">
-          <h1 className="text-5xl md:text-6xl font-extrabold mb-6 drop-shadow-lg">
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-6 drop-shadow-lg">
             Über Uns
           </h1>
-          <blockquote className="text-xl md:text-2xl italic font-light leading-relaxed drop-shadow-md text-center mb-6">
+          <blockquote className="text-lg md:text-2xl italic font-light leading-relaxed drop-shadow-md text-center mb-6">
             „Innovation entsteht, wenn man Dinge anders denkt und den Mut hat,
-            sie umzusetzen“
-            <footer className="mt-4 text-lg md:text-xl not-italic font-semibold opacity-80">
-              – Brehm, Alexander & Vahs, Dietmar: Innovationsmanagement
+            sie umzusetzen.“
+            <footer className="mt-4 text-base md:text-xl not-italic font-semibold opacity-80">
+              – Brehm, Alexander & Vahs, Dietmar
             </footer>
           </blockquote>
           <div className="w-20 h-1 bg-blue-500 mx-auto rounded-full"></div>
         </div>
       </section>
 
-      {/* Spacer */}
-      <div className="h-24 md:h-32"></div>
-
-      {/* Person Section */}
-      <section className="grid grid-cols-1 md:grid-cols-2">
+      {/* ===== Person Section ===== */}
+      <section className="min-h-screen flex flex-col md:grid md:grid-cols-2 items-center justify-center bg-white snap-start overflow-hidden">
         {/* Left: Image */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
           variants={fadeInLeft}
-          className="relative h-[700px] md:h-[1200px] flex items-center justify-center bg-white"
+          className="relative w-full h-[500px] md:h-full flex items-center justify-center bg-white p-4"
         >
           <GlareHover glareColor="#ffffff" glareOpacity={0.35}>
             <Image
@@ -161,14 +157,14 @@ export default function UnternehmenFullSplit() {
         </motion.div>
       </section>
 
-      {/* Kontakt */}
+      {/* ===== Contact Section ===== */}
       <motion.section
-        className="bg-gray-900 py-20 text-white"
+        className="bg-gray-900 py-20 text-white text-center snap-start overflow-hidden"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
       >
-        <div className="max-w-7xl mx-auto px-6 text-center">
+        <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Kontaktieren Sie Uns
           </h2>
@@ -183,6 +179,6 @@ export default function UnternehmenFullSplit() {
           </div>
         </div>
       </motion.section>
-    </div>
+    </main>
   );
 }

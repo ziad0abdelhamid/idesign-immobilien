@@ -24,7 +24,7 @@ export default function OurPartners() {
         name: "Maria Matthäus",
         title: "Expertin für technische Zeichnungen",
         description:
-          "Maria ist angehende Architektin und unsere Spezialistin für technische Zeichnungen. Sie unterstützt unsere Kunden bei der Erstellung präziser, professioneller Pläne – sei es für Energieausweise oder die optimale Verkaufspräsentation Ihrer Immobilie. Ihre technische Kompetenz und ihr Gespür für architektonische Details haben schon manches Immobilienprojekt zum Erfolg geführt.",
+          "Maria ist angehende Architektin und unsere Spezialistin für technische Zeichnungen. Sie unterstützt unsere Kunden bei der Erstellung präziser, professioneller Pläne – sei es für Energieausweise oder die optimale Verkaufspräsentation Ihrer Immobilie.",
         logo: "/Maria.jpeg",
       },
       {
@@ -32,7 +32,7 @@ export default function OurPartners() {
         name: "Dr. Konstantin Prabitz",
         title: "Hochwertige Drohnenaufnahmen",
         description:
-          "Dominik hebt mit seinen sehr anspruchsvollen Aufnahmen Ihre Immobilie auf ein ganz neues Level. Er schafft beeindruckende Luftbilder und sogar Indoor-Drohnenaufnahmen, die Ihre Immobilie aus einzigartigen Perspektiven zeigen. Für Immobilien, die mehr als Standard verlangen.",
+          "Dominik hebt mit seinen sehr anspruchsvollen Aufnahmen Ihre Immobilie auf ein ganz neues Level. Er schafft beeindruckende Luftbilder und sogar Indoor-Drohnenaufnahmen.",
         logo: "/Konstantin.jpg",
         website: "https://oesterreich.wtf",
       },
@@ -41,7 +41,7 @@ export default function OurPartners() {
         name: "Thomas Lippitz",
         title: "Ihr Ansprechpartner für Finanzierung & Immobilieninvestitionen",
         description:
-          "Wenn es um Immobilienfinanzierung geht, sorgt Thomas für Klarheit, Struktur und maßgeschneiderte Lösungen. Er denkt mit, rechnet vor und begleitet zuverlässig bis zur idealen Finanzierungslösung.",
+          "Wenn es um Immobilienfinanzierung geht, sorgt Thomas für Klarheit, Struktur und maßgeschneiderte Lösungen.",
         logo: "/Thomas.jpeg",
         website: "https://www.clever-finanziert.at/lippitz-thomas/",
       },
@@ -50,7 +50,7 @@ export default function OurPartners() {
         name: "Anna Starhemberg",
         title: "Professionelle Immobilienfotografie mit Immo Capture",
         description:
-          "Ob Altbau, Neubau oder Gewerbeobjekt – Anna sorgt mit ihrem geschulten Blick und modernster Technik für aussagekräftige Aufnahmen, die Eindruck hinterlassen. Mit Immo Capture fotografieren sie Immobilien so, wie sie wirklich wirken sollen: ansprechend, hochwertig und authentisch.",
+          "Ob Altbau, Neubau oder Gewerbeobjekt – Anna sorgt für aussagekräftige Aufnahmen, die Eindruck hinterlassen.",
         logo: "/Anna.jpg",
         website: "https://immocapture.at/kontakt/",
       },
@@ -59,7 +59,7 @@ export default function OurPartners() {
         name: "DI Mark Ekladious",
         title: "Experte für 3D-Renderings",
         description:
-          "Mark ist unser Spezialist für 3D-Renderings und erstellt für unsere Kunden professionelle 3D-Visualisierungen, die Ihre Immobilien perfekt in Szene setzen. Seine Arbeit hilft dabei, Ihr Projekt eindrucksvoll und realistisch darzustellen. Gerade im Neubausektor ist seine Arbeit unverzichtbar.",
+          "Mark ist unser Spezialist für 3D-Renderings und erstellt für unsere Kunden professionelle 3D-Visualisierungen.",
         logo: "/Mark.jpg",
         website: "https://h-ev.net/",
       },
@@ -86,87 +86,95 @@ export default function OurPartners() {
   };
 
   return (
-    <div className="w-full flex flex-col bg-gray-50">
-      {/* Hero Section */}
-      <section className="relative w-full h-[60vh] flex items-center justify-center text-center overflow-hidden">
-        <Image
-          src="/headers-bg.jpg"
-          alt="Immobilien Dienstleistungen"
-          fill
-          priority
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-black/60"></div>
-        <div className="relative z-10 max-w-4xl px-6 text-white">
-          <h1 className="text-5xl md:text-6xl font-extrabold mb-8 drop-shadow-lg">
-            Unsere Partner
-          </h1>
+<main className="w-full h-screen snap-y snap-mandatory overflow-y-scroll">
+  {/* Section 1 */}
+  <section
+    className="
+      relative w-full min-h-[100dvh]
+      flex items-center justify-center text-center overflow-hidden snap-start
+      px-4 sm:px-6
+    "
+  >
+    <Image
+      src="/headers-bg.jpg"
+      alt="Immobilien Dienstleistungen"
+      fill
+      priority
+      className="object-cover object-center"
+    />
+    <div className="absolute inset-0 bg-black/60"></div>
 
-          {/* Quote Block */}
-          <blockquote className="text-2xl md:text-3xl italic font-light leading-relaxed drop-shadow-md text-center mb-6">
-            „Große Dinge werden nie von einer Person allein erreicht,
-            sie sind das Ergebnis eines Teams.“
-            <footer className="mt-4 text-lg md:text-xl not-italic font-semibold">
-              – Steve Jobs
-            </footer>
-          </blockquote>
+    <div className="relative z-10 max-w-3xl sm:max-w-4xl text-white py-16 sm:py-20 md:py-0">
+      <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 sm:mb-8 drop-shadow-lg leading-tight">
+        Unsere Partner
+      </h1>
 
-          {/* Separator */}
-          <div className="w-16 h-1 bg-blue-500 mx-auto mb-6 rounded-full"></div>
+      <blockquote className="text-xl sm:text-2xl md:text-3xl italic font-light leading-relaxed drop-shadow-md text-center mb-6 px-2">
+        „Große Dinge werden nie von einer Person allein erreicht,
+        sie sind das Ergebnis eines Teams.“
+        <footer className="mt-4 text-base sm:text-lg md:text-xl not-italic font-semibold">
+          – Steve Jobs
+        </footer>
+      </blockquote>
 
-          {/* Follow-up Text */}
-          <p className="text-lg md:text-xl leading-relaxed drop-shadow-md text-center">
-            Wir sind stolz darauf, mit einem Netzwerk engagierter Partner
-            zusammenzuarbeiten, die mit ihrem Fachwissen jedes Projekt bereichern.
-          </p>
-        </div>
-      </section>
+      <div className="w-16 h-1 bg-blue-500 mx-auto mb-6 rounded-full"></div>
 
-      {/* Partner Cards */}
-      <section className="max-w-7xl mx-auto w-full px-6 py-16 grid gap-12">
-        {partners.map((partner) => (
-          <motion.div
-            key={partner.id}
-            variants={cardVariant}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            className="flex flex-col md:flex-row items-center bg-white rounded-2xl overflow-hidden duration-300"
-          >
-            {/* Logo */}
-            <div className="relative w-full md:w-1/3 flex items-center justify-center bg-white p-6">
-              <Image
-                src={partner.logo}
-                alt={partner.name}
-                width={1080}
-                height={920}
-                className="object-contain"
-              />
-            </div>
-
-            {/* Info */}
-            <div className="w-full md:w-2/3 p-8 text-center md:text-left">
-              <h2 className="text-3xl font-bold mb-2 text-gray-900">
-                {partner.name}
-              </h2>
-              <p className="text-lg text-gray-500 mb-4">{partner.title}</p>
-              <p className="text-gray-700 text-lg mb-6">
-                {partner.description}
-              </p>
-              {partner.website && (
-                <a
-                  href={partner.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-800 transition-colors"
-                >
-                  <FaGlobe /> Website besuchen
-                </a>
-              )}
-            </div>
-          </motion.div>
-        ))}
-      </section>
+      <p className="text-base sm:text-lg md:text-xl leading-relaxed drop-shadow-md text-center px-4">
+        Wir sind stolz darauf, mit einem Netzwerk engagierter Partner
+        zusammenzuarbeiten, die mit ihrem Fachwissen jedes Projekt bereichern.
+      </p>
     </div>
+  </section>
+
+  {/* Section 2 */}
+  <section
+    className="
+      min-h-[100dvh] snap-start flex flex-col items-center justify-start
+      bg-white overflow-y-auto pt-12 sm:pt-20 pb-16
+    "
+  >
+    <div className="max-w-7xl mx-auto w-full px-6 grid gap-12">
+      {partners.map((partner) => (
+        <motion.div
+          key={partner.id}
+          variants={cardVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          className="flex flex-col md:flex-row items-center bg-white rounded-2xl overflow-hidden shadow-lg"
+        >
+          {/* Logo */}
+          <div className="relative w-full md:w-1/3 flex items-center justify-center bg-white p-6">
+            <Image
+              src={partner.logo}
+              alt={partner.name}
+              width={400}
+              height={400}
+              className="object-contain rounded-xl"
+            />
+          </div>
+
+          {/* Info */}
+          <div className="w-full md:w-2/3 p-8 text-center md:text-left">
+            <h2 className="text-3xl font-bold mb-2 text-gray-900">{partner.name}</h2>
+            <p className="text-lg text-gray-500 mb-4">{partner.title}</p>
+            <p className="text-gray-700 text-lg mb-6">{partner.description}</p>
+            {partner.website && (
+              <a
+                href={partner.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-800 transition-colors"
+              >
+                <FaGlobe /> Website besuchen
+              </a>
+            )}
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  </section>
+</main>
+
   );
 }
