@@ -21,21 +21,21 @@ export default function PremiumHomePageDE() {
       name: "Anna Müller",
       comment: "Ein hervorragender Service! Ich habe mein Traumhaus gefunden.",
       position: "Kundin",
-      avatar: "/avatars/anna.jpg",
+      avatar: "/anna.jpg",
     },
     {
       id: 2,
       name: "Max Schmidt",
       comment: "Sehr professionell und zuverlässig. Immer wieder gerne!",
       position: "Investor",
-      avatar: "/avatars/max.jpg",
+      avatar: "/anna.jpg",
     },
     {
       id: 3,
       name: "Laura Becker",
       comment: "Tolle Beratung und schnelle Abwicklung. Vielen Dank!",
       position: "Hauskäuferin",
-      avatar: "/avatars/laura.jpg",
+      avatar: "/anna.jpg",
     },
   ];
 
