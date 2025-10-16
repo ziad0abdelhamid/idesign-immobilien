@@ -86,7 +86,8 @@ export default function OurPartners() {
   };
 
   return (
-<main className="w-full h-screen snap-y snap-proximity overflow-y-scroll">
+<main className="w-full snap-y snap-mandatory overflow-y-auto">
+
   {/* Section 1 */}
   <section
     className="
@@ -168,7 +169,7 @@ export default function OurPartners() {
               >
                 <FaGlobe /> Website besuchen
               </a>
-            )}
+            )} 
           </div>
         </motion.div>
       ))}
