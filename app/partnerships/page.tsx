@@ -86,7 +86,7 @@ export default function OurPartners() {
   };
 
   return (
-<main className="w-full h-screen snap-y snap-mandatory overflow-y-scroll">
+<main className="w-full h-screen snap-y snap-proximity overflow-y-scroll">
   {/* Section 1 */}
   <section
     className="
