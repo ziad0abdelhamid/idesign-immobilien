@@ -58,7 +58,7 @@ export default function NavbarHero() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center overflow-hidden">
-            <div className="relative w-28 sm:w-48 md:w-56 h-12 sm:h-16">
+            <div className="relative w-28 sm:w-80 md:w-80 h-42 sm:h-33.5 md:h-42">
               <Image
                 src="/logo.png"
                 alt="iDesign Immobilien"
