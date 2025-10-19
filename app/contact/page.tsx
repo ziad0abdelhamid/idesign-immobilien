@@ -36,12 +36,14 @@ export default function ContactPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <div className="relative w-full h-[45vh] flex items-center justify-center text-center overflow-hidden">
-        <Image
-          src="/hero-meow.jpg"
-          alt="Kontakt Hintergrund"
-          fill
-          className="object-cover"
-        />
+      <video
+        className="absolute inset-0 w-full h-full object-cover filter blur-md scale-105"
+        src="/hero-video.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
         <div className="absolute inset-0 bg-black/50" /> {/* Transparent Overlay */}
         <div className="relative z-10 text-white max-w-3xl px-6">
           <h1 className="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-lg">

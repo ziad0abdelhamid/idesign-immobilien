@@ -118,13 +118,14 @@ export default function PremiumServicesDE() {
     <main className="w-full h-screen snap-y snap-mandatory overflow-y-scroll">
       {/* Hero / Header Section */}
       <section className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center text-center overflow-hidden snap-start px-4 sm:px-6">
-        <Image
-          src="/headers-bg.jpg"
-          alt="Unsere Dienstleistungen"
-          fill
-          priority
-          className="object-cover object-center"
-        />
+      <video
+        className="absolute inset-0 w-full h-full object-cover filter blur-md scale-105"
+        src="/hero-video.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
         <div className="absolute inset-0 bg-black/60"></div>
 
         <div className="relative z-10 text-white max-w-3xl sm:max-w-4xl px-4 py-16 sm:py-20 md:py-0">

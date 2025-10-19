@@ -76,7 +76,7 @@ export default function PremiumHomePageDE() {
           </p>
           <a
             href="/realestate"
-            className="inline-block px-10 py-4 bg-white text-blue-700 font-bold rounded-lg shadow-md hover:bg-gray-100 transition"
+            className="inline-block px-10 py-4 bg-white text-blue-500 font-bold rounded-lg shadow-md hover:bg-blue-300 hover:text-white active:bg-blue-500 transition"
           >
             Immobilien entdecken
           </a>
@@ -118,70 +118,87 @@ export default function PremiumHomePageDE() {
       </section>
 
       {/* Testimonials — mobile chat bubble */}
-      <div className="md:hidden">
-        {/* Small floating button */}
-        <button
-          onClick={() => setShowBubble(true)}
-          className="fixed right-5 bottom-24 z-40 bg-gradient-to-br from-blue-600 to-cyan-400 text-white p-3 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all"
-        >
-          💬
-        </button>
+<div className="md:hidden">
+  {/* Small floating button */}
+  <div className="fixed right-5 bottom-24 z-50 flex flex-col items-end">
+    {/* Tooltip cloud */}
+    {!showBubble && (
+      <motion.div
+        initial={{ opacity: 0, y: 10, scale: 0.9 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 10 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="mb-2 bg-white text-gray-800 text-xs font-medium px-3 py-2 rounded-2xl shadow-lg border border-gray-200 relative"
+      >
+        <span>„Sehen Sie, was andere über uns sagen“</span>
+        <div className="absolute right-4 -bottom-1 w-2 h-2 bg-white rotate-45 border-r border-b border-gray-200"></div>
+      </motion.div>
+    )}
 
-        <AnimatePresence>
-          {showBubble && (
-            <motion.div
-              variants={bubbleVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              className="fixed right-4 bottom-28 w-[85vw] max-w-[300px] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden z-50"
+    <button
+      onClick={() => setShowBubble(true)}
+      className="bg-gradient-to-br from-blue-600 to-cyan-400 text-white p-3 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all"
+    >
+      💬
+    </button>
+  </div>
+
+  <AnimatePresence>
+    {showBubble && (
+      <motion.div
+        variants={bubbleVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        className="fixed right-4 bottom-28 w-[85vw] max-w-[300px] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden z-50"
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between bg-gradient-to-r from-blue-600 to-blue-700 text-white px-3 py-2">
+          <span className="font-semibold text-sm">Kundenstimmen</span>
+          <button
+            onClick={() => setShowBubble(false)}
+            className="text-white text-base leading-none hover:text-gray-200"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Chat messages */}
+        <div className="p-3 space-y-3 max-h-[40vh] overflow-y-auto">
+          {testimonials.map((t, i) => (
+            <div
+              key={t.id}
+              className={`flex items-start gap-2 ${
+                i % 2 === 0 ? "flex-row" : "flex-row-reverse"
+              }`}
             >
-              {/* Header */}
-              <div className="flex items-center justify-between bg-gradient-to-r from-blue-600 to-blue-700 text-white px-3 py-2">
-                <span className="font-semibold text-sm">Kundenstimmen</span>
-                <button
-                  onClick={() => setShowBubble(false)}
-                  className="text-white text-base leading-none hover:text-gray-200"
-                >
-                  ✕
-                </button>
+              <Image
+                src={t.avatar}
+                alt={t.name}
+                width={36}
+                height={36}
+                className="rounded-full object-cover border border-gray-200"
+              />
+              <div
+                className={`rounded-2xl px-3 py-2 text-sm max-w-[75%] ${
+                  i % 2 === 0
+                    ? "bg-gray-100 text-gray-800"
+                    : "bg-gradient-to-r from-blue-600 to-cyan-500 text-white"
+                }`}
+              >
+                <p className="italic leading-snug text-[13px]">{t.comment}</p>
+                <p className="mt-1 text-[11px] font-medium">
+                  — {t.name}, {t.position}
+                </p>
               </div>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</div>
 
-              {/* Chat messages */}
-              <div className="p-3 space-y-3 max-h-[40vh] overflow-y-auto">
-                {testimonials.map((t, i) => (
-                  <div
-                    key={t.id}
-                    className={`flex items-start gap-2 ${
-                      i % 2 === 0 ? "flex-row" : "flex-row-reverse"
-                    }`}
-                  >
-                    <Image
-                      src={t.avatar}
-                      alt={t.name}
-                      width={36}
-                      height={36}
-                      className="rounded-full object-cover border border-gray-200"
-                    />
-                    <div
-                      className={`rounded-2xl px-3 py-2 text-sm max-w-[75%] ${
-                        i % 2 === 0
-                          ? "bg-gray-100 text-gray-800"
-                          : "bg-gradient-to-r from-blue-600 to-cyan-500 text-white"
-                      }`}
-                    >
-                      <p className="italic leading-snug text-[13px]">{t.comment}</p>
-                      <p className="mt-1 text-[11px] font-medium">
-                        — {t.name}, {t.position}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
 
 
 
@@ -200,9 +217,8 @@ export default function PremiumHomePageDE() {
             heute!
           </p>
           <div className="flex flex-col md:flex-row justify-center gap-6 font-medium">
-            <p>📞 +20 123 456 789</p>
-            <p>📧 info@yourcompany.com</p>
-            <p>📍 Alexandria, Ägypten</p>
+            <p>📞 +43 662 46 69-0</p>
+            <p>📍 Salzburg, Austria</p>
           </div>
         </div>
       </motion.section>

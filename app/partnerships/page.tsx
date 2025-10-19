@@ -96,13 +96,14 @@ export default function OurPartners() {
       px-4 sm:px-6
     "
   >
-    <Image
-      src="/headers-bg.jpg"
-      alt="Immobilien Dienstleistungen"
-      fill
-      priority
-      className="object-cover object-center"
-    />
+      <video
+        className="absolute inset-0 w-full h-full object-cover filter blur-md scale-105"
+        src="/hero-video.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
     <div className="absolute inset-0 bg-black/60"></div>
 
     <div className="relative z-10 max-w-3xl sm:max-w-4xl text-white py-16 sm:py-20 md:py-0">

@@ -74,13 +74,14 @@ export default function UnternehmenFullSplit() {
     <main className="w-full h-screen overflow-y-scroll overflow-x-hidden snap-y snap-mandatory scroll-smooth text-gray-800 font-sans">
       {/* ===== Hero Section ===== */}
       <section className="relative w-full h-screen flex items-center justify-center text-center overflow-hidden snap-start">
-        <Image
-          src="/headers-bg.jpg"
-          alt="Über Uns"
-          fill
-          priority
-          className="object-cover"
-        />
+      <video
+        className="absolute inset-0 w-full h-full object-cover filter blur-md scale-105"
+        src="/hero-video.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
         <div className="absolute inset-0 bg-black/60"></div>
         <div className="relative z-10 max-w-4xl px-6 text-white">
           <h1 className="text-4xl md:text-6xl font-extrabold mb-6 drop-shadow-lg">
@@ -173,9 +174,8 @@ export default function UnternehmenFullSplit() {
             heute!
           </p>
           <div className="flex flex-col md:flex-row justify-center gap-8 font-medium text-lg">
-            <p>📞 +20 123 456 789</p>
-            <p>📧 info@yourcompany.com</p>
-            <p>📍 Alexandria, Ägypten</p>
+            <p>📞 +43 662 46 69-0</p>
+            <p>📍 Salzburg, Austria</p>
           </div>
         </div>
       </motion.section>
