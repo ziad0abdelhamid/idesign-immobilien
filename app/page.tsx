@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence, Variants } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
 interface Testimonial {
@@ -10,18 +10,25 @@ interface Testimonial {
   comment: string;
   position: string;
   avatar: string;
+  rating: number;
 }
 
-export default function PremiumHomePageDE() {
-  const [showBubble, setShowBubble] = useState(false);
 
+export default function PremiumHomePageDE() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
   const testimonials: Testimonial[] = [
+    
+
+    
     {
       id: 1,
       name: "Anna Müller",
       comment: "Ein hervorragender Service! Ich habe mein Traumhaus gefunden.",
       position: "Kundin",
       avatar: "/Anna.jpg",
+      rating: 5,
     },
     {
       id: 2,
@@ -29,6 +36,7 @@ export default function PremiumHomePageDE() {
       comment: "Sehr professionell und zuverlässig. Immer wieder gerne!",
       position: "Investor",
       avatar: "/Anna.jpg",
+      rating: 4,
     },
     {
       id: 3,
@@ -36,26 +44,20 @@ export default function PremiumHomePageDE() {
       comment: "Tolle Beratung und schnelle Abwicklung. Vielen Dank!",
       position: "Hauskäuferin",
       avatar: "/Anna.jpg",
+      rating: 5,
     },
   ];
 
-  const bubbleVariants: Variants = {
-    hidden: { x: "100%", opacity: 0 },
-    visible: {
-      x: 0,
-      opacity: 1,
-      transition: { duration: 0.4, ease: "easeOut" },
-    },
-    exit: {
-      x: "100%",
-      opacity: 0,
-      transition: { duration: 0.3, ease: "easeIn" },
-    },
-  };
-
+    useEffect(() => {
+    if (carouselRef.current) {
+      const scrollWidth = carouselRef.current.scrollWidth - carouselRef.current.offsetWidth;
+      setWidth(scrollWidth);
+    }
+  }, [testimonials]);
+  
   return (
-    <div className="relative w-full bg-gray-50">
-      {/* CTA */}
+    <div className="w-full bg-gray-50">
+      {/* Hero Section */}
       <motion.section
         className="relative py-24 bg-gradient-to-r from-blue-600 to-blue-800 text-white"
         initial={{ opacity: 0, y: 30 }}
@@ -63,9 +65,7 @@ export default function PremiumHomePageDE() {
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[url('/house-bg.jpg')] bg-cover bg-center opacity-20"></div>
-        </div>
+        <div className="absolute inset-0 bg-[url('/house-bg.jpg')] bg-cover bg-center opacity-20"></div>
         <div className="relative z-10 max-w-3xl mx-auto text-center px-6">
           <h2 className="text-4xl font-extrabold mb-4">
             Traumimmobilien warten auf Sie
@@ -83,126 +83,78 @@ export default function PremiumHomePageDE() {
         </div>
       </motion.section>
 
-      {/* Testimonials — desktop */}
-      <section className="hidden md:block bg-gradient-to-b from-gray-50 to-white py-20 px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-gray-900 mb-14">
-            Kundenstimmen
-          </h2>
-          <div className="grid gap-10 md:grid-cols-3">
-            {testimonials.map((testimonial) => (
-              <div
-                key={testimonial.id}
-                className="bg-white rounded-2xl p-8 shadow-md flex flex-col items-center text-center hover:shadow-lg transition-shadow"
+    {/* 🌟 Modern & Swipeable Testimonials Section */}
+    <section className="py-24 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 text-center">
+        {/* Title */}
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4"
+        >
+          Was unsere Kunden sagen
+        </motion.h2>
+        <p className="text-gray-600 max-w-2xl mx-auto mb-14">
+          Wir sind stolz darauf, Vertrauen und Zufriedenheit zu schaffen – hören Sie selbst von unseren glücklichen Kunden.
+        </p>
+
+        {/* Carousel */}
+        <motion.div
+          ref={carouselRef}
+          className="cursor-grab active:cursor-grabbing overflow-hidden"
+        >
+          <motion.div
+            drag="x"
+            dragConstraints={{ right: 0, left: -width }}
+            whileTap={{ cursor: "grabbing" }}
+            transition={{ type: "spring", stiffness: 100, damping: 20 }}
+            className="flex gap-6 sm:gap-8 px-2"
+          >
+            {testimonials.map((t, i) => (
+              <motion.div
+                key={t.id}
+                whileHover={{ y: -5, scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+                className="min-w-[85%] sm:min-w-[45%] lg:min-w-[30%] bg-white/80 backdrop-blur-md border border-gray-100 rounded-3xl shadow-[0_6px_20px_rgba(0,0,0,0.06)] p-8 flex flex-col items-center text-center transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,0.1)] mx-auto"
               >
                 <Image
-                  src={testimonial.avatar}
-                  alt={testimonial.name}
-                  width={90}
-                  height={90}
-                  className="rounded-full mb-6 object-cover ring-4 ring-blue-100"
+                  src={t.avatar}
+                  alt={t.name}
+                  width={80}
+                  height={80}
+                  className="rounded-full object-cover border-4 border-white shadow-md mb-5"
                 />
-                <p className="text-gray-700 mb-6 italic text-lg leading-relaxed">
-                  "{testimonial.comment}"
+
+                {/* Stars */}
+                <div className="flex justify-center mb-3">
+                  {[...Array(5)].map((_, i2) => (
+                    <span
+                      key={i2}
+                      className={`text-yellow-400 text-lg ${
+                        i2 < t.rating ? "opacity-100" : "opacity-30"
+                      }`}
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
+
+                {/* Comment */}
+                <p className="italic text-gray-700 text-[15px] leading-relaxed mb-5">
+                  “{t.comment}”
                 </p>
-                <h3 className="font-semibold text-xl text-gray-900">
-                  {testimonial.name}
-                </h3>
-                <span className="text-gray-500 text-sm">
-                  {testimonial.position}
-                </span>
-              </div>
+
+                {/* Name & Position */}
+                <p className="font-semibold text-gray-900 text-base">{t.name}</p>
+                <p className="text-sm text-gray-500">{t.position}</p>
+              </motion.div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials — mobile chat bubble */}
-<div className="md:hidden">
-  {/* Small floating button */}
-  <div className="fixed right-5 bottom-24 z-50 flex flex-col items-end">
-    {/* Tooltip cloud */}
-    {!showBubble && (
-      <motion.div
-        initial={{ opacity: 0, y: 10, scale: 0.9 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 10 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="mb-2 bg-white text-gray-800 text-xs font-medium px-3 py-2 rounded-2xl shadow-lg border border-gray-200 relative"
-      >
-        <span>„Sehen Sie, was andere über uns sagen“</span>
-        <div className="absolute right-4 -bottom-1 w-2 h-2 bg-white rotate-45 border-r border-b border-gray-200"></div>
-      </motion.div>
-    )}
-
-    <button
-      onClick={() => setShowBubble(true)}
-      className="bg-gradient-to-br from-blue-600 to-cyan-400 text-white p-3 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all"
-    >
-      💬
-    </button>
-  </div>
-
-  <AnimatePresence>
-    {showBubble && (
-      <motion.div
-        variants={bubbleVariants}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        className="fixed right-4 bottom-28 w-[85vw] max-w-[300px] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden z-50"
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between bg-gradient-to-r from-blue-600 to-blue-700 text-white px-3 py-2">
-          <span className="font-semibold text-sm">Kundenstimmen</span>
-          <button
-            onClick={() => setShowBubble(false)}
-            className="text-white text-base leading-none hover:text-gray-200"
-          >
-            ✕
-          </button>
-        </div>
-
-        {/* Chat messages */}
-        <div className="p-3 space-y-3 max-h-[40vh] overflow-y-auto">
-          {testimonials.map((t, i) => (
-            <div
-              key={t.id}
-              className={`flex items-start gap-2 ${
-                i % 2 === 0 ? "flex-row" : "flex-row-reverse"
-              }`}
-            >
-              <Image
-                src={t.avatar}
-                alt={t.name}
-                width={36}
-                height={36}
-                className="rounded-full object-cover border border-gray-200"
-              />
-              <div
-                className={`rounded-2xl px-3 py-2 text-sm max-w-[75%] ${
-                  i % 2 === 0
-                    ? "bg-gray-100 text-gray-800"
-                    : "bg-gradient-to-r from-blue-600 to-cyan-500 text-white"
-                }`}
-              >
-                <p className="italic leading-snug text-[13px]">{t.comment}</p>
-                <p className="mt-1 text-[11px] font-medium">
-                  — {t.name}, {t.position}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </motion.div>
-    )}
-  </AnimatePresence>
-</div>
-
-
-
-
-      {/* Kontakt */}
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+      {/* Contact Section */}
       <motion.section
         className="bg-gray-900 py-20 text-white"
         initial={{ opacity: 0, y: 30 }}
@@ -217,8 +169,8 @@ export default function PremiumHomePageDE() {
             heute!
           </p>
           <div className="flex flex-col md:flex-row justify-center gap-6 font-medium">
-            <p>📞 +43 662 46 69-0</p>
-            <p>📍 Salzburg, Austria</p>
+            <p>📞 +43 676 418 3782‬</p>
+            <p>📍 Laaweg 30, 8401 Kalsdorf bei Graz, Österreich</p>
           </div>
         </div>
       </motion.section>

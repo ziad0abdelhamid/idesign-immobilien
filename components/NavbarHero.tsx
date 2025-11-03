@@ -58,8 +58,8 @@ export default function NavbarHero() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center overflow-hidden">
-            <div className="relative w-28 sm:w-48 md:w-56 h-12 sm:h-16">
-              <Image
+              <div className="relative w-28 sm:w-80 md:w-80 h-42 sm:h-33.5 md:h-42">
+                <Image
                 src="/logo.png"
                 alt="iDesign Immobilien"
                 fill
@@ -153,105 +153,118 @@ export default function NavbarHero() {
         )}
       </AnimatePresence>
 
-      {/* Hero Section (Home only) */}
-      {isHomePage && (
-        <section className="relative h-[85vh] sm:h-[90vh] md:h-[95vh] flex items-center justify-start overflow-hidden">
-          {/* Background Video (mobile-safe) */}
-          <video
-            ref={videoRef}
-            className="absolute inset-0 w-full h-full object-cover"
-            src="/hero-video.mp4"
-            playsInline
-            autoPlay
-            loop
-            muted
-            preload="auto"
-            poster="/hero-poster.jpg"
-          />
+{/* Hero Section (Home only) */}
+{isHomePage && (
+<section className="relative h-[90vh] flex items-end justify-center pt-10 pb-3 overflow-hidden">
+    {/* Background Video */}
+    <video
+      ref={videoRef}
+      className="absolute inset-0 w-full h-full object-cover"
+      src="/hero-video.mp4"
+      playsInline
+      autoPlay
+      loop
+      muted
+      preload="auto"
+      poster="/hero-poster.jpg"
+    />
 
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+    {/* Gradient Overlay */}
+    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
 
-          {/* Content */}
-          <div className="relative z-10 mx-4 sm:mx-8 md:mx-16 lg:mx-24 max-w-3xl">
-            <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 sm:p-10 shadow-2xl">
+    {/* Centered Glass Container */}
+    <div className="relative z-10 max-w-3xl w-[90%] sm:w-[80%] md:w-[70%] text-center">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-3xl p-8 sm:p-10 shadow-2xl"
+      >
+        {/* --- MAIN TITLE --- */}
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-4 leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]"
+        >
+          IDesign Immobilien EU
+        </motion.h1>
 
-              {/* --- MAIN TITLE --- */}
-              <SplitText
-                text="IDesign Immobilien eu"
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white drop-shadow-[0_4px_10px_rgba(0,0,0,0.4)] mb-4 leading-tight"
-                delay={150}
-                duration={0.8}
-                ease="easeOut"
-                splitType="chars"
-                from={{ opacity: 0, y: 30 }}
-                to={{ opacity: 1, y: 0 }}
-              />
+        {/* --- SUBTITLE --- */}
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.1, duration: 0.7, ease: "easeOut" }}
+          className="text-lg sm:text-2xl md:text-3xl font-semibold text-blue-200 mb-6"
+        >
+          Innovatives Immobilienmarketing
+        </motion.h2>
 
-              {/* --- SUBTITLE --- */}
-              <SplitText
-                text="Innovatives Immobilienmarketing"
-                className="text-lg sm:text-2xl md:text-3xl font-semibold text-blue-200 mb-4"
-                delay={1500}
-                duration={0.6}
-                ease="easeOut"
-                splitType="words"
-                from={{ opacity: 0, y: 25 }}
-                to={{ opacity: 1, y: 0 }}
-              />
+        {/* --- SUPPORTING LINE --- */}
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.8, duration: 0.7, ease: "easeOut" }}
+          className="text-sm sm:text-lg md:text-xl text-white/90 mb-8"
+        >
+          Maßgeschneiderte Immobilienpräsentationen für maximale Wirkung
+        </motion.p>
 
-              {/* --- SUPPORTING LINE --- */}
-              <SplitText
-                text="Maßgeschneiderte Immobilienpräsentationen für maximale Wirkung:"
-                className="text-sm sm:text-lg md:text-xl text-white/90 mb-6"
-                delay={2300}
-                duration={0.7}
-                ease="easeOut"
-                splitType="lines"
-                from={{ opacity: 0, y: 20 }}
-                to={{ opacity: 1, y: 0 }}
-              />
+        {/* --- Service List --- */}
+        <motion.ul
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.15, delayChildren: 2.2 },
+            },
+          }}
+          className="list-none text-left mx-auto max-w-md mb-10 space-y-3"
+        >
+          {[
+            "Home Staging",
+            "Drohnenaufnahmen",
+            "3D Visualisierung",
+            "Fotografie",
+            "Virtuelle Gestaltung",
+            "Social Media Marketing",
+          ].map((item, i) => (
+            <motion.li
+              key={i}
+              variants={{
+                hidden: { opacity: 0, y: 15 },
+                visible: { opacity: 1, y: 0 },
+              }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="flex items-center space-x-3"
+            >
+              {/* Gradient Bullet Icon */}
+              <div className="w-3 h-3 rounded-full bg-gradient-to-br from-blue-400 to-cyan-300 shadow-[0_0_8px_rgba(59,130,246,0.8)] flex-shrink-0" />
+              <span className="text-base sm:text-lg text-white/95">
+                {item}
+              </span>
+            </motion.li>
+          ))}
+        </motion.ul>
 
-              {/* --- LIST --- */}
-              <ul className="list-none space-y-2 mb-8">
-                {[
-                  "Home Staging",
-                  "Drohnenaufnahmen",
-                  "3D Visualisierung",
-                  "Fotografie",
-                  "Virtuelle Gestaltung",
-                  "Social Media Marketing",
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start space-x-3">
-                    <span className="mt-1 text-blue-400">✓</span>
-                    <SplitText
-                      text={item}
-                      className="text-base sm:text-lg text-white/95"
-                      delay={3000 + i * 200}
-                      duration={0.5}
-                      ease="easeOut"
-                      splitType="lines"
-                      from={{ opacity: 0, x: -15 }}
-                      to={{ opacity: 1, x: 0 }}
-                    />
-                  </li>
-                ))}
-              </ul>
+        {/* --- BUTTON --- */}
+        <motion.a
+          href="/contact"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 3.2, duration: 0.8, ease: "easeOut" }}
+          className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          Jetzt anfragen
+        </motion.a>
+      </motion.div>
+    </div>
+  </section>
+)}
 
-              {/* --- BUTTON --- */}
-              <motion.a
-                href="/contact"
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 4400, duration: 0.7, ease: "easeOut" }}
-                className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                Jetzt anfragen
-              </motion.a>
-            </div>
-          </div>
-        </section>
-      )}
+
     </header>
   );
 }

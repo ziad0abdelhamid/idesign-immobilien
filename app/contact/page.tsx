@@ -26,7 +26,7 @@ export default function ContactPage() {
     const body = encodeURIComponent(
       `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
     );
-    const mailto = `mailto:target_email@example.com?subject=${subject}&body=${body}`;
+    const mailto = `mailto:office@immo-design.at?subject=${subject}&body=${body}`;
     window.location.href = mailto;
 
     setFormData({ name: "", email: "", message: "" });
@@ -70,15 +70,15 @@ export default function ContactPage() {
           <div className="space-y-6">
             <div className="flex items-center gap-4 text-gray-700">
               <MapPin className="w-6 h-6 text-blue-600" />
-              <span>Musterstraße 123, 10115 Berlin</span>
+              <span>Laaweg 30, 8401 Kalsdorf bei Graz, Österreich</span>
             </div>
             <div className="flex items-center gap-4 text-gray-700">
               <Phone className="w-6 h-6 text-blue-600" />
-              <span>+49 30 123 456 78</span>
+              <span>+43 676 418 3782‬</span>
             </div>
             <div className="flex items-center gap-4 text-gray-700">
               <Mail className="w-6 h-6 text-blue-600" />
-              <span>info@beispiel.de</span>
+              <span>office@immo-design.at</span>
             </div>
           </div>
         </div>

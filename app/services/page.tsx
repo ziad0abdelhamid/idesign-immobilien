@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, Variants } from "framer-motion";
 import { CheckCircle } from "lucide-react";
 import Image from "next/image";
@@ -16,6 +16,8 @@ interface Service {
 export default function PremiumServicesDE() {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     const serviceData: Service[] = [
@@ -97,6 +99,31 @@ export default function PremiumServicesDE() {
     setLoading(false);
   }, []);
 
+  // ✅ Mobile autoplay fix + fade-in trigger
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const playVideo = async () => {
+      try {
+        await video.play();
+        setVideoLoaded(true);
+      } catch {
+        console.warn("Autoplay blocked, using fallback poster.");
+      }
+    };
+
+    // Fade in once video can play
+    const handleCanPlay = () => setVideoLoaded(true);
+    video.addEventListener("canplay", handleCanPlay);
+
+    playVideo();
+
+    return () => {
+      video.removeEventListener("canplay", handleCanPlay);
+    };
+  }, []);
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -116,16 +143,24 @@ export default function PremiumServicesDE() {
 
   return (
     <main className="w-full h-screen snap-y snap-mandatory overflow-y-scroll">
-      {/* Hero / Header Section */}
+      {/* Hero Section */}
       <section className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center text-center overflow-hidden snap-start px-4 sm:px-6">
-      <video
-        className="absolute inset-0 w-full h-full object-cover filter blur-md scale-105"
-        src="/hero-video.mp4"
-        autoPlay
-        loop
-        muted
-        playsInline
-      />
+        {/* ✅ Smooth fade-in video */}
+        <motion.video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover filter blur-md scale-105"
+          src="/hero-video.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          poster="/hero-fallback.jpg"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: videoLoaded ? 1 : 0 }}
+          transition={{ duration: 2, ease: "easeOut" }}
+        />
+
         <div className="absolute inset-0 bg-black/60"></div>
 
         <div className="relative z-10 text-white max-w-3xl sm:max-w-4xl px-4 py-16 sm:py-20 md:py-0">
@@ -163,7 +198,6 @@ export default function PremiumServicesDE() {
                 i % 2 === 1 ? "md:flex-row-reverse" : ""
               }`}
             >
-              {/* Image */}
               <div className="relative w-full md:w-1/2 h-64 md:h-96">
                 <Image
                   src={service.image}
@@ -173,7 +207,6 @@ export default function PremiumServicesDE() {
                 />
               </div>
 
-              {/* Info */}
               <div className="w-full md:w-1/2 p-10 text-center md:text-left">
                 <h2 className="text-3xl font-bold mb-4 text-gray-900">
                   {service.title}
@@ -183,13 +216,13 @@ export default function PremiumServicesDE() {
                 </p>
                 <ul className="space-y-3">
                   {service.details.map((detail, idx) => (
-                    <li
-                      key={idx}
-                      className="flex items-center gap-2 justify-center md:justify-start text-gray-600"
-                    >
-                      <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0" />
-                      <span>{detail}</span>
-                    </li>
+                <li
+                  key={idx}
+                  className="flex items-center gap-2 justify-start text-gray-600"
+                >
+                  <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  <span>{detail}</span>
+                </li>
                   ))}
                 </ul>
               </div>
