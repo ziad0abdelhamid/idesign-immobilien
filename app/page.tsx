@@ -1,16 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
-
-
-
+import { motion} from "framer-motion";
 
 export default function PremiumHomePageDE() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(0);
   
   return (
     <div className="w-full bg-gray-50">

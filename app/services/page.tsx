@@ -146,20 +146,14 @@ export default function PremiumServicesDE() {
       {/* Hero Section */}
       <section className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center text-center overflow-hidden snap-start px-4 sm:px-6">
         {/* ✅ Smooth fade-in video */}
-        <motion.video
-          ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover filter blur-md scale-105"
-          src="/hero-video.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          poster="/hero-fallback.jpg"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: videoLoaded ? 1 : 0 }}
-          transition={{ duration: 2, ease: "easeOut" }}
-        />
+      <video
+        className="absolute inset-0 w-full h-full object-cover filter blur-md scale-105"
+        src="/hero-video.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
 
         <div className="absolute inset-0 bg-black/60"></div>
 
