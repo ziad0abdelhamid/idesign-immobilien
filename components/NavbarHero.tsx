@@ -6,7 +6,6 @@ import { useEffect, useState, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import SplitText from "components/SplitText";
 
 export default function NavbarHero() {
   const [open, setOpen] = useState(false);
@@ -14,6 +13,14 @@ export default function NavbarHero() {
   const { scrollY } = useScroll();
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  interface Testimonial {
+  id: number;
+  name: string;
+  comment: string;
+  position: string;
+  avatar: string;
+  rating: number;
+}
   // ✅ Mobile autoplay fix for hero video
   useEffect(() => {
     const video = videoRef.current;
@@ -46,8 +53,47 @@ export default function NavbarHero() {
     { name: "Kontakt", href: "/contact" },
   ];
 
-  const isHomePage = pathname === "/";
 
+  const isHomePage = pathname === "/";
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const carouselRef = useRef<HTMLDivElement>(null);
+    const [width, setWidth] = useState(0);
+  const testimonials: Testimonial[] = [
+    
+
+    
+    {
+      id: 1,
+      name: "Anna Müller",
+      comment: "Ein hervorragender Service! Ich habe mein Traumhaus gefunden.",
+      position: "Kundin",
+      avatar: "/Anna.jpg",
+      rating: 5,
+    },
+    {
+      id: 2,
+      name: "Max Schmidt",
+      comment: "Sehr professionell und zuverlässig. Immer wieder gerne!",
+      position: "Investor",
+      avatar: "/Anna.jpg",
+      rating: 4,
+    },
+    {
+      id: 3,
+      name: "Laura Becker",
+      comment: "Tolle Beratung und schnelle Abwicklung. Vielen Dank!",
+      position: "Hauskäuferin",
+      avatar: "/Anna.jpg",
+      rating: 5,
+    },
+  ];
+
+      useEffect(() => {
+    if (carouselRef.current) {
+      const scrollWidth = carouselRef.current.scrollWidth - carouselRef.current.offsetWidth;
+      setWidth(scrollWidth);
+    }
+  }, [testimonials]);
   return (
     <header className="relative">
       {/* Navbar */}
@@ -155,7 +201,7 @@ export default function NavbarHero() {
 
 {/* Hero Section (Home only) */}
 {isHomePage && (
-<section className="relative h-[90vh] flex items-end justify-center pt-10 pb-3 overflow-hidden">
+  <section className="relative h-auto min-h-[100vh] flex flex-col items-center justify-end pt-10 pb-10 overflow-hidden">
     {/* Background Video */}
     <video
       ref={videoRef}
@@ -173,7 +219,7 @@ export default function NavbarHero() {
     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
 
     {/* Centered Glass Container */}
-    <div className="relative z-10 max-w-3xl w-[90%] sm:w-[80%] md:w-[70%] text-center">
+    <div className="relative z-10 max-w-5xl w-[90%] sm:w-[85%] md:w-[75%] text-center">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -221,7 +267,7 @@ export default function NavbarHero() {
               transition: { staggerChildren: 0.15, delayChildren: 2.2 },
             },
           }}
-          className="list-none text-left mx-auto max-w-md mb-10 space-y-3"
+          className="list-none text-left mx-auto max-w-md mb-12 space-y-3"
         >
           {[
             "Home Staging",
@@ -240,29 +286,85 @@ export default function NavbarHero() {
               transition={{ duration: 0.4, ease: "easeOut" }}
               className="flex items-center space-x-3"
             >
-              {/* Gradient Bullet Icon */}
               <div className="w-3 h-3 rounded-full bg-gradient-to-br from-blue-400 to-cyan-300 shadow-[0_0_8px_rgba(59,130,246,0.8)] flex-shrink-0" />
-              <span className="text-base sm:text-lg text-white/95">
-                {item}
-              </span>
+              <span className="text-base sm:text-lg text-white/95">{item}</span>
             </motion.li>
           ))}
         </motion.ul>
 
-        {/* --- BUTTON --- */}
-        <motion.a
-          href="/contact"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 3.2, duration: 0.8, ease: "easeOut" }}
-          className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+{/* 🌟 Testimonials INSIDE Glass Container */}
+<div className="mt-12 w-full">
+  <motion.h2
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6 }}
+    className="text-2xl sm:text-3xl font-bold text-white mb-3"
+  >
+    Was unsere Kunden sagen
+  </motion.h2>
+  <p className="text-white/80 max-w-2xl mx-auto mb-10 text-sm sm:text-base">
+    Wir sind stolz darauf, Vertrauen und Zufriedenheit zu schaffen – hören Sie selbst von unseren glücklichen Kunden.
+  </p>
+
+  {/* Carousel */}
+  <motion.div
+    ref={carouselRef}
+    className="overflow-hidden cursor-grab active:cursor-grabbing w-full"
+  >
+    <motion.div
+      drag={width > 0 ? "x" : false} // ✅ Enable drag only when needed
+      dragConstraints={{ right: 0, left: -width }}
+      whileTap={{ cursor: "grabbing" }}
+      transition={{ type: "spring", stiffness: 100, damping: 20 }}
+      className="flex gap-6 sm:gap-8 px-4 sm:px-6 lg:px-8"
+    >
+      {testimonials.map((t) => (
+        <motion.div
+          key={t.id}
+          whileHover={{ y: -5, scale: 1.02 }}
+          transition={{ duration: 0.3 }}
+          className="min-w-full sm:min-w-[45%] lg:min-w-[30%] bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl shadow-[0_6px_20px_rgba(0,0,0,0.2)] p-6 flex flex-col items-center text-center"
         >
-          Jetzt anfragen
-        </motion.a>
+          <Image
+            src={t.avatar}
+            alt={t.name}
+            width={80}
+            height={80}
+            className="rounded-full object-cover border-4 border-white shadow-md mb-5"
+          />
+
+          {/* Stars */}
+          <div className="flex justify-center mb-3">
+            {[...Array(5)].map((_, i2) => (
+              <span
+                key={i2}
+                className={`text-yellow-400 text-lg ${
+                  i2 < t.rating ? "opacity-100" : "opacity-30"
+                }`}
+              >
+                ★
+              </span>
+            ))}
+          </div>
+
+          <p className="italic text-white/90 text-sm leading-relaxed mb-4">
+            “{t.comment}”
+          </p>
+
+          <p className="font-semibold text-white text-base">{t.name}</p>
+          <p className="text-sm text-white/70">{t.position}</p>
+        </motion.div>
+      ))}
+    </motion.div>
+  </motion.div>
+</div>
+
+
       </motion.div>
     </div>
   </section>
 )}
+
 
 
     </header>
