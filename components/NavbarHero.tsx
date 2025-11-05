@@ -71,7 +71,7 @@ export default function NavbarHero() {
   const startAutoSwipe = () => {
     intervalRef.current = setInterval(() => {
       setIndex((prev) => (prev + 1) % testimonials.length);
-    }, 2000);
+    }, 4000);
   };
 
   const stopAutoSwipe = () => {
@@ -235,10 +235,10 @@ export default function NavbarHero() {
           onMouseEnter={stopAutoSwipe}
           onMouseLeave={startAutoSwipe}
         >
-          <div className="max-w-6xl mx-auto px-6 text-center overflow-hidden">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+          <div className="max-w-6xl mx-auto px-3 text-center overflow-hidden mt-[-3rem]">
+              <p className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-black mb-3 drop-shadow-[0_4px_12px_rgba(255,255,255,0.4)]">
               Was unsere Kunden sagen
-            </h2>
+            </p>
 
             {/* ✅ Mobile: single card carousel */}
             <div className="relative h-56 sm:h-64 md:hidden">
