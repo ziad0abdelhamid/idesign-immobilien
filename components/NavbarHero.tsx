@@ -5,12 +5,12 @@ import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function NavbarHero() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const videoRef = useRef<HTMLVideoElement>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
 
   const isHomePage = pathname === "/";
 
@@ -62,6 +62,25 @@ export default function NavbarHero() {
       }
     };
     playVideo();
+  }, []);
+
+  // ✅ Auto change testimonials (with pause on hover)
+  const [index, setIndex] = useState(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startAutoSwipe = () => {
+    intervalRef.current = setInterval(() => {
+      setIndex((prev) => (prev + 1) % testimonials.length);
+    }, 2000);
+  };
+
+  const stopAutoSwipe = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+  };
+
+  useEffect(() => {
+    startAutoSwipe();
+    return () => stopAutoSwipe();
   }, []);
 
   const navLinks = [
@@ -210,52 +229,108 @@ export default function NavbarHero() {
                 ))}
               </ul>
             </div>
+        {/* 🌟 Testimonials (bottom half) */}
+        <div
+          className="flex-grow bg-white w-full flex flex-col justify-center"
+          onMouseEnter={stopAutoSwipe}
+          onMouseLeave={startAutoSwipe}
+        >
+          <div className="max-w-6xl mx-auto px-6 text-center overflow-hidden">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+              Was unsere Kunden sagen
+            </h2>
 
-            {/* 🌟 Testimonials (bottom half) */}
-            <div className="flex-grow bg-white w-full flex flex-col justify-center">
-              <div className="max-w-7xl mx-auto px-6 text-center">
-                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                  Was unsere Kunden sagen
-                </h2>
-
-                <div
-                  ref={carouselRef}
-                  className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 overflow-x-auto sm:overflow-visible pb-0 snap-x snap-mandatory scrollbar-hide"
+            {/* ✅ Mobile: single card carousel */}
+            <div className="relative h-56 sm:h-64 md:hidden">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={testimonials[index].id}
+                  initial={{ opacity: 0, x: 80 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -80 }}
+                  transition={{ duration: 0.6 }}
+                  className="absolute inset-0 flex items-center justify-center"
                 >
-                  {testimonials.map((t) => (
-                    <div
-                      key={t.id}
-                      className="min-w-[85%] sm:min-w-0 bg-white border border-gray-200 rounded-2xl shadow-sm p-4 text-left snap-center"
-                    >
-                      <div className="flex items-center gap-3 mb-3">
-                        <Image
-                          src={t.avatar}
-                          alt={t.name}
-                          width={48}
-                          height={48}
-                          className="rounded-full object-cover border border-gray-200"
-                        />
-                        <div className="flex flex-col">
-                          <span className="font-semibold text-gray-900 text-sm sm:text-base">{t.name}</span>
-                          <span className="text-xs text-gray-500">{t.position}</span>
-                          <div className="flex">
-                            {[...Array(5)].map((_, i2) => (
-                              <span
-                                key={i2}
-                                className={`text-yellow-400 text-sm ${i2 < t.rating ? "opacity-100" : "opacity-30"}`}
-                              >
-                                ★
-                              </span>
-                            ))}
-                          </div>
+                  <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 sm:p-8 w-full text-left max-w-md mx-auto">
+                    <div className="flex items-center gap-4 mb-3">
+                      <Image
+                        src={testimonials[index].avatar}
+                        alt={testimonials[index].name}
+                        width={56}
+                        height={56}
+                        className="rounded-full object-cover border border-gray-200"
+                      />
+                      <div className="flex flex-col">
+                        <span className="font-semibold text-gray-900 text-base sm:text-lg">
+                          {testimonials[index].name}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {testimonials[index].position}
+                        </span>
+                        <div className="flex">
+                          {[...Array(5)].map((_, i2) => (
+                            <span
+                              key={i2}
+                              className={`text-yellow-400 text-sm ${
+                                i2 < testimonials[index].rating ? "opacity-100" : "opacity-30"
+                              }`}
+                            >
+                              ★
+                            </span>
+                          ))}
                         </div>
                       </div>
-                      <p className="text-gray-700 italic text-sm leading-relaxed">“{t.comment}”</p>
                     </div>
-                  ))}
-                </div>
-              </div>
+                    <p className="text-gray-700 italic text-sm sm:text-base leading-relaxed">
+                      “{testimonials[index].comment}”
+                    </p>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
             </div>
+
+            {/* 💻 Desktop: show all testimonials side by side */}
+            <div className="hidden md:grid md:grid-cols-3 gap-6">
+              {testimonials.map((t) => (
+                <div
+                  key={t.id}
+                  className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 sm:p-8 text-left"
+                >
+                  <div className="flex items-center gap-4 mb-3">
+                    <Image
+                      src={t.avatar}
+                      alt={t.name}
+                      width={56}
+                      height={56}
+                      className="rounded-full object-cover border border-gray-200"
+                    />
+                    <div className="flex flex-col">
+                      <span className="font-semibold text-gray-900 text-base sm:text-lg">
+                        {t.name}
+                      </span>
+                      <span className="text-xs text-gray-500">{t.position}</span>
+                      <div className="flex">
+                        {[...Array(5)].map((_, i2) => (
+                          <span
+                            key={i2}
+                            className={`text-yellow-400 text-sm ${
+                              i2 < t.rating ? "opacity-100" : "opacity-30"
+                            }`}
+                          >
+                            ★
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-gray-700 italic text-sm sm:text-base leading-relaxed">
+                    “{t.comment}”
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
           </div>
         </section>
       )}
