@@ -39,20 +39,26 @@ export default function RealEstatePage() {
 
   // ✅ Fetch all properties once
   useEffect(() => {
-    fetch("/api/properties")
-      .then((res) => res.json())
-      .then((data: Property[]) => {
-        const sorted = [...data].sort((a, b) => a.id - b.id);
-        setAllProperties(sorted);
+      fetch("/api/properties")
+        .then((res) => res.json())
+        .then((data: Property[]) => {
+          const sorted = [...data].sort((a, b) => a.id - b.id);
+          setAllProperties(sorted);
 
-        const uniqueCountries = Array.from(
-          new Set(sorted.map((p) => p.country?.trim()).filter(Boolean))
-        );
-        setCountries(uniqueCountries);
-        setLoading(false);
-      })
-      .catch((err) => console.error("Failed to fetch properties:", err));
-  }, []);
+          const uniqueCountries = Array.from(
+            new Set(sorted.map((p) => p.country?.trim()).filter(Boolean))
+          );
+          setCountries(uniqueCountries);
+
+          // ✅ Auto-select country if only one exists
+          if (uniqueCountries.length === 1) {
+            setSelectedCountry(uniqueCountries[0]);
+          }
+
+          setLoading(false);
+        })
+        .catch((err) => console.error("Failed to fetch properties:", err));
+    }, []);
 
   // ✅ Filter by country
   useEffect(() => {
