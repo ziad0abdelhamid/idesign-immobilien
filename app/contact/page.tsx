@@ -57,31 +57,73 @@ export default function ContactPage() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* Contact Info */}
-        <div className="space-y-8">
-          <h2 className="text-3xl font-semibold text-gray-800 mb-6">
-            Unsere Kontaktdaten
-          </h2>
-          <p className="text-gray-600 leading-relaxed">
-            Haben Sie Fragen oder benötigen Sie Unterstützung? Kontaktieren Sie
-            uns gerne über das Formular oder direkt über unsere Kontaktdaten.
-          </p>
-          <div className="space-y-6">
-            <div className="flex items-center gap-4 text-gray-700">
-              <MapPin className="w-6 h-6 text-blue-600" />
-              <span>Laaweg 30, 8401 Kalsdorf bei Graz, Österreich</span>
-            </div>
-            <div className="flex items-center gap-4 text-gray-700">
-              <Phone className="w-6 h-6 text-blue-600" />
-              <span>+43 676 418 3782‬</span>
-            </div>
-            <div className="flex items-center gap-4 text-gray-700">
-              <Mail className="w-6 h-6 text-blue-600" />
-              <span>office@immo-design.at</span>
-            </div>
-          </div>
-        </div>
+<div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 grid grid-cols-1 md:grid-cols-2 gap-10">
+
+  {/* Contact Info */}
+  <div className="space-y-8">
+    <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">
+      Kontakt
+    </h2>
+
+    <p className="text-gray-600 leading-relaxed">
+      Haben Sie Fragen oder benötigen Sie Unterstützung? Kontaktieren Sie uns
+      gerne über das Formular oder direkt über unsere Kontaktdaten.
+    </p>
+
+    <div className="space-y-5">
+      <div className="flex items-center gap-4 text-gray-700">
+        <Phone className="w-6 h-6 text-blue-600" />
+        <a
+          href="tel:+436764183782"
+          className="hover:text-blue-600 transition"
+        >
+          +43 676 418 3782‬
+        </a>
+      </div>
+
+      <div className="flex items-center gap-4 text-gray-700">
+        <Mail className="w-6 h-6 text-blue-600" />
+        <a
+          href="mailto:office@immo-design.at"
+          className="hover:text-blue-600 transition"
+        >
+          office@immo-design.at
+        </a>
+      </div>
+    </div>
+  </div>
+
+  {/* Location Info */}
+  <div className="space-y-8">
+    <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">
+      Standort
+    </h2>
+
+    <a
+      href="https://www.google.com/maps/place/Laaweg+30,+8401+Kalsdorf+bei+Graz,+Österreich"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center gap-4 text-gray-700 hover:text-blue-600 transition"
+    >
+      <MapPin className="w-6 h-6 text-blue-600" />
+      <span>Laaweg 30, 8401 Kalsdorf bei Graz, Österreich</span>
+    </a>
+
+    {/* Responsive Google Map */}
+    <div className="w-full h-56 sm:h-72 rounded-lg overflow-hidden shadow-md">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2735.486605979025!2d15.505218215724204!3d46.97071377914809!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476e5cf4b5f0c91b%3A0xa39e5ef3b33e45a6!2sLaaweg%2030%2C%208401%20Kalsdorf%20bei%20Graz!5e0!3m2!1sen!2sat!4v000000000"
+        width="100%"
+        height="100%"
+        style={{ border: 0 }}
+        allowFullScreen
+        loading="lazy"
+      ></iframe>
+    </div>
+  </div>
+
+</div>
+
 
         {/* Contact Form */}
         <div className="bg-white p-10 rounded-2xl shadow-lg border border-gray-100">
@@ -131,6 +173,5 @@ export default function ContactPage() {
           </form>
         </div>
       </div>
-    </div>
   );
 }
