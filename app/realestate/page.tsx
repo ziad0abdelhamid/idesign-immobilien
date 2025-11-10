@@ -288,12 +288,14 @@ export default function RealEstatePage() {
             />
           </div>
 
-          <button
-            onClick={() => setSelectedCountry(null)}
-            className="px-4 py-2 text-sm bg-gray-200 hover:bg-gray-300 rounded-xl font-medium text-gray-700 whitespace-nowrap cursor-pointer"
-          >
-            Change Country
-          </button>
+          {countries.length > 0 && (
+  <button
+    onClick={() => setSelectedCountry(null)}
+    className="px-4 py-2 text-sm bg-gray-200 hover:bg-gray-300 rounded-xl font-medium text-gray-700 whitespace-nowrap cursor-pointer"
+  >
+    Change Country
+  </button>
+)}
         </div>
       </div>
 
