@@ -123,17 +123,17 @@ export default function NavbarHero() {
       {/* 🌐 Navbar */}
       <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-white/95 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 flex justify-between items-center h-16 md:h-20">
-          <Link href="/" className="flex items-center overflow-hidden">
-            <div className="relative w-28 sm:w-80 md:w-80 h-42 sm:h-33.5 md:h-42">
-              <Image
-                src="/logo.png"
-                alt="iDesign Immobilien"
-                fill
-                className="object-contain object-left"
-                priority
-              />
-            </div>
-          </Link>
+          <Link href="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+  <div className="relative w-28 sm:w-80 md:w-80 h-42 sm:h-33.5 md:h-42">
+    <Image
+      src="/logo.png"
+      alt="iDesign Immobilien"
+      fill
+      className="object-contain object-left"
+      priority
+    />
+  </div>
+</Link>
 
           <ul className="hidden md:flex space-x-6 lg:space-x-10 text-base lg:text-lg font-semibold">
             {navLinks.map((link) => {
