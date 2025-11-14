@@ -25,10 +25,7 @@ export default function Footer() {
           priority
         />
       </Link>
-      <p className="text-sm text-gray-400 max-w-xs leading-relaxed">
-        Exklusive Immobilienlösungen – von der Idee bis zur Realisierung.  
-        Ihr Partner für Wohn- und Gewerbeprojekte mit Stil und Präzision.
-      </p>
+    
     </div>
 
     {/* Navigation */}
