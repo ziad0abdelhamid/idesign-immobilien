@@ -23,8 +23,11 @@ export default function PremiumHomePageDE() {
             Entdecken Sie unsere exklusive Auswahl an Häusern, Wohnungen und
             Investitionsmöglichkeiten.
           </p>
-          <a
-            href="/realestate"
+            {/* Updated WhatsApp Button */}
+        <a
+          href="https://wa.me/436764183782?text=Hallo%2C%20ich%20interessiere%20mich%20für%20eine%20Immobilie."
+          target="_blank"
+          rel="noopener noreferrer"
             className="inline-block px-10 py-4 bg-white text-blue-500 font-bold rounded-lg shadow-md hover:bg-blue-300 hover:text-white active:bg-blue-500 transition"
           >
             Immobilien entdecken
