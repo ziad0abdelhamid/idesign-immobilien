@@ -25,7 +25,7 @@ export default function PremiumHomePageDE() {
           </p>
             {/* Updated WhatsApp Button */}
         <a
-          href="https://wa.me/436764183782?text=Hallo%2C%20ich%20interessiere%20mich%20für%20eine%20Immobilie."
+          href="https://wa.me/436764183782?text=Hallo!%20Ich%20m%C3%B6chte%20einen%20kostenlosen%20Beratungstermin%20vereinbaren."
           target="_blank"
           rel="noopener noreferrer"
             className="inline-block px-10 py-4 bg-white text-blue-500 font-bold rounded-lg shadow-md hover:bg-blue-300 hover:text-white active:bg-blue-500 transition"
