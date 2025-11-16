@@ -71,7 +71,7 @@ const fadeInRight: Variants = {
 
 export default function UnternehmenFullSplit() {
   return (
-    <main className="w-full h-screen overflow-y-scroll overflow-x-hidden snap-y snap-mandatory scroll-smooth text-gray-800 font-sans">
+<main className="w-full overflow-x-hidden snap-y snap-mandatory scroll-smooth text-gray-800 font-sans">
       {/* ===== Hero Section ===== */}
       <section className="relative w-full h-screen flex items-center justify-center text-center overflow-hidden snap-start">
       <video

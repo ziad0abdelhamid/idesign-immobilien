@@ -142,7 +142,7 @@ export default function PremiumServicesDE() {
   };
 
   return (
-    <main className="w-full h-screen snap-y snap-mandatory overflow-y-scroll">
+<main className="w-full overflow-x-hidden snap-y snap-mandatory scroll-smooth text-gray-800 font-sans">
       {/* Hero Section */}
       <section className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center text-center overflow-hidden snap-start px-4 sm:px-6">
         {/* ✅ Smooth fade-in video */}

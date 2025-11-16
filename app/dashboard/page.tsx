@@ -14,6 +14,7 @@ export interface Property {
   price: number;
   location_city: string;
   location_address: string;
+  country: string; // added country
   property_type: string;
   rooms: number;
   ground_area: number;
@@ -22,15 +23,12 @@ export interface Property {
 }
 
 export default function DashboardPage() {
-  // --- Credential & Authorization Hooks ---
   const [authorized, setAuthorized] = useState(false);
   const [checking, setChecking] = useState(true);
 
-  // --- Data Hooks ---
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // --- Credential check effect ---
   useEffect(() => {
     const checkCredentials = async () => {
       const cookies = document.cookie.split(";").map((c) => c.trim());
@@ -65,7 +63,6 @@ export default function DashboardPage() {
     checkCredentials();
   }, []);
 
-  // --- Fetch properties effect ---
   useEffect(() => {
     const fetchProperties = async () => {
       setLoading(true);
@@ -79,23 +76,18 @@ export default function DashboardPage() {
       setLoading(false);
     };
 
-    if (authorized) {
-      fetchProperties();
-    }
+    if (authorized) fetchProperties();
   }, [authorized]);
 
-  // --- Delete property ---
   const deleteProperty = async (id: string) => {
     const { error } = await supabase.from("properties").delete().eq("id", id);
     if (error) {
       console.error("Error deleting property:", error);
     } else {
-      const { data } = await supabase.from("properties").select("*");
-      if (data) setProperties(data as Property[]);
+      setProperties((prev) => prev.filter((p) => p.id !== id));
     }
   };
 
-  // --- Conditional rendering ---
   if (checking)
     return <p className="text-center mt-10">Checking credentials...</p>;
 
@@ -104,19 +96,18 @@ export default function DashboardPage() {
       <p className="text-center mt-10 text-red-500">Unauthorized!</p>
     );
 
-  // --- Render your original Dashboard content exactly as it was ---
   return (
-    <div className="container mx-auto px-4 py-34">
+    <div className="container mx-auto px-4 py-10 pt-2">
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
 
       <Tabs defaultValue="properties">
-        <TabsList className="flex justify-center mb-6 gap-4">
+        <TabsList className="flex justify-center mb-6 gap-4 pt-2">
           <TabsTrigger value="properties">Properties</TabsTrigger>
         </TabsList>
 
         <TabsContent value="properties">
           <div className="flex flex-wrap gap-4 mb-4 items-center">
-            <AddPropertyDialog onRecordAdded={() => { /* keep original */ }} />
+            <AddPropertyDialog onRecordAdded={() => {}} />
           </div>
 
           {loading ? (
@@ -125,12 +116,13 @@ export default function DashboardPage() {
             <p>No properties found.</p>
           ) : (
             <div className="overflow-x-auto">
-              <table className="min-w-full bg-white shadow rounded-lg">
+              <table className="min-w-full bg-white shadow rounded-lg border">
                 <thead className="bg-gray-100">
                   <tr>
                     <th className="px-4 py-2 border">Title</th>
                     <th className="px-4 py-2 border">Price</th>
                     <th className="px-4 py-2 border">City</th>
+                    <th className="px-4 py-2 border">Country</th>
                     <th className="px-4 py-2 border">Address</th>
                     <th className="px-4 py-2 border">Type</th>
                     <th className="px-4 py-2 border">Rooms</th>
@@ -146,6 +138,7 @@ export default function DashboardPage() {
                       <td className="px-4 py-2 border">{p.title}</td>
                       <td className="px-4 py-2 border">{p.price}</td>
                       <td className="px-4 py-2 border">{p.location_city}</td>
+                      <td className="px-4 py-2 border">{p.country}</td>
                       <td className="px-4 py-2 border">{p.location_address}</td>
                       <td className="px-4 py-2 border">{p.property_type}</td>
                       <td className="px-4 py-2 border">{p.rooms}</td>
@@ -162,14 +155,14 @@ export default function DashboardPage() {
                           "No image"
                         )}
                       </td>
-                      <td className="px-4 py-2 border">
+                      <td className="px-4 py-2 border flex flex-wrap gap-2">
                         <EditPropertyDialog
                           record={p}
-                          onRecordUpdated={() => { /* keep original */ }}
+                          onRecordUpdated={() => {}}
                         />
                         <Button
                           variant="destructive"
-                          className="ml-2 cursor-pointer hover:scale-105 transition"
+                          className="ml-0 md:ml-2 cursor-pointer hover:scale-105 transition"
                           onClick={() => deleteProperty(p.id)}
                         >
                           Delete
