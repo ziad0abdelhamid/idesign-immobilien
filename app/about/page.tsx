@@ -91,7 +91,7 @@ export default function UnternehmenFullSplit() {
             „Innovation entsteht, wenn man Dinge anders denkt und den Mut hat,
             sie umzusetzen.“
             <footer className="mt-4 text-base md:text-xl not-italic font-semibold opacity-80">
-              – Brehm, Alexander & Vahs, Dietmar
+              – Brehm, Alexander & Vahs, Dietmar, Innovationsmanagement, 2015
             </footer>
           </blockquote>
           <div className="w-20 h-1 bg-blue-500 mx-auto rounded-full"></div>
@@ -131,21 +131,21 @@ export default function UnternehmenFullSplit() {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
               Daniel BETROS
             </h2>
-            <p className="text-sm uppercase tracking-wide text-blue-600">
+            <p className="text-sm uppercase tracking-wide text-gray-900">
               Inhaber
             </p>
             <p className="text-gray-700 leading-relaxed text-lg">
-              Mein Name ist Daniel Betros, und seit über 13 Jahren – seit 2012 –
-              übe ich mit großer Leidenschaft meinen Beruf als Immobilienmakler
-              in unserer wunderschönen Landeshauptstadt aus. <br />
+              Immobilien professionell zu vermarkten bedeutet mehr als nur Exposés und 
+              Besichtigungen. Mein Name ist Daniel Betros – seit 2012 entwickle ich 
+              innovative Präsentationskonzepte, die Immobilien sichtbar aufwerten und 
+              schneller zum Erfolg führen. <br />
               <br />
-              Von Beginn an war ich stets auf der Suche nach innovativen Ideen
-              und neuen Wegen, um Immobilien noch wirkungsvoller zu präsentieren
-              und erfolgreicher zu vermarkten. Im Laufe der Jahre habe ich den
-              Einsatz von Home Staging, Drohnenaufnahmen, 3D-Visualisierungen,
-              virtuellem Staging und weiteren modernen Methoden auf die
-              Anforderungen des Immobilienvertriebs optimiert. Heute freue ich
-              mich, diese Fähigkeiten an meine Kundinnen und Kunden
+              Von Anfang an und bis heute bin ich stets auf der Suche nach neuen Wegen und 
+              Ideen um Immobilien noch wirkungsvoller zu präsentieren und erfolgreicher zu
+              vermarkten. Im Laufe der Jahre habe ich den Einsatz von Home Staging, 
+              Drohnenaufnahmen, 3D-Visualisierungen, virtuellem Staging und weiteren 
+              modernen Methoden auf die Anforderungen des Immobilienvertriebs optimiert. 
+              Heute freue ich mich, diese Fähigkeiten an meine Kundinnen und Kunden 
               weiterzugeben.
               <br />
               <br />

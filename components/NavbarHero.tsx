@@ -252,114 +252,113 @@ export default function NavbarHero() {
               </ul>
             </div>
 
-            {/* 🌟 Testimonials Section */}
-            <div
-              className="flex-grow bg-white w-full flex flex-col justify-center"
-              onMouseEnter={stopAutoSwipe}
-              onMouseLeave={startAutoSwipe}
-              onTouchStart={handleTouchStart}
-              onTouchEnd={handleTouchEnd}
-            >
-              <div className="max-w-6xl mx-auto px-3 text-center overflow-hidden pt-2rem mt-[-2rem]">
-                <p className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-black mb-3">
-                  Was unsere Kunden sagen
-                </p>
+{/* 🌟 Testimonials Section */}
+<div
+  className="w-full bg-white flex flex-col justify-center"
+  onMouseEnter={stopAutoSwipe}
+  onMouseLeave={startAutoSwipe}
+  onTouchStart={handleTouchStart}
+  onTouchEnd={handleTouchEnd}
+>
+  <div className="max-w-6xl mx-auto px-4 text-center pt-12 sm:pt-16 md:pt-24 pb-24 sm:pb-32">
+    
+    {/* Title */}
+    <p className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-black mb-6">
+      Was unsere Kunden sagen
+    </p>
 
-                {/* ✅ Mobile Swipeable Testimonial */}
-                <div className="relative h-56 sm:h-64 md:hidden">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={testimonials[index].id}
-                      initial={{ opacity: 0, x: 80 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -80 }}
-                      transition={{ duration: 0.6 }}
-                      className="absolute inset-0 flex items-center justify-center"
+    {/* ✅ Mobile Swipeable Testimonial */}
+    <div className="relative md:hidden min-h-[24rem] sm:min-h-[26rem] flex items-center justify-center">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={testimonials[index].id}
+          initial={{ opacity: 0, x: 80 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -80 }}
+          transition={{ duration: 0.6 }}
+          className="flex items-center justify-center w-full px-2"
+        >
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 sm:p-8 w-full text-left max-w-md mx-auto">
+            
+            <div className="flex items-center gap-4 mb-3">
+              <Image
+                src={testimonials[index].avatar}
+                alt={testimonials[index].name}
+                width={56}
+                height={56}
+                className="rounded-full object-cover border border-gray-200"
+              />
+              <div className="flex flex-col">
+                <span className="font-semibold text-gray-900 text-base sm:text-lg">
+                  {testimonials[index].name}
+                </span>
+                <span className="text-xs text-gray-500">
+                  {testimonials[index].position}
+                </span>
+                <div className="flex">
+                  {[...Array(5)].map((_, i2) => (
+                    <span
+                      key={i2}
+                      className={`text-yellow-400 text-sm ${i2 < testimonials[index].rating ? "opacity-100" : "opacity-30"}`}
                     >
-                      <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 sm:p-8 w-full text-left max-w-md mx-auto">
-                        <div className="flex items-center gap-4 mb-3">
-                          <Image
-                            src={testimonials[index].avatar}
-                            alt={testimonials[index].name}
-                            width={56}
-                            height={56}
-                            className="rounded-full object-cover border border-gray-200"
-                          />
-                          <div className="flex flex-col">
-                            <span className="font-semibold text-gray-900 text-base sm:text-lg">
-                              {testimonials[index].name}
-                            </span>
-                            <span className="text-xs text-gray-500">
-                              {testimonials[index].position}
-                            </span>
-                            <div className="flex">
-                              {[...Array(5)].map((_, i2) => (
-                                <span
-                                  key={i2}
-                                  className={`text-yellow-400 text-sm ${
-                                    i2 < testimonials[index].rating
-                                      ? "opacity-100"
-                                      : "opacity-30"
-                                  }`}
-                                >
-                                  ★
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                        <p className="text-gray-700 italic text-sm sm:text-base leading-relaxed">
-                          “{testimonials[index].comment}”
-                        </p>
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-
-                {/* 💻 Desktop Grid */}
-                <div className="hidden md:grid md:grid-cols-3 gap-6">
-                  {testimonials.map((t) => (
-                    <div
-                      key={t.id}
-                      className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 sm:p-8 text-left"
-                    >
-                      <div className="flex items-center gap-4 mb-3">
-                        <Image
-                          src={t.avatar}
-                          alt={t.name}
-                          width={56}
-                          height={56}
-                          className="rounded-full object-cover border border-gray-200"
-                        />
-                        <div className="flex flex-col">
-                          <span className="font-semibold text-gray-900 text-base sm:text-lg">
-                            {t.name}
-                          </span>
-                          <span className="text-xs text-gray-500">
-                            {t.position}
-                          </span>
-                          <div className="flex">
-                            {[...Array(5)].map((_, i2) => (
-                              <span
-                                key={i2}
-                                className={`text-yellow-400 text-sm ${
-                                  i2 < t.rating ? "opacity-100" : "opacity-30"
-                                }`}
-                              >
-                                ★
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                      <p className="text-gray-700 italic text-sm sm:text-base leading-relaxed">
-                        “{t.comment}”
-                      </p>
-                    </div>
+                      ★
+                    </span>
                   ))}
                 </div>
               </div>
             </div>
+
+            <p className="text-gray-700 italic text-sm sm:text-base leading-relaxed">
+              “{testimonials[index].comment}”
+            </p>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+
+    {/* 💻 Desktop Grid */}
+    <div className="hidden md:grid md:grid-cols-3 gap-6 pt-6">
+      {testimonials.map((t) => (
+        <div
+          key={t.id}
+          className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 sm:p-8 text-left"
+        >
+          <div className="flex items-center gap-4 mb-3">
+            <Image
+              src={t.avatar}
+              alt={t.name}
+              width={56}
+              height={56}
+              className="rounded-full object-cover border border-gray-200"
+            />
+            <div className="flex flex-col">
+              <span className="font-semibold text-gray-900 text-base sm:text-lg">
+                {t.name}
+              </span>
+              <span className="text-xs text-gray-500">{t.position}</span>
+              <div className="flex">
+                {[...Array(5)].map((_, i2) => (
+                  <span
+                    key={i2}
+                    className={`text-yellow-400 text-sm ${i2 < t.rating ? "opacity-100" : "opacity-30"}`}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <p className="text-gray-700 italic text-sm sm:text-base leading-relaxed">
+            “{t.comment}”
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+
           </div>
         </section>
       )}
