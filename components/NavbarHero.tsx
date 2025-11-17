@@ -156,7 +156,7 @@ export default function NavbarHero() {
 
       {/* Homepage Hero */}
       {isHomePage && (
-<section className="relative w-full h-screen overflow-hidden pt-16 md:pt-20">
+<section className="relative w-full min-h-screen overflow-hidden pt-16 md:pt-20">
           {/* Video Background */}
           <video
             ref={videoRef}
@@ -171,9 +171,9 @@ export default function NavbarHero() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
 
-          <div className="relative z-20 flex flex-col w-full h-full justify-between items-center">
+        <div className="relative z-20 flex flex-col w-full justify-start items-center">
             {/* Glass Content */}
-<div className="flex flex-col items-center text-center justify-center flex-grow bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl max-w-4xl w-[90%] mx-auto p-8 sm:p-10 rounded-none">
+            <div className="flex flex-col items-center text-center justify-center flex-grow bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl max-w-4xl w-[90%] mx-auto p-8 sm:p-10 rounded-none">
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-3">IDesign Immobilien EU</h1>
               <h2 className="text-lg sm:text-2xl font-semibold text-blue-200 mb-4">Innovatives Immobilienmarketing</h2>
               <p className="text-sm sm:text-lg text-white/90 mb-5">
@@ -189,20 +189,18 @@ export default function NavbarHero() {
                 ))}
               </ul>
             </div>
-
             {/* Testimonials */}
-            <div
-              className="w-full bg-white flex flex-col justify-center pb-3 pt-3"
-              onMouseEnter={stopAutoSwipe}
-              onMouseLeave={startAutoSwipe}
-              onTouchStart={handleTouchStart}
-              onTouchEnd={handleTouchEnd}
-            >
+              <div
+                className="w-full bg-white flex flex-col justify-center pb-3 pt-3 min-h-[50vh]"
+                onMouseEnter={stopAutoSwipe}
+                onMouseLeave={startAutoSwipe}
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+              >
               <div className="max-w-6xl mx-auto px-4 text-center">
-                <p className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-black mb-6">Was unsere Kunden sagen</p>
-
+                <p className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-black mb-2">Was unsere Kunden sagen</p>
                 {/* Mobile Carousel */}
-                <div className="relative md:hidden min-h-[40vh] flex items-center justify-center pb-2">
+                <div className="relative md:hidden min-h-[30vh] flex items-center justify-top pb-20 z-500">
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={testimonials[index].id}

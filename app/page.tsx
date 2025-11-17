@@ -5,7 +5,7 @@ import { motion} from "framer-motion";
 export default function PremiumHomePageDE() {
   
   return (
-    <div className="w-full bg-gray-50">
+<div className="w-full bg-gray-50 pt-10">
       {/* Hero Section */}
       <motion.section
         className="relative py-24 bg-gradient-to-r from-blue-600 to-blue-800 text-white"
@@ -14,7 +14,7 @@ export default function PremiumHomePageDE() {
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        <div className="absolute inset-0 bg-[url('/house-bg.jpg')] bg-cover bg-center opacity-20"></div>
+        <div className="absolute inset-0 bg-[url('/house-bg.jpg')] bg-cover bg-center opacity-20 z-10"></div>
         <div className="relative z-10 max-w-3xl mx-auto text-center px-6">
           <h2 className="text-4xl font-extrabold mb-4">
             Traumimmobilien warten auf Sie
