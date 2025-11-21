@@ -160,7 +160,7 @@ export default function NavbarHero() {
           {/* Video Background */}
           <video
             ref={videoRef}
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover grayscale"
             src="/hero-video.mp4"
             playsInline
             autoPlay
@@ -173,21 +173,21 @@ export default function NavbarHero() {
 
         <div className="relative z-20 flex flex-col w-full justify-start items-center">
             {/* Glass Content */}
-            <div className="flex flex-col items-center text-center justify-center flex-grow bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl max-w-4xl w-[90%] mx-auto p-8 sm:p-10 rounded-none">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-3">IDesign Immobilien EU</h1>
+            <div className="flex flex-col items-center text-center justify-center flex-grow bg-white/10 backdrop-lg border border-white/20 shadow-2xl max-w-4xl w-[90%] mx-auto p-8 sm:p-10 rounded-none">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-3">DB ImmoDesign e.U</h1>
               <h2 className="text-lg sm:text-2xl font-semibold text-blue-200 mb-4">Innovatives Immobilienmarketing</h2>
               <p className="text-sm sm:text-lg text-white/90 mb-5">
-                Maßgeschneiderte Immobilienpräsentationen für maximale Wirkung
+                Wir machen Ihre Immobilie erlebbar– mit Home Staging, professioneller Fotografie, Drohnenaufnahmen und viele anderen Tools zum Verkaufserfolg.
               </p>
 
-              <ul className="list-none text-left mx-auto max-w-md space-y-2">
-                {["Home Staging", "Drohnenaufnahmen", "3D Visualisierung", "Fotografie", "Virtuelle Gestaltung", "Social Media Marketing"].map((item, i) => (
-                  <li key={i} className="flex items-center space-x-3">
-                    <div className="w-3 h-3 rounded-full bg-gradient-to-br from-blue-400 to-cyan-300 shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
-                    <span className="text-base text-white/95">{item}</span>
-                  </li>
-                ))}
-              </ul>
+              <Link
+              href="/services"
+              className="mt-2 px-8 py-3 border border-white text-white rounded-full tracking-widest text-sm sm:text-base hover:bg-white hover:text-black transition"
+              >
+              Mehr erfahren
+            </Link>
+
+
             </div>
             {/* Testimonials */}
               <div
