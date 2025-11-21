@@ -168,7 +168,7 @@ export default function NavbarHero() {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setOpen(!open)}
-              className="focus:outline-none text-gray-200"
+              className="focus:outline-none text-gray-800"
             >
               {open ? <X size={26} /> : <Menu size={26} />}
             </button>
