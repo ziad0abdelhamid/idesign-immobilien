@@ -228,7 +228,7 @@ export default function NavbarHero() {
           <div className="relative z-20 flex flex-col w-full justify-start items-center pt-28">
 
             {/* GLASS CARD */}
-            <div className="flex flex-col items-center text-center justify-center bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl max-w-8xl w-[90%] mx-auto p-8 sm:p-10 rounded-none">
+            <div className="flex flex-col items-center text-center justify-center bg-white/10 backdrop- border border-white/20 shadow-2xl max-w-8xl w-[90%] mx-auto p-8 sm:p-10 rounded-none">
 
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-3">
                 DB ImmoDesign
