@@ -5,16 +5,16 @@ import { motion} from "framer-motion";
 export default function PremiumHomePageDE() {
   
   return (
-<div className="w-full bg-gray-50 pt-10">
+<div className="w-full bg-gray-50 ">
       {/* Hero Section */}
       <motion.section
-        className="relative py-24 bg-gradient-to-r from-blue-600 to-blue-800 text-white"
+        className="relative py-24 bg-gray-600 text-white"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        <div className="absolute inset-0 bg-[url('/house-bg.jpg')] bg-cover bg-center opacity-20 z-10"></div>
+        <div className="absolute inset-0 bg-[url('/house-bg.jpg')] bg-cover bg-center opacity-10 z-10"></div>
         <div className="relative z-10 max-w-3xl mx-auto text-center px-6">
           <h2 className="text-4xl font-extrabold mb-4">
             Traumimmobilien warten auf Sie
@@ -28,7 +28,7 @@ export default function PremiumHomePageDE() {
           href="https://wa.me/436764183782?text=Hallo!%20Ich%20m%C3%B6chte%20einen%20kostenlosen%20Beratungstermin%20vereinbaren."
           target="_blank"
           rel="noopener noreferrer"
-            className="inline-block px-10 py-4 bg-white text-blue-500 font-bold rounded-lg shadow-md hover:bg-blue-300 hover:text-white active:bg-blue-500 transition"
+            className="mt-2 px-8 py-3 border border-white text-white rounded-full tracking-widest text-sm sm:text-base hover:bg-white hover:text-black transition"
           >
             Immobilien entdecken
           </a>
