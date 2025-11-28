@@ -230,17 +230,17 @@ export default function NavbarHero() {
             {/* GLASS CARD */}
             <div className="flex flex-col items-center text-center justify-center bg-white/10 backdrop- border border-white/20 shadow-2xl max-w-8xl w-[90%] mx-auto p-8 sm:p-10 rounded-none">
 
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-3">
-                DB ImmoDesign
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-3 text-shadow-strong">
+              DB ImmoDesign
               </h1>
 
-              <h2 className="text-lg sm:text-2xl font-semibold text-blue-200 mb-4">
-                Innovatives Immobilienmarketing
+              <h2 className="text-lg sm:text-2xl font-semibold text-blue-200 mb-4 text-shadow-strong">
+              Innovatives Immobilienmarketing
               </h2>
 
-              <p className="text-sm sm:text-lg text-white/90 mb-5">
-                Wir machen Ihre Immobilie erlebbar– mit Home Staging, professioneller Fotografie, Drohnenaufnahmen und mehr.
-              </p>
+              <p className="text-sm sm:text-lg text-white/90 mb-5 text-shadow-strong">
+              Wir machen Ihre Immobilie erlebbar– mit Home Staging, professioneller Fotografie, Drohnenaufnahmen und mehr.
+            </p>
 
               <Link
                 href="/services"
