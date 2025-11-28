@@ -36,15 +36,15 @@ export default function NavbarHero() {
       id: 1,
       name: "Nika und Marko Cipot",
       comment: "Wir waren relativ neu in Graz und wollten unsere erste Wohnung kaufen. Daniel hat uns von Beginn an bis zur Übergabe - und danach super unterstütz und alle unsere Fragen beatwortet.",
-      position: "Kundin",
+      position: "",
       avatar: "/Nika&Marko_Cipot.jpeg",
       rating: 5,
     },
     {
       id: 2,
       name: "Elvira und Kemal Alikovic",
-      comment: "2019 wollten wir unser Haus verkaufen und haben Daniel kennengelerntin - zwischen haben wir schon die dritte Immobilie mit seiner Hilfe veräußert, Danke!!",
-      position: "Investor",
+      comment: "2019 wollten wir unser Haus verkaufen und haben Daniel kennengelerntin - inzwischen haben wir schon die dritte Immobilie mit seiner Hilfe veräußert, Danke!!",
+      position: "",
       avatar: "/Elvira&Kemal_Alikovic.jpeg",
       rating: 4,
     },
@@ -52,7 +52,7 @@ export default function NavbarHero() {
       id: 3,
       name: "Peter Pache",
       comment: "Daniel verstand schon beim ersten Treffen das es sich um ein Liebhaberobjekt handelt und hat mir mit viel Geduld dabei geholfen meinen Wunschpreis zu erzielen, ich bin sehr dankbar dafür.",
-      position: "Hauskäuferin",
+      position: "",
       avatar: "/Peter_Pache.jpeg",
       rating: 5,
     },
@@ -230,15 +230,16 @@ export default function NavbarHero() {
             {/* GLASS CARD */}
             <div className="flex flex-col items-center text-center justify-center bg-white/10 backdrop- border border-white/20 shadow-2xl max-w-8xl w-[90%] mx-auto p-8 sm:p-10 rounded-none">
 
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-3 text-shadow-strong">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-3 text-shadow-immo">
               DB ImmoDesign
               </h1>
 
-              <h2 className="text-lg sm:text-2xl font-semibold text-blue-200 mb-4 text-shadow-strong">
+
+              <h2 className="text-lg sm:text-2xl font-semibold text-blue-200 mb-4 text-shadow-immo">
               Innovatives Immobilienmarketing
               </h2>
 
-              <p className="text-sm sm:text-lg text-white/90 mb-5 text-shadow-strong">
+              <p className="text-sm sm:text-lg text-white/90 mb-5 text-shadow-immo">
               Wir machen Ihre Immobilie erlebbar– mit Home Staging, professioneller Fotografie, Drohnenaufnahmen und mehr.
             </p>
 
@@ -272,16 +273,16 @@ export default function NavbarHero() {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -40 }}
                         transition={{ duration: 0.6 }}
-                        className="flex items-center justify-center w-full px-2"
-                      >
-                        <div className="bg-gray-800 border border-gray-200 rounded-2xl shadow-lg w-full max-w-[90%] p-4 sm:p-6 text-left">
-                          <div className="flex items-center gap-4 mb-3">
+                         className="w-full flex items-center justify-center"
+                         >     
+                            <div className="bg-gray-800 border border-gray-200 rounded-2xl shadow-lg w-[90%] p-4 sm:p-6 text-left">
+                            <div className="flex items-center gap-4 mb-3">
                             <Image
                               src={testimonials[index].avatar}
                               alt={testimonials[index].name}
                               width={56}
                               height={56}
-                              className="rounded-full object-cover border border-gray-200"
+                              className="!w-[56px] !h-[56px] rounded-full object-cover border border-gray-200"
                             />
                             <div className="flex flex-col">
                               <span className="font-semibold text-white text-base sm:text-lg">
@@ -319,7 +320,7 @@ export default function NavbarHero() {
                     {testimonials.map((t) => (
                       <div
                         key={t.id}
-                        className="bg-gray-800 border border-gray-200 rounded-2xl shadow-lg p-6 sm:p-8 text-left"
+                        className="bg-gray-800 border border-gray-200 rounded-2xl shadow-lg p-6 sm:p-8 text-left max-w-3xl"
                       >
                         <div className="flex items-center gap-4 mb-3">
                           <Image
@@ -327,7 +328,7 @@ export default function NavbarHero() {
                             alt={t.name}
                             width={56}
                             height={56}
-                            className="rounded-full object-cover border border-gray-200"
+                            className="!w-[56px] !h-[56px] rounded-full object-cover border border-gray-200"
                           />
                           <div className="flex flex-col">
                             <span className="font-semibold text-white text-base sm:text-lg">
