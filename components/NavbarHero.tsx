@@ -320,7 +320,7 @@ export default function NavbarHero() {
                     {testimonials.map((t) => (
                       <div
                         key={t.id}
-                        className="bg-gray-800 border border-gray-200 rounded-2xl shadow-lg p-6 sm:p-8 text-left max-w-3xl"
+                        className="bg-gray-800 border border-gray-200 rounded-2xl shadow-lg p-6 sm:p-8 text-left max-w-3x1"
                       >
                         <div className="flex items-center gap-4 mb-3">
                           <Image
