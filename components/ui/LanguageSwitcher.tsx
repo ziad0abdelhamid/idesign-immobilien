@@ -53,8 +53,8 @@ export function LanguageSwitcher() {
                 className={cn(
                     "flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-(--primary-gold) cursor-pointer text-white",
                     showGlass || !isHome
-                        ? "bg-white/20 border-white/30 text-white hover:bg-white/30 dark:bg-white/20 dark:hover:bg-white/30"
-                        : "bg-white/25 border-white/30 text-white hover:bg-white/35"
+                        ? "bg-white/20 border-white/30 text-black hover:bg-white/30 dark:bg-white/20 dark:hover:bg-white/30"
+                        : "bg-white/25 border-white/30 text-black hover:bg-white/35"
                 )}
                 aria-expanded={open}
             >

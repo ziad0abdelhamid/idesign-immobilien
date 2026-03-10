@@ -11,6 +11,7 @@ interface PropertyCardProps {
     location: string;
     price: number;
     area: number;
+    land_area?: number;
     bedrooms: number;
 
     floor?: number;
@@ -31,6 +32,7 @@ export function PropertyCard({
     location,
     price,
     area,
+    land_area,
     bedrooms,
 
     floor,
@@ -164,6 +166,7 @@ export function PropertyCard({
                     <Feature icon={<FaBed />} value={TotalRooms} label={language === "de" ? "Zimmer" : "Rooms"} labelPosition="inline" />
                     {floor && <Feature icon={<FaBuilding />} value={Math.round(floor)} label={language === "de" ? "Etage" : "Floor"} labelPosition="inline" />}
                     <Feature icon={<FaRulerCombined />} value={Math.round(area)} label={language === "de" ? "Fläche" : "Area"} labelPosition="inline" />
+                    {land_area && <Feature icon={<FaRulerCombined />} value={Math.round(land_area)} label={language === "de" ? "Grundstück" : "Land"} labelPosition="inline" />}
                     <Feature
                         icon={<FaSwimmingPool className="text-blue-500" />}
                         value={has_pool ? (language === "de" ? "Ja" : "Yes") : (language === "de" ? "Nein" : "No")}

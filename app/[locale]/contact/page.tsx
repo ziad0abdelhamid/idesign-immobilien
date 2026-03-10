@@ -85,36 +85,6 @@ export default function ContactPage() {
     return (
         <div className="w-full relative">
             {/* Header with Video Background */}
-            <section
-                className="
-      relative w-full min-h-dvh
-      flex items-center justify-center text-center overflow-hidden snap-start
-      px-4 sm:px-6
-    "
-            >
-                <video
-                    className="absolute inset-0 w-full h-full object-cover filter blur-md scale-105"
-                    src="/hero-video.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                />
-                <div className="absolute inset-0 bg-black/40"></div>
-                <motion.div
-                    className="relative z-10 max-w-3xl mx-auto"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-                        {t.contact.title}
-                    </h1>
-                    <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto">
-                        {t.contact.subtitle}
-                    </p>
-                </motion.div>
-            </section>
 
             {/* Contact Section */}
             <section className="py-20 bg-neutral-50 dark:bg-neutral-950">

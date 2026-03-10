@@ -2,9 +2,10 @@
 
 import { useLanguageStore } from "@/lib/store";
 import { motion } from "framer-motion";
-import React, { useState, useEffect, useRef } from "react";
-import { Star, ChevronLeft, ChevronRight } from "lucide-react";
+import React from "react";
+import { Star } from "lucide-react";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 interface Testimonial {
     id: number;
@@ -47,212 +48,83 @@ const testimonials: Testimonial[] = [
 
 export function ReviewsCarousel() {
     const { language } = useLanguageStore();
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [isAutoplay, setIsAutoplay] = useState(true);
-    const autoplayRef = useRef<NodeJS.Timeout | null>(null);
-    const touchStartX = useRef<number>(0);
-    const touchEndX = useRef<number>(0);
 
-    const title = language === "de" ? "Das sagen unsere Kunden" : "What Our Clients Say";
-    const description = language === "de"
-        ? "Hören Sie von zufriedenen Kunden, die ihre perfekten Immobilien mit uns gefunden haben"
-        : "Hear from satisfied customers who found their perfect properties with us";
+    const title = language === "de" ? "Was unsere Kunden sagen" : "What Our Clients Say";
 
-    // Auto-rotate testimonials
-    useEffect(() => {
-        if (!isAutoplay) return;
-
-        autoplayRef.current = setInterval(() => {
-            setActiveIndex((prev) => (prev + 1) % testimonials.length);
-        }, 5000);
-
-        return () => {
-            if (autoplayRef.current) clearInterval(autoplayRef.current);
-        };
-    }, [isAutoplay]);
-
-    const goToPrevious = () => {
-        setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-        setIsAutoplay(false);
+    const fadeUp = {
+        hidden: { opacity: 0, y: 40 },
+        visible: { opacity: 1, y: 0 },
     };
 
-    const goToNext = () => {
-        setActiveIndex((prev) => (prev + 1) % testimonials.length);
-        setIsAutoplay(false);
+    const container = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.2,
+            },
+        },
     };
-
-    // Swipe handlers
-    const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-        touchStartX.current = e.touches[0].clientX;
-    };
-
-    const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
-        touchEndX.current = e.changedTouches[0].clientX;
-        handleSwipe();
-    };
-
-    const handleSwipe = () => {
-        const swipeThreshold = 50;
-        const diff = touchStartX.current - touchEndX.current;
-
-        if (Math.abs(diff) > swipeThreshold) {
-            if (diff > 0) {
-                goToNext();
-            } else {
-                goToPrevious();
-            }
-        }
-    };
-
-    const goToSlide = (index: number) => {
-        setActiveIndex(index);
-        setIsAutoplay(false);
-    };
-
-    const currentTestimonial = testimonials[activeIndex];
 
     return (
-        <section className="py-20 bg-linear-to-b from-white dark:from-neutral-900 to-neutral-50 dark:to-neutral-950">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Header */}
+        <section className="w-full">
+            <div className="w-full">
+                {/* Title */}
+
+
+                {/* Reviews Grid */}
                 <motion.div
-                    className="text-center mb-16"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-5 lg:gap-6"
+                    variants={container}
+                    initial="hidden"
+                    whileInView="visible"
                     viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
                 >
-                    <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-4">
-                        {title}
-                    </h2>
-                    <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-                        {description}
-                    </p>
-                    <div className="h-1 w-20 bg-linear-to-r from-cyan-500 to-cyan-300 mx-auto mt-6 rounded-full"></div>
-                </motion.div>
-
-                {/* Main Carousel */}
-                <div className="relative">
-                    <motion.div
-                        className="flex justify-center"
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <div className="w-full max-w-4xl" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
-                            {/* Premium Testimonial Card */}
-                            <div className="relative h-full">
-                                <motion.div
-                                    key={currentTestimonial.id}
-                                    className="bg-linear-to-br from-white to-neutral-50 dark:from-neutral-800 dark:to-neutral-900 rounded-2xl shadow-2xl border border-cyan-200 dark:border-neutral-700 p-8 md:p-12"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -20 }}
-                                    transition={{ duration: 0.5 }}
-                                >
-                                    {/* Quote Mark */}
-                                    <div className="text-6xl text-cyan-500 opacity-10 mb-2">"</div>
-
-                                    {/* Rating */}
-                                    <div className="flex gap-1 mb-6">
-                                        {[...Array(currentTestimonial.rating)].map((_, i) => (
-                                            <motion.div
-                                                key={i}
-                                                initial={{ opacity: 0, scale: 0 }}
-                                                animate={{ opacity: 1, scale: 1 }}
-                                                transition={{ delay: i * 0.1 }}
-                                            >
-                                                <Star
-                                                    size={20}
-                                                    className="fill-cyan-500 text-cyan-500"
-                                                />
-                                            </motion.div>
-                                        ))}
-                                    </div>
-
-                                    {/* Comment */}
-                                    <motion.p
-                                        className="text-lg md:text-xl text-neutral-700 dark:text-neutral-200 leading-relaxed mb-8 italic"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        transition={{ delay: 0.2, duration: 0.5 }}
-                                    >
-                                        "{currentTestimonial.comment}"
-                                    </motion.p>
-
-                                    {/* Author Section */}
-                                    <motion.div
-                                        className="flex items-center gap-4"
-                                        initial={{ opacity: 0, x: -20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: 0.3, duration: 0.5 }}
-                                    >
-                                        {/* Avatar */}
-                                        <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-cyan-500 shrink-0">
-                                            <Image
-                                                src={currentTestimonial.avatar}
-                                                alt={currentTestimonial.name}
-                                                fill
-                                                className="object-cover"
-                                            />
-                                        </div>
-
-                                        {/* Name */}
-                                        <div>
-                                            <p className="font-bold text-neutral-900 dark:text-white text-lg">
-                                                {currentTestimonial.name}
-                                            </p>
-                                            {currentTestimonial.position && (
-                                                <p className="text-sm text-cyan-600 dark:text-cyan-400 font-medium">
-                                                    {currentTestimonial.position}
-                                                </p>
-                                            )}
-                                        </div>
-                                    </motion.div>
-                                </motion.div>
+                    {testimonials.map((testimonial) => (
+                        <motion.div
+                            key={testimonial.id}
+                            variants={fadeUp}
+                            className={cn(
+                                "relative overflow-hidden text-center",
+                                "bg-(--glass) backdrop-blur-md",
+                                "py-5 md:py-6 lg:py-7 px-4 md:px-5 lg:px-6",
+                                "border border-cyan-500/60",
+                                "rounded-lg",
+                                "shadow-[0_10px_30px_rgba(0,0,0,0.3)]",
+                                "hover:border-cyan-400/80 transition-all duration-300"
+                            )}
+                        >
+                            {/* Avatar */}
+                            <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden mx-auto mb-3 border-2 border-cyan-500 shrink-0">
+                                <Image
+                                    src={testimonial.avatar}
+                                    alt={testimonial.name}
+                                    fill
+                                    className="object-cover"
+                                />
                             </div>
-                        </div>
-                    </motion.div>
 
-                    {/* Navigation Buttons */}
-                    <motion.button
-                        onClick={goToPrevious}
-                        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-16 md:-translate-x-20 bg-cyan-600 hover:bg-cyan-700 text-white p-3 rounded-full transition-all hover:scale-110 shadow-lg"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        <ChevronLeft size={24} />
-                    </motion.button>
+                            {/* Name */}
+                            <h3 className="text-white font-bold text-sm md:text-base mb-2">
+                                {testimonial.name}
+                            </h3>
 
-                    <motion.button
-                        onClick={goToNext}
-                        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-16 md:translate-x-20 bg-cyan-600 hover:bg-cyan-700 text-white p-3 rounded-full transition-all hover:scale-110 shadow-lg"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        <ChevronRight size={24} />
-                    </motion.button>
-                </div>
+                            {/* Stars */}
+                            <div className="flex justify-center gap-1 mb-3">
+                                {[...Array(testimonial.rating)].map((_, i) => (
+                                    <Star
+                                        key={i}
+                                        size={14}
+                                        className="fill-yellow-400 text-yellow-400"
+                                    />
+                                ))}
+                            </div>
 
-                {/* Dot Indicators */}
-                <motion.div
-                    className="flex justify-center gap-2 mt-12"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ delay: 0.3 }}
-                >
-                    {testimonials.map((_, index) => (
-                        <motion.button
-                            key={index}
-                            onClick={() => goToSlide(index)}
-                            className={`transition-all rounded-full ${index === activeIndex
-                                ? "bg-cyan-600 w-8 h-3"
-                                : "bg-neutral-300 dark:bg-neutral-600 w-3 h-3 hover:bg-cyan-400"
-                                }`}
-                            whileHover={{ scale: 1.15 }}
-                            whileTap={{ scale: 0.95 }}
-                        />
+                            {/* Comment */}
+                            <p className="text-neutral-200 text-xs md:text-xs leading-relaxed italic ">
+                                "{testimonial.comment}"
+                            </p>
+                        </motion.div>
                     ))}
                 </motion.div>
             </div>

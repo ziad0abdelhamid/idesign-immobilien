@@ -11,9 +11,9 @@ import { translations } from "@/lib/i18n/translations";
 import { supabase } from "@/lib/db/supabase";
 import { clearAdminToken } from "@/lib/admin/auth";
 import { duplicateProperty } from "@/lib/admin/propertyActions";
-import { useEgptoEur } from "@/lib/hooks/conversionRate";
 
 interface Property {
+    land_area: import("react/jsx-runtime").JSX.Element;
     display_order: number;
     id: string;
     title_en: string | null;
@@ -49,7 +49,6 @@ export default function AdminPropertiesPage() {
     const router = useRouter();
     const { language } = useLanguageStore();
     const t = translations[language] || translations.en;
-    const { rate: eurRate } = useEgptoEur();
 
     const handleLogout = () => {
         if (window.confirm(language === "en" ? "Are you sure you want to logout?" : "Möchten Sie sich wirklich abmelden?")) {
@@ -362,18 +361,22 @@ export default function AdminPropertiesPage() {
                                             {language === "de" ? "qm" : "sqm"}
                                         </span>
                                     </div>
+
+                                    {property.land_area && (
+                                        <div className="flex flex-col items-center gap-1">
+                                            <Ruler className="w-4 sm:w-5 h-4 sm:h-5 text-primary-500" />
+                                            <span className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-50">{property.land_area || "—"}</span>
+                                            <span className="text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400">
+                                                {language === "de" ? "Grundstück" : "Land"}
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* Price */}
                                 <p className="text-2xl sm:text-3xl font-bold text-primary-600 dark:text-primary-400 mb-1 sm:mb-2">
-                                    {property.price ? `EGP${property.price.toLocaleString(language === 'de' ? 'de-DE' : 'en-US', { maximumFractionDigits: 0 })}` : '—'}
+                                    {property.price ? `€${property.price.toLocaleString(language === 'de' ? 'de-DE' : 'en-US', { maximumFractionDigits: 0 })}` : '—'}
                                 </p>
-                                {property.price && eurRate && (
-                                    <p className="text-sm sm:text-base text-neutral-500 dark:text-neutral-400 mb-3 sm:mb-4">
-                                        €{(property.price * eurRate).toLocaleString(language === 'de' ? 'de-DE' : 'en-US', { maximumFractionDigits: 0 })}
-                                    </p>
-                                )}
-
                                 {/* Down Payment Indicator */}
                                 {property.down_payments && property.down_payments.length > 0 && (
                                     <div className="mb-3 sm:mb-4 p-3 bg-green-100 dark:bg-green-900 rounded-lg">

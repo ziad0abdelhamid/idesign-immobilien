@@ -403,8 +403,8 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                 </h3>
 
                 {/* Titles */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                    {["en", "ar", "de"].map((lang) => (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
+                    {["en", "de"].map((lang) => (
                         <div key={lang}>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 {language === "en" ? `Title (${lang.toUpperCase()})` : `Titel (${lang.toUpperCase()})`}
@@ -420,9 +420,9 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                     ))}
                 </div>
 
-                {/* Locations */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                    {["en", "ar", "de"].map((lang) => (
+                {/* Locations - Arabic commented out */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
+                    {["en", "de"].map((lang) => (
                         <div key={lang}>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 {language === "en" ? `Location (${lang.toUpperCase()})` : `Standort (${lang.toUpperCase()})`}
@@ -438,9 +438,9 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                     ))}
                 </div>
 
-                {/* Descriptions */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                    {["en", "ar", "de"].map((lang) => (
+                {/* Descriptions - Arabic commented out */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
+                    {["en", "de"].map((lang) => (
                         <div key={lang}>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 {language === "en" ? `Description (${lang.toUpperCase()})` : `Beschreibung (${lang.toUpperCase()})`}
@@ -903,47 +903,49 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                         </div>
                     )}
                 </div>
-            </div>
+            </div >
 
             {/* Images Section */}
-            <div className="border-t pt-6">
+            < div className="border-t pt-6" >
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
                     {language === "en" ? "Property Images" : "Grundstücksbilder"}
                 </h3>
 
                 {/* Existing Images */}
-                {images.length > 0 && (
-                    <div className="mb-6">
-                        <h4 className="text-sm font-medium text-gray-700 mb-3">
-                            {language === "en" ? "Current Images" : "Aktuelle Bilder"}
-                        </h4>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                            {images.map((img, idx) => (
-                                <div
-                                    key={img.id || idx}
-                                    className="relative group cursor-move"
-                                    draggable
-                                    onDragStart={() => onDragStart(idx)}
-                                    onDragOver={(e) => onDragOver(idx, e)}
-                                    onDragEnd={onDragEnd}
-                                >
-                                    <img src={img.image_url} alt="Property" className="w-full h-32 object-cover rounded-lg" />
-                                    <button
-                                        type="button"
-                                        onClick={() => deleteExistingImage(img.id || "")}
-                                        className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-lg opacity-0 group-hover:opacity-100 transition"
+                {
+                    images.length > 0 && (
+                        <div className="mb-6">
+                            <h4 className="text-sm font-medium text-gray-700 mb-3">
+                                {language === "en" ? "Current Images" : "Aktuelle Bilder"}
+                            </h4>
+                            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                                {images.map((img, idx) => (
+                                    <div
+                                        key={img.id || idx}
+                                        className="relative group cursor-move"
+                                        draggable
+                                        onDragStart={() => onDragStart(idx)}
+                                        onDragOver={(e) => onDragOver(idx, e)}
+                                        onDragEnd={onDragEnd}
                                     >
-                                        <X size={16} />
-                                    </button>
-                                    <div className="absolute bottom-2 left-2 bg-black/50 text-white px-1 rounded text-xs">
-                                        #{idx + 1}
+                                        <img src={img.image_url} alt="Property" className="w-full h-32 object-cover rounded-lg" />
+                                        <button
+                                            type="button"
+                                            onClick={() => deleteExistingImage(img.id || "")}
+                                            className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-lg opacity-0 group-hover:opacity-100 transition"
+                                        >
+                                            <X size={16} />
+                                        </button>
+                                        <div className="absolute bottom-2 left-2 bg-black/50 text-white px-1 rounded text-xs">
+                                            #{idx + 1}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
 
-                    </div>
-                )}
+                        </div>
+                    )
+                }
 
                 {/* Upload Area */}
                 <div className="mb-6">
@@ -969,46 +971,48 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                 </div>
 
                 {/* New Images Preview */}
-                {newImages.length > 0 && (
-                    <div className="mb-6">
-                        <h4 className="text-sm font-medium text-gray-700 mb-3">
-                            {language === "en" ? "New Images to Upload" : "Neue Bilder zum Hochladen"}
-                        </h4>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                            {newImages.map((file, idx) => (
-                                <div
-                                    key={idx}
-                                    className="relative group cursor-move"
-                                    draggable
-                                    onDragStart={() => handleNewDragStart(idx)}
-                                    onDragOver={(e) => handleNewDragOver(e, idx)}
-                                    onDragEnd={handleNewDrop}
-                                >
-                                    <img
-                                        src={URL.createObjectURL(file)}
-                                        alt="Preview"
-                                        className="w-full h-32 object-cover rounded-lg"
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => removeNewImage(idx)}
-                                        className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-lg opacity-0 group-hover:opacity-100 transition"
+                {
+                    newImages.length > 0 && (
+                        <div className="mb-6">
+                            <h4 className="text-sm font-medium text-gray-700 mb-3">
+                                {language === "en" ? "New Images to Upload" : "Neue Bilder zum Hochladen"}
+                            </h4>
+                            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                                {newImages.map((file, idx) => (
+                                    <div
+                                        key={idx}
+                                        className="relative group cursor-move"
+                                        draggable
+                                        onDragStart={() => handleNewDragStart(idx)}
+                                        onDragOver={(e) => handleNewDragOver(e, idx)}
+                                        onDragEnd={handleNewDrop}
                                     >
-                                        <X size={16} />
-                                    </button>
-                                    <div className="absolute bottom-2 left-2 bg-black/50 text-white px-1 rounded text-xs">
-                                        #{idx + 1}
+                                        <img
+                                            src={URL.createObjectURL(file)}
+                                            alt="Preview"
+                                            className="w-full h-32 object-cover rounded-lg"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => removeNewImage(idx)}
+                                            className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-lg opacity-0 group-hover:opacity-100 transition"
+                                        >
+                                            <X size={16} />
+                                        </button>
+                                        <div className="absolute bottom-2 left-2 bg-black/50 text-white px-1 rounded text-xs">
+                                            #{idx + 1}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
 
-                    </div>
-                )}
-            </div>
+                        </div>
+                    )
+                }
+            </div >
 
             {/* Submit Button */}
-            <div className="border-t pt-6 flex flex-col sm:flex-row justify-end gap-3">
+            < div className="border-t pt-6 flex flex-col sm:flex-row justify-end gap-3" >
                 <button
                     type="button"
                     onClick={() => router.back()}
@@ -1031,8 +1035,8 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                         propertyId ? "Update Property" : "Create Property"
                     )}
                 </button>
-            </div>
-        </form>
+            </div >
+        </form >
     );
 }
 

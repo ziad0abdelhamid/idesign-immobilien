@@ -40,12 +40,12 @@ export const translations = {
       title: "Based in Austria",
       greeting: "DB ImmoDesign",
       subtitle:
-        "Innovatives Immobilienmarketing – Wir machen Ihre Immobilie erlebbar",
+        "Innovatives Immobilienmarketing – We make your property come alive",
       titleServices: [
         "Home Staging",
         "Professional Photography",
         "Drone Photography",
-        "and much more for optimal marketing",
+        "Much more for optimal marketing",
       ],
       cta: "Explore Investments",
       ctaTwo: "Mehr erfahren",
@@ -98,6 +98,10 @@ export const translations = {
           title: "First-time Buyer",
         },
       ],
+      dreamTitle: "Your Dream Properties Await You",
+      dreamDesc:
+        "Discover our exclusive selection of houses, apartments, and investment opportunities.",
+      dreamCta: "Explore Properties",
     },
     properties: {
       title: "Our Properties",
@@ -317,6 +321,10 @@ export const translations = {
           rating: 4,
         },
       ],
+      dreamTitle: "Traumimmobilien warten auf Sie",
+      dreamDesc:
+        "Entdecken Sie unsere exklusive Auswahl an Häusern, Wohnungen und Investitionsmöglichkeiten.",
+      dreamCta: "Immobilien entdecken",
     },
     properties: {
       title: "Immobilien mit Potenzial",

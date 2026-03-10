@@ -24,6 +24,7 @@ const TEXT = {
         facilities: "Facilities",
         floorPlans: "Floor Plans",
         area: "Area",
+        landArea: "Land Area",
         bedrooms: "Rooms",
         floor: "Floor",
         view: "View",
@@ -41,13 +42,15 @@ const TEXT = {
         sending: "Sending...",
         success: "Message sent!",
         agentMessage: "Hello, I am interested in the property",
-        agentMessage2: "Could you please contact me with further details?"
+        agentMessage2: "Could you please contact me with further details?",
+        shareProperty: "Share Property"
     },
     de: {
         contact: "Makler kontaktieren",
         facilities: "Ausstattung",
         floorPlans: "Grundrisse",
         area: "Fläche",
+        landArea: "Grundstücksfläche",
         bedrooms: "Zimmer",
 
         floor: "Etage",
@@ -66,7 +69,8 @@ const TEXT = {
         sending: "Wird gesendet...",
         success: "Nachricht gesendet!",
         agentMessage: "Hallo! Ich interessiere mich für diese Immobilie",
-        agentMessage2: "Bitte schicken Sie mir weitere Details zu."
+        agentMessage2: "Bitte schicken Sie mir weitere Details zu.",
+        shareProperty: "Immobilie teilen"
     },
 };
 
@@ -365,6 +369,7 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                             {/* DESKTOP STATS */}
                             <div className="hidden md:grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-2 lg:gap-4 px-2">
                                 {property.area && <Stat label={t.area} value={Math.round(property.area)} suffix=" m²" icon={<FaRulerCombined />} />}
+                                {property.land_area && <Stat label={t.landArea} value={Math.round(property.land_area)} suffix=" m²" icon={<FaRulerCombined />} />}
                                 {property.bedrooms && <Stat label={t.bedrooms} value={TotalRooms} icon={<FaBed />} />}
                                 {property.floor && <Stat label={t.floor} value={Math.round(property.floor)} icon={<FaBuilding />} />}
                                 <Stat
@@ -419,15 +424,6 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                                 />
                             </div>
 
-                            {/* Description Field - Left side below stats (desktop only) */}
-                            <div className="hidden md:block bg-neutral-50 dark:bg-neutral-800 rounded-lg p-2 sm:p-3 md:p-4 m-2 sm:m-3 md:m-4 text-xs sm:text-sm space-y-2 wrap-break-word overflow-hidden">
-                                {getText("description") && (
-                                    <p className="text-neutral-600 dark:text-neutral-300 leading-snug wrap-break-word whitespace-normal">
-                                        {getText("description")}
-                                    </p>
-                                )}
-                            </div>
-
                         </div>
 
                         {/* CONTENT */}
@@ -441,11 +437,12 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                             <div>
                                 <h1 className="text-lg sm:text-xl md:text-xl lg:text-2xl font-bold leading-tight ">{getText("title")}</h1>
                                 <p className="text-xs sm:text-sm md:text-sm text-neutral-500 mt-1 sm:mt-2">{getText("location")}</p>
-                                <p className="text-xs text-neutral-600 dark:text-neutral-400">
-                                    {language === "de"
-                                        ? `Objektnummer: ${property.object_number}`
-                                        : `Object Number: ${property.object_number}`}</p>
-
+                                {property.object_number && (
+                                    <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">
+                                        {language === "de"
+                                            ? `Objektnummer: ${property.object_number}`
+                                            : `Object Number: ${property.object_number}`}</p>
+                                )}
                             </div>
 
                             {/* TOTAL PRICE (mobile priority) */}
@@ -554,9 +551,19 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                                     </div>
                                 </div>
                             )}
+                            {/* Description Field - Left side below stats (desktop only) */}
+                            <div className="hidden md:block bg-neutral-50 dark:bg-neutral-800 rounded-lg p-2 sm:p-3 md:p-4 m-2 sm:m-3 md:m-4 text-xs sm:text-sm space-y-2 wrap-break-word overflow-hidden prose dark:prose-invert max-w-none">
+                                {getText("description") && (
+                                    <div
+                                        className="text-neutral-600 dark:text-neutral-300 leading-snug whitespace-normal"
+                                        dangerouslySetInnerHTML={{ __html: getText("description").replace(/\n/g, '<br/>') }}
+                                    />
+                                )}
+                            </div>
                             {/* MOBILE STATS - Only show on mobile */}
                             <div className="md:hidden grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
                                 {property.area && <Stat label={t.area} value={Math.round(property.area)} suffix=" m²" icon={<FaRulerCombined />} />}
+                                {property.land_area && <Stat label={t.landArea} value={Math.round(property.land_area)} suffix=" m²" icon={<FaRulerCombined />} />}
                                 {property.bedrooms && <Stat label={t.bedrooms} value={TotalRooms} icon={<FaBed />} />}
                                 {property.floor && <Stat label={t.floor} value={Math.round(property.floor)} icon={<FaBuilding />} />}
                                 <Stat

@@ -50,7 +50,7 @@ export function Navbar({ isTransparent = true }: NavbarProps) {
             {/* NAVBAR */}
             <nav
                 className={cn(
-                    "fixed inset-x-0 top-0 z-50 transition-all duration-500 pb-1 backdrop-blur-xl",
+                    "fixed inset-x-0 top-0 z-50 transition-all duration-500 backdrop-blur-xl",
                     showGlass
                         ? "bg-white/75 dark:bg-[#0b1220]/80 backdrop-blur-xl shadow-lg border-b border-white/20 dark:border-neutral-800"
                         : "bg-transparent"
@@ -61,7 +61,7 @@ export function Navbar({ isTransparent = true }: NavbarProps) {
                     <div className="pointer-events-none absolute inset-x-0 -bottom-px h-px bg-linear-to-r from-transparent via-[#06b6d4] to-transparent opacity-70" />
                 )}
 
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="flex h-20 md:h-24 items-center justify-between">
                         {/* LOGO */}
                         <Link
@@ -72,8 +72,8 @@ export function Navbar({ isTransparent = true }: NavbarProps) {
                             <Image
                                 src="/logo.png"
                                 alt="DB ImmoDesign"
-                                width={700}
-                                height={700}
+                                width={600}
+                                height={600}
                                 priority
                                 className={cn(
                                     "object-contain transition-all duration-500 ease-in-out opacity-90 pt-0.5",
@@ -90,15 +90,6 @@ export function Navbar({ isTransparent = true }: NavbarProps) {
                                     "lg:w-36 lg:h-36"
                                 )}
                             />
-                            {/* <motion.h1
-                                className={cn(
-                                    "relative text-2xl font-semibold tracking-wide transition-colors",
-                                    showGlass
-                                        ? "text-[#0b1220] dark:text-white hover:(--primary-gold)"
-                                        : "text-white/95 hover:text-(--primary-gold)"
-                                )}>
-                                DB ImmoDesign
-                            </motion.h1> */}
                         </Link>
 
                         {/* DESKTOP NAV */}
@@ -140,7 +131,7 @@ export function Navbar({ isTransparent = true }: NavbarProps) {
                             aria-expanded={isMobileOpen}
                             onClick={() => setIsMobileOpen((v) => !v)}
                             className={cn(
-                                "md:hidden rounded-lg p-2 transition-colors backdrop-blur-2xl",
+                                "md:hidden rounded-lg m-2 p-2 transition-colors backdrop-blur-2xl",
                                 showGlass
                                     ? "bg-gray-400/50 backdrop-blur-xl shadow-xl border-b border-white/10"
                                     : "bg-transparent backdrop-blur-none shadow-none border-none",
@@ -152,11 +143,11 @@ export function Navbar({ isTransparent = true }: NavbarProps) {
 
                     {/* MOBILE MENU */}
                     {isMobileOpen && (
-                        <div className="md:hidden mt-2 rounded-xl bg-white dark:bg-[#0b1220] border border-neutral-200 dark:border-neutral-800 shadow-xl overflow-hidden z-50000">
+                        <div className="md:hidden mt-2 rounded-xl bg-white dark:bg-[#0b1220] border border-neutral-200 dark:border-neutral-800 shadow-xl mb-15 overflow-hidden min-h-full z-50000">
                             {/* Language Switcher for Mobile */}
                             <div className="px-5 py-4 border-t border-neutral-200 dark:border-neutral-800">
                                 <div className="text-xs font-semibold text-neutral-600 dark:text-neutral-400 mb-2">
-                                    Language
+                                    {language === "en" ? "Language" : "Sprache"}
                                 </div>
                                 <LanguageSwitcher />
                             </div>

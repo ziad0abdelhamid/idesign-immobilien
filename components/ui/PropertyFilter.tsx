@@ -4,7 +4,6 @@ import * as Slider from "@radix-ui/react-slider";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguageStore } from "@/lib/store";
 import { translations } from "@/lib/i18n/translations";
-import { useEgptoEur } from "@/lib/hooks/conversionRate";
 import { useEffect, useRef, useState } from "react";
 
 interface FiltersProps {
@@ -17,12 +16,47 @@ interface FiltersProps {
 export function PropertyFilters({ isOpen, onClose, properties, setFilteredProperties }: FiltersProps) {
     const { language } = useLanguageStore();
     const t = translations[language] || translations.en;
-    const { rate } = useEgptoEur();
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Fixed price range in EUR: 20,000€ - 400,000€
-    const minPriceEUR = 20000;
-    const maxPriceEUR = 400000;
+    // Calculate price range dynamically from properties
+    const getPriceRange = () => {
+        if (!properties || properties.length === 0) {
+            return { min: 0, max: 1000000 };
+        }
+        const prices = properties
+            .map(p => p.price)
+            .filter((p) => p > 0);
+        return {
+            min: Math.floor(Math.min(...prices) / 1000) * 1000,
+            max: Math.ceil(Math.max(...prices) / 1000) * 1000,
+        };
+    };
+
+    // Calculate land_area range dynamically from properties
+    const getLandAreaRange = () => {
+        if (!properties || properties.length === 0) {
+            return { min: 0, max: 10000 };
+        }
+        const landAreas = properties
+            .filter((p) => p.land_area)
+            .map(p => p.land_area)
+            .filter((area): area is number => area !== undefined && area > 0);
+        if (landAreas.length === 0) {
+            return { min: 0, max: 10000 };
+        }
+        return {
+            min: Math.floor(Math.min(...landAreas) / 100) * 100,
+            max: Math.ceil(Math.max(...landAreas) / 100) * 100,
+        };
+    };
+
+    const dynamicPriceRange = getPriceRange();
+    const minPriceEUR = dynamicPriceRange.min;
+    const maxPriceEUR = dynamicPriceRange.max;
+
+    const dynamicLandAreaRange = getLandAreaRange();
+    const minLandArea = dynamicLandAreaRange.min;
+    const maxLandArea = dynamicLandAreaRange.max;
 
     // Fixed area range: 20 - 300m²
     const minArea = 20;
@@ -35,15 +69,26 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
     // -------------------- Local State --------------------
     const [priceRange, setPriceRange] = useState<[number, number]>([minPriceEUR, maxPriceEUR]);
     const [areaRange, setAreaRange] = useState<[number, number]>([minArea, maxArea]);
+    const [landAreaRange, setLandAreaRange] = useState<[number, number]>([minLandArea, maxLandArea]);
     const [roomsRange, setRoomsRange] = useState<[number, number]>([minRooms, maxRooms]);
     const [hasPool, setHasPool] = useState<boolean | "">("");
     const [installmentOnly, setInstallmentOnly] = useState<boolean | "">("");
+
+    // Update price range when properties change
+    useEffect(() => {
+        setPriceRange([minPriceEUR, maxPriceEUR]);
+    }, [minPriceEUR, maxPriceEUR]);
+
+    // Update land area range when properties change
+    useEffect(() => {
+        setLandAreaRange([minLandArea, maxLandArea]);
+    }, [minLandArea, maxLandArea]);
 
     // -------------------- Filtering --------------------
     useEffect(() => {
         const timeout = setTimeout(() => {
             const filtered = properties.filter(p => {
-                const price = rate ? Math.round(p.price * rate) : p.price;
+                const price = p.price;
                 const totalRooms = p.bedrooms;
                 const hasInstallments = p.down_payments && Array.isArray(p.down_payments) && p.down_payments.length > 0;
 
@@ -52,6 +97,7 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
                     price <= priceRange[1] &&
                     p.area >= areaRange[0] &&
                     p.area <= areaRange[1] &&
+                    (!p.land_area || (p.land_area >= landAreaRange[0] && p.land_area <= landAreaRange[1])) &&
                     totalRooms >= roomsRange[0] &&
                     totalRooms <= roomsRange[1] &&
                     (hasPool === "" || p.has_pool === hasPool) &&
@@ -62,11 +108,12 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
         }, 100);
 
         return () => clearTimeout(timeout);
-    }, [priceRange, areaRange, roomsRange, hasPool, installmentOnly, properties, rate, setFilteredProperties]);
+    }, [priceRange, areaRange, landAreaRange, roomsRange, hasPool, installmentOnly, properties, setFilteredProperties]);
 
     const resetFilters = () => {
         setPriceRange([minPriceEUR, maxPriceEUR]);
         setAreaRange([minArea, maxArea]);
+        setLandAreaRange([minLandArea, maxLandArea]);
         setRoomsRange([minRooms, maxRooms]);
         setHasPool("");
         setInstallmentOnly("");
@@ -139,6 +186,28 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
                 </p>
             </div>
 
+            {/* Land Area Range */}
+            <div className={section}>
+                <p className="font-medium">{language === "de" ? "Grundstücksfläche" : "Land Area"}</p>
+                <Slider.Root
+                    className="relative flex items-center select-none touch-none w-full h-5"
+                    value={landAreaRange}
+                    min={minLandArea}
+                    max={maxLandArea}
+                    step={100}
+                    onValueChange={(val: number[]) => setLandAreaRange([val[0], val[1]])}
+                >
+                    <Slider.Track className="bg-neutral-300 dark:bg-neutral-700 relative flex-1 h-1 rounded-full">
+                        <Slider.Range className="absolute bg-black dark:bg-white h-full rounded-full" />
+                    </Slider.Track>
+                    <Slider.Thumb className="block w-5 h-5 bg-black dark:bg-white rounded-full shadow-md hover:scale-110 transition-transform cursor-pointer" />
+                    <Slider.Thumb className="block w-5 h-5 bg-black dark:bg-white rounded-full shadow-md hover:scale-110 transition-transform cursor-pointer" />
+                </Slider.Root>
+                <p className="text-sm text-neutral-500">
+                    {landAreaRange[0]} – {landAreaRange[1]} {t.filter.sqm}
+                </p>
+            </div>
+
             {/* Rooms Range */}
             <div className={section}>
                 <p className="font-medium">{t.filter.rooms ?? "Rooms"}</p>
@@ -177,7 +246,7 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
             </div>
 
             {/* Installment Payment Toggle */}
-            <div className={section}>
+            {/* <div className={section}>
                 <div className="flex items-center justify-between">
                     <p className="font-medium">
                         {language === "de" ? "Nur Ratenzahlung" : "Installment only"}
@@ -189,7 +258,7 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
                         <span className={toggleSwitchThumb(installmentOnly === true)} />
                     </button>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 

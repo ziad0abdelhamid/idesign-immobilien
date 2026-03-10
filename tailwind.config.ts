@@ -9,6 +9,21 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Luxury color scheme
+        charcoal: {
+          50: "#f5f5f5",
+          100: "#e8e8e8",
+          200: "#d6d6d6",
+          300: "#c0c0c0",
+          400: "#a0a0a0",
+          500: "#808080",
+          600: "#555555",
+          700: "#333333",
+          800: "#1a1a1a",
+          900: "#0f0f0f",
+          950: "#0a0a0a",
+        },
+        gold: "#d4af37",
         // Custom color scheme: Red and Dark Blue
         primary: {
           50: "#fee2e0",
@@ -59,6 +74,10 @@ const config: Config = {
           800: "#262626",
           900: "#171717",
         },
+      },
+      fontFamily: {
+        playfair: ["Playfair Display", "serif"],
+        inter: ["Inter", "sans-serif"],
       },
       typography: {
         DEFAULT: {

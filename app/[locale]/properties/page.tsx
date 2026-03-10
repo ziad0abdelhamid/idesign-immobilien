@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/db/supabase";
 import { useLanguageStore } from "@/lib/store";
+import { useSearchParams } from "next/navigation";
 import { translations } from "@/lib/i18n/translations";
 import { PropertyCard } from "@/components/properties/PropertyCard";
 import { PropertyFilters } from "@/components/ui/PropertyFilter";
@@ -25,6 +26,7 @@ interface Property {
     description_de: string;
     price: number;
     area: number;
+    land_area?: number;
     bedrooms: number;
     down_payments?: string;
     view?: string[] | string;
@@ -47,6 +49,7 @@ export default function PropertiesPage() {
     const { language } = useLanguageStore();
     const t = translations[language] || translations.en;
     const tFilters = translations[language] || translations.en;
+    const searchParams = useSearchParams();
     const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
     const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
     const [properties, setProperties] = useState<Property[]>([]);
@@ -119,6 +122,19 @@ export default function PropertiesPage() {
 
         fetchProperties();
     }, []);
+
+    /* ---------------- Handle URL Parameter for Property Modal ---------------- */
+    useEffect(() => {
+        if (properties.length > 0) {
+            const propertyId = searchParams.get("property");
+            if (propertyId) {
+                const foundProperty = properties.find(p => p.id === propertyId);
+                if (foundProperty) {
+                    setSelectedProperty(foundProperty);
+                }
+            }
+        }
+    }, [properties, searchParams]);
 
     /* ---------------- Filtering Logic ---------------- */
     useEffect(() => {
@@ -266,6 +282,7 @@ export default function PropertiesPage() {
                                             location={getText(prop, "location")}
                                             price={prop.price}
                                             area={prop.area}
+                                            land_area={prop.land_area}
                                             bedrooms={prop.bedrooms}
                                             images={prop.images.length ? prop.images : ["/placeholder.jpg"]}
                                             language={language === "de" ? "en" : language}
