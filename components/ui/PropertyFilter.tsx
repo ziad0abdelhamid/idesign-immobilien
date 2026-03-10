@@ -51,8 +51,8 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
     };
 
     const dynamicPriceRange = getPriceRange();
-    const minPriceEUR = dynamicPriceRange.min;
-    const maxPriceEUR = dynamicPriceRange.max;
+    const minPriceEUR = 0;
+    const maxPriceEUR = dynamicPriceRange.max + 100000;
 
     const dynamicLandAreaRange = getLandAreaRange();
     const minLandArea = dynamicLandAreaRange.min;
@@ -246,7 +246,7 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
             </div>
 
             {/* Installment Payment Toggle */}
-            {/* <div className={section}>
+            <div className={section}>
                 <div className="flex items-center justify-between">
                     <p className="font-medium">
                         {language === "de" ? "Nur Ratenzahlung" : "Installment only"}
@@ -258,7 +258,7 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
                         <span className={toggleSwitchThumb(installmentOnly === true)} />
                     </button>
                 </div>
-            </div> */}
+            </div>
         </div>
     );
 
