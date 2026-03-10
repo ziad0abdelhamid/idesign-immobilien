@@ -19,8 +19,8 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         }
 
         // Extract locale from URL path and sync with store
-        const localeMatch = pathname?.match(/^\/(en|ar|de)/);
-        const urlLocale = localeMatch?.[1] as "en" | "ar" | "de" || "de";
+        const localeMatch = pathname?.match(/^\/(en|de)/);
+        const urlLocale = (localeMatch?.[1] as "en" | "de") || "de";
 
         // If URL locale differs from store, update store
         if (urlLocale !== language) {
@@ -29,7 +29,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
 
         const root = document.documentElement;
         root.lang = urlLocale;
-        root.dir = urlLocale === "ar" ? "rtl" : "ltr";
+        root.dir = "ltr";
 
         setMounted(true);
     }, [pathname, language, setLanguage]);

@@ -300,7 +300,7 @@ export default function AdminPropertiesPage() {
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center bg-neutral-200 dark:bg-neutral-700">
                                         <span className="text-neutral-500 dark:text-neutral-400 text-lg font-semibold">
-                                            {language === "ar" ? "لا توجد صور" : language === "de" ? "Keine Bilder" : "No Images"}
+                                            {language === "de" ? "Keine Bilder" : "No Images"}
                                         </span>
                                     </div>
                                 )}
@@ -351,7 +351,7 @@ export default function AdminPropertiesPage() {
                                         <Bed className="w-4 sm:w-5 h-4 sm:h-5 text-primary-500" />
                                         <span className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-50">{property.bedrooms || "—"}</span>
                                         <span className="text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400">
-                                            {language === "ar" ? "غرف" : language === "de" ? "Zimmer" : "Beds"}
+                                            {language === "de" ? "Zimmer" : "Beds"}
                                         </span>
                                     </div>
 
@@ -359,18 +359,18 @@ export default function AdminPropertiesPage() {
                                         <Ruler className="w-4 sm:w-5 h-4 sm:h-5 text-primary-500" />
                                         <span className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-50">{property.area || "—"}</span>
                                         <span className="text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400">
-                                            {language === "ar" ? "متر" : language === "de" ? "qm" : "sqm"}
+                                            {language === "de" ? "qm" : "sqm"}
                                         </span>
                                     </div>
                                 </div>
 
                                 {/* Price */}
                                 <p className="text-2xl sm:text-3xl font-bold text-primary-600 dark:text-primary-400 mb-1 sm:mb-2">
-                                    {property.price ? `EGP${property.price.toLocaleString(language === 'ar' ? 'ar-SA' : 'de-DE', { maximumFractionDigits: 0 })}` : '—'}
+                                    {property.price ? `EGP${property.price.toLocaleString(language === 'de' ? 'de-DE' : 'en-US', { maximumFractionDigits: 0 })}` : '—'}
                                 </p>
                                 {property.price && eurRate && (
                                     <p className="text-sm sm:text-base text-neutral-500 dark:text-neutral-400 mb-3 sm:mb-4">
-                                        €{(property.price * eurRate).toLocaleString(language === 'ar' ? 'ar-SA' : 'de-DE', { maximumFractionDigits: 0 })}
+                                        €{(property.price * eurRate).toLocaleString(language === 'de' ? 'de-DE' : 'en-US', { maximumFractionDigits: 0 })}
                                     </p>
                                 )}
 
@@ -378,7 +378,7 @@ export default function AdminPropertiesPage() {
                                 {property.down_payments && property.down_payments.length > 0 && (
                                     <div className="mb-3 sm:mb-4 p-3 bg-green-100 dark:bg-green-900 rounded-lg">
                                         <p className="text-[10px] sm:text-xs font-semibold text-green-800 dark:text-green-200 mb-2">
-                                            {language === 'en' ? 'Down Payments Available' : language === 'ar' ? 'خيارات الدفع المقدم متاحة' : 'Zahlungsoptionen verfügbar'}
+                                            {language === 'en' ? 'Down Payments Available' : 'Zahlungsoptionen verfügbar'}
                                         </p>
                                         <div className="flex flex-wrap gap-1.5 sm:gap-2">
                                             {property.down_payments.map((dp: any, idx: number) => (
@@ -395,7 +395,7 @@ export default function AdminPropertiesPage() {
                                     property.object_number || property.load_factor || property.facilities) && (
                                         <div className="mb-3 sm:mb-4 pb-3 sm:pb-4 border-t border-neutral-200 dark:border-neutral-700 pt-3 sm:pt-4">
                                             <p className="text-[10px] sm:text-xs font-semibold text-neutral-500 dark:text-neutral-400 mb-2">
-                                                {language === "en" ? "Additional Info:" : language === "ar" ? "معلومات إضافية:" : "Zusätzliche Info:"}
+                                                {language === "en" ? "Additional Info:" : "Zusätzliche Info:"}
                                             </p>
                                             <div className="flex flex-wrap gap-1.5 sm:gap-2">
                                                 {property.floor && <span className="text-[10px] sm:text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">Floor: {property.floor}</span>}
@@ -415,8 +415,8 @@ export default function AdminPropertiesPage() {
                                             disabled={updatingStatus === property.id}
                                             className="flex-1 px-2 py-1 text-xs sm:text-sm bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded hover:border-blue-500 cursor-pointer disabled:opacity-50"
                                         >
-                                            <option value="shown">{language === "en" ? "Shown" : language === "ar" ? "مرئي" : "Angezeigt"}</option>
-                                            <option value="hidden">{language === "en" ? "Hidden" : language === "ar" ? "مخفي" : "Verborgen"}</option>
+                                            <option value="shown">{language === "en" ? "Shown" : "Angezeigt"}</option>
+                                            <option value="hidden">{language === "en" ? "Hidden" : "Verborgen"}</option>
                                         </select>
                                     </div>
                                     <button
@@ -427,7 +427,7 @@ export default function AdminPropertiesPage() {
                                             : "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-600"
                                             } disabled:opacity-50`}
                                     >
-                                        {property.sold ? (language === "en" ? "✓ Sold" : language === "ar" ? "✓ مباع" : "✓ Verkauft") : (language === "en" ? "Not Sold" : language === "ar" ? "غير مباع" : "Nicht verkauft")}
+                                        {property.sold ? (language === "en" ? "✓ Sold" : "✓ Verkauft") : (language === "en" ? "Not Sold" : "Nicht verkauft")}
                                     </button>
                                 </div>
 
@@ -437,12 +437,12 @@ export default function AdminPropertiesPage() {
                                         href={`/${locale}/admin/properties/edit/${property.id}`}
                                         className="flex-1 px-3 sm:px-4 py-2.5 sm:py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center gap-2 text-sm sm:text-base"
                                     >
-                                        <Edit2 size={16} className="sm:w-4.5 sm:h-4.5" /> {language === "en" ? "Edit" : language === "ar" ? "تحرير" : "Bearbeiten"}
+                                        <Edit2 size={16} className="sm:w-4.5 sm:h-4.5" /> {language === "en" ? "Edit" : "Bearbeiten"}
                                     </Link>
                                     <button
                                         onClick={() => handleDuplicate(property.id)}
                                         disabled={duplicating === property.id}
-                                        title={language === "en" ? "Duplicate this property" : language === "ar" ? "نسخ هذا العقار" : "Diese Eigenschaft duplizieren"}
+                                        title={language === "en" ? "Duplicate this property" : "Diese Eigenschaft duplizieren"}
                                         className="flex-1 px-3 sm:px-4 py-2.5 sm:py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition flex items-center justify-center gap-2 cursor-pointer text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                         {duplicating === property.id ? (
@@ -450,13 +450,13 @@ export default function AdminPropertiesPage() {
                                         ) : (
                                             <Copy size={16} className="sm:w-4.5 sm:h-4.5" />
                                         )}
-                                        {language === "en" ? "Duplicate" : language === "ar" ? "نسخ" : "Duplizieren"}
+                                        {language === "en" ? "Duplicate" : "Duplizieren"}
                                     </button>
                                     <button
                                         onClick={() => deleteProperty(property.id)}
                                         className="flex-1 px-3 sm:px-4 py-2.5 sm:py-2 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition flex items-center justify-center gap-2 cursor-pointer text-sm sm:text-base"
                                     >
-                                        <Trash2 size={16} className="sm:w-4.5 sm:h-4.5" /> {language === "en" ? "Delete" : language === "ar" ? "حذف" : "Löschen"}
+                                        <Trash2 size={16} className="sm:w-4.5 sm:h-4.5" /> {language === "en" ? "Delete" : "Löschen"}
                                     </button>
                                 </div>
 

@@ -268,7 +268,7 @@ export default function PropertiesPage() {
                                             area={prop.area}
                                             bedrooms={prop.bedrooms}
                                             images={prop.images.length ? prop.images : ["/placeholder.jpg"]}
-                                            language={language}
+                                            language={language === "de" ? "en" : language}
                                             status={prop.status}
                                             sold={prop.sold}
                                             onClick={() => setSelectedProperty(prop)}

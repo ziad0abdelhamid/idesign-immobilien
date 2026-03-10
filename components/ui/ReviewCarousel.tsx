@@ -83,11 +83,11 @@ export function ReviewsCarousel() {
 
     // Swipe handlers
     const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-        touchStartX.current = e.clientX;
+        touchStartX.current = e.touches[0].clientX;
     };
 
     const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
-        touchEndX.current = e.clientX;
+        touchEndX.current = e.changedTouches[0].clientX;
         handleSwipe();
     };
 
