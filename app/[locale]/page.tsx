@@ -42,18 +42,18 @@ export default function HomePage() {
         <div className="w-full overflow-hidden">
             {/* HERO */}
             <section className="relative min-h-screen flex items-center justify-center">
-                {/* <video
+                <video
                     autoPlay
                     muted
                     loop
                     className="absolute inset-0 w-full h-full object-cover opacity-80 grayscale"
                     aria-hidden="true"
                     src={'hero-video.mp4'}
-                /> */}
-                <img
+                />
+                {/* <img
                     src="/graz-bg.jpg"
                     alt="Hero background"
-                    className="absolute inset-0 w-full h-full object-cover opacity-110" />
+                    className="absolute inset-0 w-full h-full object-cover opacity-110" /> */}
                 <div className="absolute inset-0 bg-black/45" />
                 <div className="absolute top-30 inset-0 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-16 translate-y-[-4%]">
 

@@ -112,8 +112,9 @@ export function Navbar({ isTransparent = true }: NavbarProps) {
                                         className={cn(
                                             "relative text-l font-semibold tracking-wide transition-colors",
                                             showGlass
-                                                ? "text-[#0b1220] dark:text-white hover:text-(--primary-gold)"
-                                                : "text-white/95 hover:text-(--primary-gold)"
+                                                ? "text-[#0b1220] dark:text-white hover:text-[#43afe0]"
+                                                : "text-white/95 hover:text-[#43afe0]",
+                                            isActive && "text-[#43afe0]!"
                                         )}
                                     >
                                         {link.label}
@@ -123,9 +124,7 @@ export function Navbar({ isTransparent = true }: NavbarProps) {
                                             className={cn(
                                                 "absolute -bottom-1 left-0 h-0.5 w-full scale-x-0 transition-transform duration-300 origin-left",
                                                 isActive && "scale-x-100",
-                                                showGlass
-                                                    ? "bg-(--primary-gold)"
-                                                    : "bg-white"
+                                                "bg-[#43afe0]"
                                             )}
                                         />
                                     </Link>
@@ -161,16 +160,24 @@ export function Navbar({ isTransparent = true }: NavbarProps) {
                                 </div>
                                 <LanguageSwitcher />
                             </div>
-                            {navLinks.map((link) => (
-                                <Link
-                                    key={link.href}
-                                    href={link.href}
-                                    onClick={() => setIsMobileOpen(false)}
-                                    className="block px-5 py-4 text-base font-semibold text-[#0b1220] dark:text-white hover:bg-neutral-100 dark:hover:bg-white/10 transition-colors border-b border-neutral-200 dark:border-neutral-800 last:border-b-0"
-                                >
-                                    {link.label}
-                                </Link>
-                            ))}
+                            {navLinks.map((link) => {
+                                const isActive = pathname === link.href;
+                                return (
+                                    <Link
+                                        key={link.href}
+                                        href={link.href}
+                                        onClick={() => setIsMobileOpen(false)}
+                                        className={cn(
+                                            "block px-5 py-4 text-base font-semibold transition-colors border-b border-neutral-200 dark:border-neutral-800 last:border-b-0",
+                                            isActive
+                                                ? "text-[#43afe0]!"
+                                                : "text-[#0b1220] dark:text-white hover:bg-neutral-100 dark:hover:bg-white/10"
+                                        )}
+                                    >
+                                        {link.label}
+                                    </Link>
+                                );
+                            })}
                         </div>
                     )}
                 </div>
