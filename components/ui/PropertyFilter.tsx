@@ -146,7 +146,7 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
             <div className={section}>
                 <p className="font-medium">{t.filter.price}</p>
                 <Slider.Root
-                    className="relative flex items-center select-none touch-none w-full h-5"
+                    className="relative flex items-center select-none touch-none w-full h-5 p-10"
                     value={priceRange}
                     min={minPriceEUR}
                     max={maxPriceEUR}
