@@ -34,6 +34,7 @@ export async function duplicateProperty(propertyId: string) {
     description_de: originalProperty.description_de,
     price: originalProperty.price,
     area: originalProperty.area,
+    land_area: originalProperty.land_area,
     bedrooms: originalProperty.bedrooms,
     location_en: originalProperty.location_en,
     location_ar: originalProperty.location_ar,

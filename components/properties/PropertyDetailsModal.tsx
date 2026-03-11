@@ -1,5 +1,5 @@
 "use client";
-import { FaBed, FaBath, FaRulerCombined, FaBuilding, FaEye, FaTools, FaPercent, FaCalendarAlt, FaCheckCircle, FaSwimmingPool } from "react-icons/fa";
+import { FaBed, FaBath, FaRulerCombined, FaBuilding, FaEye, FaTools, FaPercent, FaCalendarAlt, FaCheckCircle, FaSwimmingPool, FaMap } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -200,6 +200,7 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
             >
                 <motion.div
                     ref={modalRef}
+                    id={`property-modal-${property.id}`}
                     dir="ltr"
                     className="
                                 relative w-full
@@ -369,7 +370,7 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                             {/* DESKTOP STATS */}
                             <div className="hidden md:grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-2 lg:gap-4 px-2">
                                 {property.area && <Stat label={t.area} value={Math.round(property.area)} suffix=" m²" icon={<FaRulerCombined />} />}
-                                {property.land_area && <Stat label={t.landArea} value={Math.round(property.land_area)} suffix=" m²" icon={<FaRulerCombined />} />}
+                                {property.land_area && <Stat label={t.landArea} value={Math.round(property.land_area)} suffix=" m²" icon={<FaMap />} />}
                                 {property.bedrooms && <Stat label={t.bedrooms} value={TotalRooms} icon={<FaBed />} />}
                                 {property.floor && <Stat label={t.floor} value={Math.round(property.floor)} icon={<FaBuilding />} />}
                                 <Stat
@@ -563,7 +564,7 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                             {/* MOBILE STATS - Only show on mobile */}
                             <div className="md:hidden grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
                                 {property.area && <Stat label={t.area} value={Math.round(property.area)} suffix=" m²" icon={<FaRulerCombined />} />}
-                                {property.land_area && <Stat label={t.landArea} value={Math.round(property.land_area)} suffix=" m²" icon={<FaRulerCombined />} />}
+                                {property.land_area && <Stat label={t.landArea} value={Math.round(property.land_area)} suffix=" m²" icon={<FaMap />} />}
                                 {property.bedrooms && <Stat label={t.bedrooms} value={TotalRooms} icon={<FaBed />} />}
                                 {property.floor && <Stat label={t.floor} value={Math.round(property.floor)} icon={<FaBuilding />} />}
                                 <Stat

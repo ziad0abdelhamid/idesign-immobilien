@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/db/supabase";
 import { useLanguageStore } from "@/lib/store";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { translations } from "@/lib/i18n/translations";
 import { PropertyCard } from "@/components/properties/PropertyCard";
 import { PropertyFilters } from "@/components/ui/PropertyFilter";
@@ -50,6 +50,7 @@ export default function PropertiesPage() {
     const t = translations[language] || translations.en;
     const tFilters = translations[language] || translations.en;
     const searchParams = useSearchParams();
+    const router = useRouter();
     const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
     const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
     const [properties, setProperties] = useState<Property[]>([]);
@@ -148,6 +149,16 @@ export default function PropertiesPage() {
 
         setFilteredProperties(filtered);
     }, [maxPrice, maxArea, bedrooms, properties]);
+
+    const handleSelectProperty = (prop: Property) => {
+        setSelectedProperty(prop);
+        router.push(`?property=${prop.id}`);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedProperty(null);
+        router.push("?");
+    };
 
     const getText = (
         prop: Property,
@@ -285,10 +296,10 @@ export default function PropertiesPage() {
                                             land_area={prop.land_area}
                                             bedrooms={prop.bedrooms}
                                             images={prop.images.length ? prop.images : ["/placeholder.jpg"]}
-                                            language={language === "de" ? "en" : language}
+                                            language={language}
                                             status={prop.status}
                                             sold={prop.sold}
-                                            onClick={() => setSelectedProperty(prop)}
+                                            onClick={() => handleSelectProperty(prop)}
                                             view={Array.isArray(prop.view) ? prop.view : prop.view ? [prop.view] : undefined}
                                             floor={prop.floor}
                                             has_pool={prop.has_pool}
@@ -304,7 +315,7 @@ export default function PropertiesPage() {
                             <PropertyDetailsModal
                                 property={selectedProperty}
                                 language={language}
-                                onClose={() => setSelectedProperty(null)}
+                                onClose={handleCloseModal}
                             />
                         )}
 

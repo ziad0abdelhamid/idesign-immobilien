@@ -131,7 +131,7 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
         }`;
 
     const content = (
-        <div ref={containerRef} dir="ltr" className="overflow-y-auto max-h-[calc(100vh-8rem)] p-6 space-y-6">
+        <div ref={containerRef} dir="ltr" className="overflow-hidden max-h-[calc(100vh-8rem)] p-6 space-y-6">
             <div className="flex items-center justify-between">
                 <h3 className="text-xl font-semibold tracking-tight">{t.filter.title}</h3>
                 <button
@@ -146,7 +146,7 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
             <div className={section}>
                 <p className="font-medium">{t.filter.price}</p>
                 <Slider.Root
-                    className="relative flex items-center select-none touch-none w-full h-5 p-10"
+                    className="relative flex items-center select-none touch-none w-full h-5"
                     value={priceRange}
                     min={minPriceEUR}
                     max={maxPriceEUR}

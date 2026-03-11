@@ -4,7 +4,7 @@ import { JSX, useState } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { FaBed, FaBath, FaRulerCombined, FaBuilding, FaEye, FaPercent, FaCalendarAlt, FaCheckCircle, FaTimesCircle, FaSwimmingPool } from "react-icons/fa";
+import { FaBed, FaBath, FaRulerCombined, FaBuilding, FaEye, FaPercent, FaCalendarAlt, FaCheckCircle, FaTimesCircle, FaSwimmingPool, FaMap } from "react-icons/fa";
 
 interface PropertyCardProps {
     title: string;
@@ -166,7 +166,7 @@ export function PropertyCard({
                     <Feature icon={<FaBed />} value={TotalRooms} label={language === "de" ? "Zimmer" : "Rooms"} labelPosition="inline" />
                     {floor && <Feature icon={<FaBuilding />} value={Math.round(floor)} label={language === "de" ? "Etage" : "Floor"} labelPosition="inline" />}
                     <Feature icon={<FaRulerCombined />} value={Math.round(area)} label={language === "de" ? "Fläche" : "Area"} labelPosition="inline" />
-                    {land_area && <Feature icon={<FaRulerCombined />} value={Math.round(land_area)} label={language === "de" ? "Grundstück" : "Land"} labelPosition="inline" />}
+                    {land_area && <Feature icon={<FaMap />} value={Math.round(land_area)} label={language === "de" ? "Grundstück" : "Land"} labelPosition="inline" />}
                     <Feature
                         icon={<FaSwimmingPool className="text-blue-500" />}
                         value={has_pool ? (language === "de" ? "Ja" : "Yes") : (language === "de" ? "Nein" : "No")}
