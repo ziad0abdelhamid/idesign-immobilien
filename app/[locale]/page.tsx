@@ -36,7 +36,7 @@ export default function HomePage() {
         <div className="w-full overflow-hidden bg-charcoal-900">
             {/* HERO SECTION */}
             <section className="relative min-h-screen lg:h-screen flex items-center justify-center py-12 sm:py-16 md:py-20 lg:py-0 lg:pt-20 px-4 sm:px-6 lg:px-8">
-                <video
+                {/* <video
                     autoPlay
                     muted
                     loop
@@ -44,7 +44,11 @@ export default function HomePage() {
                     className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale"
                     aria-hidden="true"
                     src={'hero-video.mp4'}
-                />
+                /> */}
+                <img
+                    src="/heroBG.jpeg"
+                    alt="Hero Image"
+                    className="absolute inset-0 w-full h-full opacity-60" />
                 <div className="absolute inset-0 bg-black/50 hidden lg:block" />
                 <div className="absolute inset-0 bg-charcoal-900 lg:hidden" />
 

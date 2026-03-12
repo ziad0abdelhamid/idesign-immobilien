@@ -1,10 +1,10 @@
 "use client";
 
 import * as Slider from "@radix-ui/react-slider";
-import { motion, AnimatePresence } from "framer-motion";
 import { useLanguageStore } from "@/lib/store";
 import { translations } from "@/lib/i18n/translations";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { Search } from "lucide-react";
 
 interface FiltersProps {
     isOpen: boolean;
@@ -15,282 +15,265 @@ interface FiltersProps {
 
 export function PropertyFilters({ isOpen, onClose, properties, setFilteredProperties }: FiltersProps) {
     const { language } = useLanguageStore();
-    const t = translations[language] || translations.en;
-    const containerRef = useRef<HTMLDivElement>(null);
 
-    // Calculate price range dynamically from properties
+    // Dynamic price range from properties
     const getPriceRange = () => {
         if (!properties || properties.length === 0) {
-            return { min: 0, max: 1000000 };
+            return { min: 0, max: 5000000 };
         }
-        const prices = properties
-            .map(p => p.price)
-            .filter((p) => p > 0);
+        const prices = properties.map(p => p.price).filter((p) => p > 0);
         return {
-            min: Math.floor(Math.min(...prices) / 1000) * 1000,
-            max: Math.ceil(Math.max(...prices) / 1000) * 1000,
+            min: 0,
+            max: Math.ceil(Math.max(...prices) / 10000) * 10000 + 50000,
         };
     };
 
-    // Calculate land_area range dynamically from properties
-    const getLandAreaRange = () => {
-        if (!properties || properties.length === 0) {
-            return { min: 0, max: 10000 };
-        }
-        const landAreas = properties
-            .filter((p) => p.land_area)
-            .map(p => p.land_area)
-            .filter((area): area is number => area !== undefined && area > 0);
-        if (landAreas.length === 0) {
-            return { min: 0, max: 10000 };
-        }
-        return {
-            min: Math.floor(Math.min(...landAreas) / 100) * 100,
-            max: Math.ceil(Math.max(...landAreas) / 100) * 100,
-        };
+    // Get unique locations from properties
+    const getUniqueLocations = () => {
+        if (!properties || properties.length === 0) return [];
+        const locations = properties
+            .map(p => {
+                const loc = language === "de" ? p.location_de : p.location_en;
+                return loc || p.location || "";
+            })
+            .filter(Boolean);
+        return [...new Set(locations)].sort();
     };
 
     const dynamicPriceRange = getPriceRange();
-    const minPriceEUR = 0;
-    const maxPriceEUR = dynamicPriceRange.max + 100000;
+    const minPriceEUR = dynamicPriceRange.min;
+    const maxPriceEUR = dynamicPriceRange.max;
+    const uniqueLocations = getUniqueLocations();
 
-    const dynamicLandAreaRange = getLandAreaRange();
-    const minLandArea = dynamicLandAreaRange.min;
-    const maxLandArea = dynamicLandAreaRange.max;
-
-    // Fixed area range: 20 - 300m²
-    const minArea = 20;
-    const maxArea = 300;
-
-    // Rooms range: 1 - 15
-    const minRooms = 1;
-    const maxRooms = 15;
-
-    // -------------------- Local State --------------------
+    // State
     const [priceRange, setPriceRange] = useState<[number, number]>([minPriceEUR, maxPriceEUR]);
-    const [areaRange, setAreaRange] = useState<[number, number]>([minArea, maxArea]);
-    const [landAreaRange, setLandAreaRange] = useState<[number, number]>([minLandArea, maxLandArea]);
-    const [roomsRange, setRoomsRange] = useState<[number, number]>([minRooms, maxRooms]);
-    const [hasPool, setHasPool] = useState<boolean | "">("");
-    const [installmentOnly, setInstallmentOnly] = useState<boolean | "">("");
+    const [selectedRegion, setSelectedRegion] = useState<string>("");
+    const [searchQuery, setSearchQuery] = useState<string>("");
+    const [filteredCount, setFilteredCount] = useState(properties.length);
 
-    // Update price range when properties change
     useEffect(() => {
         setPriceRange([minPriceEUR, maxPriceEUR]);
     }, [minPriceEUR, maxPriceEUR]);
 
-    // Update land area range when properties change
-    useEffect(() => {
-        setLandAreaRange([minLandArea, maxLandArea]);
-    }, [minLandArea, maxLandArea]);
-
-    // -------------------- Filtering --------------------
+    // Filtering logic
     useEffect(() => {
         const timeout = setTimeout(() => {
             const filtered = properties.filter(p => {
                 const price = p.price;
-                const totalRooms = p.bedrooms;
-                const hasInstallments = p.down_payments && Array.isArray(p.down_payments) && p.down_payments.length > 0;
+                if (price < priceRange[0] || price > priceRange[1]) return false;
 
-                return (
-                    price >= priceRange[0] &&
-                    price <= priceRange[1] &&
-                    p.area >= areaRange[0] &&
-                    p.area <= areaRange[1] &&
-                    (!p.land_area || (p.land_area >= landAreaRange[0] && p.land_area <= landAreaRange[1])) &&
-                    totalRooms >= roomsRange[0] &&
-                    totalRooms <= roomsRange[1] &&
-                    (hasPool === "" || p.has_pool === hasPool) &&
-                    (installmentOnly === "" || hasInstallments === installmentOnly)
-                );
+                if (selectedRegion) {
+                    const propertyLocation = language === "de" ? p.location_de : p.location_en || p.location;
+                    if (propertyLocation !== selectedRegion) return false;
+                }
+
+                if (searchQuery.trim()) {
+                    const query = searchQuery.toLowerCase();
+                    const title = language === "de" ? p.title_de : p.title_en || p.title;
+                    const location = language === "de" ? p.location_de : p.location_en || p.location;
+                    const titleMatch = title && title.toLowerCase().includes(query);
+                    const locationMatch = location && location.toLowerCase().includes(query);
+                    if (!titleMatch && !locationMatch) return false;
+                }
+
+                return true;
             });
+            setFilteredCount(filtered.length);
             setFilteredProperties(filtered);
         }, 100);
 
         return () => clearTimeout(timeout);
-    }, [priceRange, areaRange, landAreaRange, roomsRange, hasPool, installmentOnly, properties, setFilteredProperties]);
+    }, [priceRange, selectedRegion, searchQuery, properties, setFilteredProperties, language]);
 
     const resetFilters = () => {
         setPriceRange([minPriceEUR, maxPriceEUR]);
-        setAreaRange([minArea, maxArea]);
-        setLandAreaRange([minLandArea, maxLandArea]);
-        setRoomsRange([minRooms, maxRooms]);
-        setHasPool("");
-        setInstallmentOnly("");
+        setSelectedRegion("");
+        setSearchQuery("");
     };
-
-    // -------------------- UI Helpers --------------------
-    const section = "bg-neutral-50 dark:bg-neutral-900 rounded-xl p-4 space-y-3 shadow-md";
-
-    const toggleSwitch = (active: boolean) =>
-        `relative inline-flex h-6 w-11 items-center rounded-full transition ${active ? "bg-blue-600" : "bg-neutral-300 dark:bg-neutral-700"
-        } cursor-pointer`;
-
-    const toggleSwitchThumb = (active: boolean) =>
-        `inline-block h-4 w-4 transform rounded-full bg-white transition ${active ? "translate-x-5" : "translate-x-1"
-        }`;
-
-    const content = (
-        <div ref={containerRef} dir="ltr" className="overflow-hidden max-h-[calc(100vh-8rem)] p-6 space-y-6">
-            <div className="flex items-center justify-between">
-                <h3 className="text-xl font-semibold tracking-tight">{t.filter.title}</h3>
-                <button
-                    onClick={resetFilters}
-                    className="cursor-pointer text-sm font-medium text-neutral-500 px-2 py-1 rounded-md hover:text-black dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800"
-                >
-                    {t.filter.reset ?? "Reset"}
-                </button>
-            </div>
-
-            {/* Price Range */}
-            <div className={section}>
-                <p className="font-medium">{t.filter.price}</p>
-                <Slider.Root
-                    className="relative flex items-center select-none touch-none w-full h-5"
-                    value={priceRange}
-                    min={minPriceEUR}
-                    max={maxPriceEUR}
-                    step={5000}
-                    onValueChange={(val: number[]) => setPriceRange([val[0], val[1]])}
-                >
-                    <Slider.Track className="bg-neutral-300 dark:bg-neutral-700 relative flex-1 h-1 rounded-full cursor-pointer">
-                        <Slider.Range className="absolute bg-black dark:bg-white h-full rounded-full" />
-                    </Slider.Track>
-                    <Slider.Thumb className="block w-5 h-5 bg-black dark:bg-white rounded-full shadow-md hover:scale-110 transition-transform cursor-pointer" />
-                    <Slider.Thumb className="block w-5 h-5 bg-black dark:bg-white rounded-full shadow-md hover:scale-110 transition-transform cursor-pointer" />
-                </Slider.Root>
-                <p className="text-sm text-neutral-500">
-                    €{priceRange[0].toLocaleString()} – €{priceRange[1].toLocaleString()}
-                </p>
-            </div>
-
-            {/* Area Range */}
-            <div className={section}>
-                <p className="font-medium">{t.filter.area}</p>
-                <Slider.Root
-                    className="relative flex items-center select-none touch-none w-full h-5"
-                    value={areaRange}
-                    min={minArea}
-                    max={maxArea}
-                    step={10}
-                    onValueChange={(val: number[]) => setAreaRange([val[0], val[1]])}
-                >
-                    <Slider.Track className="bg-neutral-300 dark:bg-neutral-700 relative flex-1 h-1 rounded-full">
-                        <Slider.Range className="absolute bg-black dark:bg-white h-full rounded-full" />
-                    </Slider.Track>
-                    <Slider.Thumb className="block w-5 h-5 bg-black dark:bg-white rounded-full shadow-md hover:scale-110 transition-transform cursor-pointer" />
-                    <Slider.Thumb className="block w-5 h-5 bg-black dark:bg-white rounded-full shadow-md hover:scale-110 transition-transform cursor-pointer" />
-                </Slider.Root>
-                <p className="text-sm text-neutral-500">
-                    {areaRange[0]} – {areaRange[1]} {t.filter.sqm}
-                </p>
-            </div>
-
-            {/* Land Area Range */}
-            <div className={section}>
-                <p className="font-medium">{language === "de" ? "Grundstücksfläche" : "Land Area"}</p>
-                <Slider.Root
-                    className="relative flex items-center select-none touch-none w-full h-5"
-                    value={landAreaRange}
-                    min={minLandArea}
-                    max={maxLandArea}
-                    step={100}
-                    onValueChange={(val: number[]) => setLandAreaRange([val[0], val[1]])}
-                >
-                    <Slider.Track className="bg-neutral-300 dark:bg-neutral-700 relative flex-1 h-1 rounded-full">
-                        <Slider.Range className="absolute bg-black dark:bg-white h-full rounded-full" />
-                    </Slider.Track>
-                    <Slider.Thumb className="block w-5 h-5 bg-black dark:bg-white rounded-full shadow-md hover:scale-110 transition-transform cursor-pointer" />
-                    <Slider.Thumb className="block w-5 h-5 bg-black dark:bg-white rounded-full shadow-md hover:scale-110 transition-transform cursor-pointer" />
-                </Slider.Root>
-                <p className="text-sm text-neutral-500">
-                    {landAreaRange[0]} – {landAreaRange[1]} {t.filter.sqm}
-                </p>
-            </div>
-
-            {/* Rooms Range */}
-            <div className={section}>
-                <p className="font-medium">{t.filter.rooms ?? "Rooms"}</p>
-                <Slider.Root
-                    className="relative flex items-center select-none touch-none w-full h-5"
-                    value={roomsRange}
-                    min={minRooms}
-                    max={maxRooms}
-                    step={1}
-                    onValueChange={(val: number[]) => setRoomsRange([val[0], val[1]])}
-                >
-                    <Slider.Track className="bg-neutral-300 dark:bg-neutral-700 relative flex-1 h-1 rounded-full">
-                        <Slider.Range className="absolute bg-black dark:bg-white h-full rounded-full" />
-                    </Slider.Track>
-                    <Slider.Thumb className="block w-5 h-5 bg-black dark:bg-white rounded-full shadow-md hover:scale-110 transition-transform cursor-pointer" />
-                    <Slider.Thumb className="block w-5 h-5 bg-black dark:bg-white rounded-full shadow-md hover:scale-110 transition-transform cursor-pointer" />
-                </Slider.Root>
-                <p className="text-sm text-neutral-500">
-                    {roomsRange[0]} – {roomsRange[1]} {language === "de" ? "Zimmer" : "rooms"}
-                </p>
-            </div>
-
-            {/* Pool Toggle */}
-            <div className={section}>
-                <div className="flex items-center justify-between">
-                    <p className="font-medium">
-                        {language === "de" ? "Nur mit Pool" : "Pool only"}
-                    </p>
-                    <button
-                        onClick={() => setHasPool(hasPool === true ? "" : true)}
-                        className={toggleSwitch(hasPool === true)}
-                    >
-                        <span className={toggleSwitchThumb(hasPool === true)} />
-                    </button>
-                </div>
-            </div>
-
-            {/* Installment Payment Toggle */}
-            <div className={section}>
-                <div className="flex items-center justify-between">
-                    <p className="font-medium">
-                        {language === "de" ? "Nur Ratenzahlung" : "Installment only"}
-                    </p>
-                    <button
-                        onClick={() => setInstallmentOnly(installmentOnly === true ? "" : true)}
-                        className={toggleSwitch(installmentOnly === true)}
-                    >
-                        <span className={toggleSwitchThumb(installmentOnly === true)} />
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
 
     return (
         <>
-            {/* Desktop */}
-            <aside className="hidden lg:block w-80 sticky top-24 -ml-6 border-r dark:border-neutral-800 bg-white dark:bg-neutral-950 rounded-2xl shadow-md">
-                {content}
-            </aside>
+            {/* Mobile overlay & drawer */}
+            {isOpen && (
+                <>
+                    <div className="lg:hidden fixed inset-0 bg-black/50 z-40" onClick={onClose} />
+                    <div className="lg:hidden fixed left-0 top-0 h-full w-80 bg-white z-50 overflow-y-auto shadow-xl">
+                        <div className="p-6 space-y-6">
+                            <div className="flex justify-between items-center">
+                                <h2 className="text-xl font-bold tracking-tight">{language === "de" ? "Suche verfeinern" : "Refine Search"}</h2>
+                                <button onClick={onClose} className="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+                            </div>
+                            <FilterContent
+                                priceRange={priceRange}
+                                setPriceRange={setPriceRange}
+                                minPriceEUR={minPriceEUR}
+                                maxPriceEUR={maxPriceEUR}
+                                language={language}
+                                resetFilters={resetFilters}
+                                selectedRegion={selectedRegion}
+                                setSelectedRegion={setSelectedRegion}
+                                uniqueLocations={uniqueLocations}
+                                filteredCount={filteredCount}
+                                totalCount={properties.length}
+                                searchQuery={searchQuery}
+                                setSearchQuery={setSearchQuery}
+                            />
+                        </div>
+                    </div>
+                </>
+            )}
 
-            {/* Mobile */}
-            <AnimatePresence>
-                {isOpen && (
-                    <>
-                        <motion.div
-                            className="fixed inset-0 bg-black/40 z-40 cursor-pointer"
-                            onClick={onClose}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                        />
-                        <motion.aside
-                            className={`fixed top-0 right-0 h-full w-80 bg-white dark:bg-neutral-950 z-50 shadow-xl`}
-                            initial={{ x: "100%" }}
-                            animate={{ x: 0 }}
-                            exit={{ x: "100%" }}
+            {/* Desktop sidebar */}
+            <aside className="hidden lg:block w-1/3 xl:w-1/4">
+                <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 sticky top-28">
+                    <div className="flex justify-between items-center mb-8">
+                        <h2 className="text-xl font-bold tracking-tight">{language === "de" ? "Suche verfeinern" : "Refine Search"}</h2>
+                        <button
+                            onClick={resetFilters}
+                            className="text-xs font-bold text-blue-400 hover:text-blue-500 cursor-pointer"
                         >
-                            {content}
-                        </motion.aside>
-                    </>
-                )}
-            </AnimatePresence>
+                            {language === "de" ? "Zurücksetzen" : "Reset"}
+                        </button>
+                    </div>
+
+                    <FilterContent
+                        priceRange={priceRange}
+                        setPriceRange={setPriceRange}
+                        minPriceEUR={minPriceEUR}
+                        maxPriceEUR={maxPriceEUR}
+                        language={language}
+                        resetFilters={resetFilters}
+                        selectedRegion={selectedRegion}
+                        setSelectedRegion={setSelectedRegion}
+                        uniqueLocations={uniqueLocations}
+                        filteredCount={filteredCount}
+                        totalCount={properties.length}
+                        searchQuery={searchQuery}
+                        setSearchQuery={setSearchQuery}
+                    />
+                </div>
+            </aside>
         </>
+    );
+}
+
+interface FilterContentProps {
+    priceRange: [number, number];
+    setPriceRange: (range: [number, number]) => void;
+    minPriceEUR: number;
+    maxPriceEUR: number;
+    language: "de" | "en" | "ar";
+    resetFilters: () => void;
+    selectedRegion: string;
+    setSelectedRegion: (region: string) => void;
+    uniqueLocations: string[];
+    filteredCount: number;
+    totalCount: number;
+    searchQuery: string;
+    setSearchQuery: (query: string) => void;
+}
+
+function FilterContent({
+    priceRange,
+    setPriceRange,
+    minPriceEUR,
+    maxPriceEUR,
+    language,
+    resetFilters,
+    selectedRegion,
+    setSelectedRegion,
+    uniqueLocations,
+    filteredCount,
+    totalCount,
+    searchQuery,
+    setSearchQuery,
+}: FilterContentProps) {
+    const formatPrice = (price: number) => {
+        if (price >= 1000000) {
+            return `${(price / 1000000).toFixed(1)} Mio. €`;
+        }
+        return `${(price / 1000).toFixed(0)}k €`;
+    };
+
+    return (
+        <div className="space-y-6">
+            {/* Search Bar */}
+            <div>
+                <label className="text-[10px] font-bold uppercase text-blue-400 tracking-widest block mb-3">
+                    {language === "de" ? "Suche" : "Search"}
+                </label>
+                <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                        type="text"
+                        placeholder={language === "de" ? "Name, Ort..." : "Name, location..."}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full pl-10 pr-4 py-3 bg-blue-50 border border-blue-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition placeholder-gray-400"
+                    />
+                </div>
+            </div>
+
+            {/* Region Filter */}
+            <div>
+                <label className="text-[10px] font-bold uppercase text-blue-400 tracking-widest block mb-3">
+                    {language === "de" ? "Region" : "Region"}
+                </label>
+                <div className="relative">
+                    <select
+                        value={selectedRegion}
+                        onChange={(e) => setSelectedRegion(e.target.value)}
+                        className="w-full bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 text-sm text-gray-700 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none appearance-none cursor-pointer hover:bg-blue-100 transition font-medium"
+                    >
+                        <option value="">{language === "de" ? "Alle Regionen" : "All Regions"}</option>
+                        {uniqueLocations.map((location) => (
+                            <option key={location} value={location}>
+                                {location}
+                            </option>
+                        ))}
+                    </select>
+                    <div className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2">
+                        <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            {/* Price Range Slider */}
+            <div>
+                <div className="flex justify-between items-center mb-3">
+                    <label className="text-[10px] font-bold uppercase text-blue-400 tracking-widest">
+                        {language === "de" ? "Preisbereich" : "Price Range"}
+                    </label>
+                    <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                        {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
+                    </span>
+                </div>
+                <Slider.Root
+                    className="relative flex items-center select-none touch-none w-full h-5 mb-4"
+                    value={priceRange}
+                    min={minPriceEUR}
+                    max={maxPriceEUR}
+                    step={10000}
+                    onValueChange={(val: number[]) => setPriceRange([val[0], val[1]])}
+                >
+                    <Slider.Track className="bg-blue-100 relative flex-1 h-2 rounded-full">
+                        <Slider.Range className="absolute bg-blue-400 h-full rounded-full" />
+                    </Slider.Track>
+                    <Slider.Thumb className="block w-5 h-5 bg-blue-400 rounded-full shadow-md hover:shadow-lg hover:scale-110 transition-all cursor-pointer border-2 border-white" />
+                    <Slider.Thumb className="block w-5 h-5 bg-blue-400 rounded-full shadow-md hover:shadow-lg hover:scale-110 transition-all cursor-pointer border-2 border-white" />
+                </Slider.Root>
+                <div className="flex justify-between text-xs text-gray-500 mt-2">
+                    <span>€0</span>
+                    <span>{formatPrice(maxPriceEUR)}</span>
+                </div>
+            </div>
+
+            {/* Search Button */}
+            <button className="w-full cursor-pointer bg-linear-to-r from-blue-400 to-blue-500 text-white py-3 rounded-xl font-bold text-sm shadow-md shadow-blue-200 hover:shadow-lg hover:from-blue-500 hover:to-blue-600 transition-all active:scale-[0.98]">
+                {language === "de" ? "Immobilien anzeigen" : "Show Properties"}
+            </button>
+        </div>
     );
 }

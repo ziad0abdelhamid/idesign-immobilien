@@ -202,8 +202,8 @@ export default function PropertiesPage() {
 
 
             {/* Content */}
-            <section className="bg-neutral-50 dark:bg-neutral-950 py-12">
-                <div className="max-w-7xl mx-auto px-4 flex gap-8">
+            <section className="bg-white py-12">
+                <div className="max-w-[1600px] mx-auto flex flex-col lg:flex-row gap-8 p-8">
                     {/* Filters */}
                     <PropertyFilters
                         isOpen={filtersOpen}
@@ -213,27 +213,27 @@ export default function PropertiesPage() {
                     />
 
                     {/* Main */}
-                    <div className="flex-1">
+                    <main className="w-full lg:w-2/3 xl:w-3/4">
                         {/* Mobile Filters Button */}
                         <div className="lg:hidden mb-6">
                             <button
                                 onClick={() => setFiltersOpen(true)}
-                                className="px-4 py-2 rounded bg-black text-white"
+                                className="px-4 py-2 rounded-lg bg-blue-600 text-white font-bold text-sm hover:bg-blue-700 transition"
                             >
-                                {t.filter.openFilters}
+                                {language === "de" ? "Filter öffnen" : "Open Filters"}
                             </button>
                         </div>
 
                         {/* Grid */}
                         {loading ? (
                             <div className="flex flex-col items-center justify-center h-64 p-6">
-                                <p className="text-center text-gray-600">Loading properties…</p>
+                                <p className="text-center text-gray-600">{language === "de" ? "Immobilien werden geladen…" : "Loading properties…"}</p>
                             </div>
                         ) : properties.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center h-64 p-6 bg-neutral-50 dark:bg-neutral-900 rounded-xl shadow-md text-center space-y-4">
+                            <div className="flex flex-col items-center justify-center h-64 p-6 bg-white rounded-xl text-center space-y-4">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    className="h-16 w-16 text-neutral-400 dark:text-neutral-500"
+                                    className="h-16 w-16 text-gray-400"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke="currentColor"
@@ -245,40 +245,41 @@ export default function PropertiesPage() {
                                         d="M3 3h18v18H3V3z M6 9h12 M6 15h12"
                                     />
                                 </svg>
-                                <h3 className="text-lg font-semibold text-neutral-700 dark:text-neutral-200">
-                                    No properties loaded
+                                <h3 className="text-lg font-semibold text-gray-700">
+                                    {language === "de" ? "Keine Immobilien geladen" : "No properties loaded"}
                                 </h3>
-                                <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                                    Database connection issue. Please refresh the page or check back later.
+                                <p className="text-sm text-gray-500">
+                                    {language === "de" ? "Datenbankverbindungsproblem. Bitte aktualisieren Sie die Seite." : "Database connection issue. Please refresh the page."}
                                 </p>
-                            </div>) : filteredProperties.length === 0 ? (
-                                <div className="flex flex-col items-center justify-center h-64 p-6 bg-neutral-50 dark:bg-neutral-900 rounded-xl shadow-md text-center space-y-4">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-16 w-16 text-neutral-400 dark:text-neutral-500"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M3 3h18v18H3V3z M6 9h12 M6 15h12"
-                                        />
-                                    </svg>
-                                    <h3 className="text-lg font-semibold text-neutral-700 dark:text-neutral-200">
-                                        No properties found
-                                    </h3>
-                                    <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                                        Try adjusting your filters or explore all available properties.
-                                    </p>
-                                </div>) : (
+                            </div>
+                        ) : filteredProperties.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center h-64 p-6 bg-white rounded-xl text-center space-y-4">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-16 w-16 text-gray-400"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M3 3h18v18H3V3z M6 9h12 M6 15h12"
+                                    />
+                                </svg>
+                                <h3 className="text-lg font-semibold text-gray-700">
+                                    {language === "de" ? "Keine Immobilien gefunden" : "No properties found"}
+                                </h3>
+                                <p className="text-sm text-gray-500">
+                                    {language === "de" ? "Versuchen Sie, Ihre Filter anzupassen." : "Try adjusting your filters."}
+                                </p>
+                            </div>
+                        ) : (
                             <motion.div
-                                className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
+                                className="property-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-8"
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-
                             >
                                 {filteredProperties.map((prop, idx) => (
                                     <motion.div
@@ -286,7 +287,6 @@ export default function PropertiesPage() {
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: idx * 0.05 }}
-
                                     >
                                         <PropertyCard
                                             title={getText(prop, "title")}
@@ -306,7 +306,6 @@ export default function PropertiesPage() {
                                             date_of_completion={prop.date_of_completion}
                                             has_installments={prop.has_installments}
                                         />
-
                                     </motion.div>
                                 ))}
                             </motion.div>
@@ -318,8 +317,7 @@ export default function PropertiesPage() {
                                 onClose={handleCloseModal}
                             />
                         )}
-
-                    </div>
+                    </main>
                 </div>
             </section>
         </div>
