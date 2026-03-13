@@ -209,6 +209,21 @@
   }
 }
 
+/* Custom animation delays */
+@layer utilities {
+  .animation-delay-1000 {
+    animation-delay: 1000ms;
+  }
+
+  .animation-delay-2000 {
+    animation-delay: 2000ms;
+  }
+
+  .animation-delay-3000 {
+    animation-delay: 3000ms;
+  }
+}
+
 /* Property Grid Styles */
 .property-grid {
   display: grid;

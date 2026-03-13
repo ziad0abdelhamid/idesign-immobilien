@@ -3,12 +3,13 @@
 import { useLanguageStore } from "@/lib/store";
 import { translations } from "@/lib/i18n/translations";
 import Link from "next/link";
-import { ArrowRight, Mouse } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { ReviewsCarousel } from "@/components/ui/ReviewCarousel";
 import RouteSkeleton from "@/components/ui/RouteSkeleton";
 import "flag-icons/css/flag-icons.min.css";
+
 
 export default function HomePage() {
     const { language } = useLanguageStore();
@@ -19,6 +20,11 @@ export default function HomePage() {
         visible: { opacity: 1, y: 0 },
     };
 
+    const fadeScale = {
+        hidden: { opacity: 0, scale: 0.9 },
+        visible: { opacity: 1, scale: 1 },
+    };
+
     const container = {
         hidden: {},
         visible: {
@@ -27,137 +33,211 @@ export default function HomePage() {
             },
         },
     };
-
     const buttonPress = {
         whileTap: { y: 2, scale: 0.97 },
     };
-
     return (
-        <div className="w-full overflow-hidden bg-charcoal-900">
-            {/* HERO SECTION */}
-            <section className="relative min-h-screen lg:h-screen flex items-center justify-center py-12 sm:py-16 md:py-20 lg:py-0 lg:pt-20 px-4 sm:px-6 lg:px-8">
-                {/* <video
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale"
-                    aria-hidden="true"
-                    src={'hero-video.mp4'}
-                /> */}
+
+        <div className="w-full overflow-hidden">
+            {/* HERO */}
+            <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
                 <img
                     src="/heroBG.jpeg"
-                    alt="Hero Image"
-                    className="absolute inset-0 w-full h-full opacity-60" />
-                <div className="absolute inset-0 bg-black/50 hidden lg:block" />
-                <div className="absolute inset-0 bg-charcoal-900 lg:hidden" />
+                    alt="Hero background"
+                    className="absolute inset-0 w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-black/45" />
 
-                {/* MAIN CONTENT CARD */}
-                <div className="relative z-10 w-full max-w-5xl lg:max-w-7xl px-0 sm:px-2 md:px-4">
-                    <div className="relative flex flex-col items-center text-center backdrop-blur-md bg-white/5 border border-gold/30 rounded-lg px-4 sm:px-6 md:px-10 lg:px-16 py-4 sm:py-6 md:py-8 lg:py-6 shadow-[0_20px_50px_rgba(0,0,0,0.35)]">
+                <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-16 pt-28 sm:pt-32 lg:pt-0">
 
-                        {/* TITLE */}
+                    <motion.div
+                        className={cn(
+                            "relative overflow-hidden text-center",
+                            "bg-(--glass) backdrop-blur-md",
+
+                            // responsive padding
+                            "py-5 px-5 sm:py-7 sm:px-10 lg:py-7.5 lg:px-12.5",
+
+                            // width
+                            "max-w-xl sm:max-w-3xl lg:max-w-260 mx-auto",
+
+                            // border + shadow
+                            "border-t-2 border-t-(--primary-gold)",
+                            "shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
+                        )}
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                    >
+
+                        {/* Main Title */}
                         <motion.h1
-                            className="font-['Playfair_Display',serif] font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-wider text-cyan-400 drop-shadow-lg mb-3 sm:mb-4 md:mb-5"
+                            className={cn(
+                                "relative z-10 text-white font-extrabold text-center",
+                                "font-['Playfair_Display',serif]",
+
+                                // better scaling on mobile
+                                "text-[clamp(2rem,8vw,5rem)]",
+
+                                "mb-3",
+                                "tracking-[3px] sm:tracking-[4px]",
+                                "uppercase",
+                                "drop-shadow-[2px_2px_20px_rgba(0,0,0,0.5)]"
+                            )}
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.8, delay: 0.1 }}
                         >
                             {t.home.greeting}
                         </motion.h1>
 
-                        {/* SUBTITLE */}
-                        <motion.h2 className="max-w-3xl text-xs sm:text-sm md:text-base lg:text-lg text-gray-200 drop-shadow-md mb-5 sm:mb-6 md:mb-8 font-['Inter',sans-serif] leading-relaxed px-2">
+                        {/* Subtitle */}
+                        <motion.h2
+                            className="relative text-sm sm:text-base md:text-lg lg:text-xl text-(--primary-gold) drop-shadow-lg z-10"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                        >
                             {t.home.subtitle}
                         </motion.h2>
 
-                        {/* SERVICES - Hidden on mobile, shown on tablet+ */}
+                        {/* Services */}
                         {t.home.titleServices && (
-                            <motion.div className="w-full max-w-3xl mb-5 sm:mb-6 md:mb-8 lg:mb-10 block" variants={container} initial="hidden" animate="visible">
-                                <ul className="text-left space-y-1 sm:space-y-2 md:space-y-3 text-xs sm:text-sm md:text-base">
-                                    {t.home.titleServices.map((service, index) => (
-                                        <motion.li
-                                            key={index}
-                                            variants={fadeUp}
-                                            className="text-white font-['Inter',sans-serif] flex items-start gap-2 sm:gap-3"
-                                        >
-                                            <span className="text-cyan-400 font-bold mt-0.5 shrink-0">•</span>
-                                            <span>{service}</span>
-                                        </motion.li>
-                                    ))}
-                                </ul>
+                            <motion.div
+                                className="relative mt-4 sm:mt-6 flex flex-wrap justify-center gap-2 z-10"
+                                variants={container}
+                                initial="hidden"
+                                animate="visible"
+                            >
+                                {t.home.titleServices.map((service, index) => (
+                                    <motion.span
+                                        key={index}
+                                        variants={fadeUp}
+                                        className="text-white text-xs sm:text-sm md:text-base drop-shadow-md"
+                                    >
+                                        {service}
+                                        {index < t.home.titleServices.length - 1 && (
+                                            <span className="ml-2">•</span>
+                                        )}
+                                    </motion.span>
+                                ))}
                             </motion.div>
                         )}
 
-                        {/* CTA BUTTONS */}
-                        <motion.div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 md:gap-4 lg:gap-5 justify-center mb-5 sm:mb-6 md:mb-8 lg:mb-10 w-full sm:w-auto">
-                            {/* PRIMARY */}
-                            <motion.div {...buttonPress} className="w-full sm:w-auto">
-                                <Link
-                                    href={`/${language}/properties`}
-                                    className="inline-flex items-center gap-2 justify-center px-5 sm:px-7 md:px-9 lg:px-10 py-2.5 sm:py-3 md:py-3.5 lg:py-4 bg-cyan-500 hover:bg-cyan-600 text-white font-['Inter',sans-serif] font-semibold uppercase tracking-[0.5px] text-xs sm:text-xs md:text-sm lg:text-sm rounded-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-cyan-500/30 w-full sm:w-auto"
-                                >
-                                    {t.home.cta}
-                                    <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
-                                </Link>
-                            </motion.div>
+                    </motion.div>
 
-                            {/* SECONDARY */}
-                            <motion.div {...buttonPress} className="w-full sm:w-auto">
-                                <Link
-                                    href={`/${language}/services`}
-                                    className="inline-flex items-center justify-center px-5 sm:px-7 md:px-9 lg:px-10 py-2.5 sm:py-3 md:py-3.5 lg:py-4 border-2 border-gold text-gold font-['Inter',sans-serif] font-semibold uppercase tracking-[0.5px] text-xs sm:text-xs md:text-sm lg:text-sm rounded-lg transition-all duration-300 hover:bg-gold/10 hover:-translate-y-1 hover:shadow-lg w-full sm:w-auto"
-                                >
-                                    {t.home.ctaTwo}
-                                </Link>
-                            </motion.div>
+                    {/* CTA Buttons */}
+                    <motion.div className="relative mt-6 sm:mt-8 flex justify-center z-10">
+                        <motion.div
+                            {...buttonPress}
+                            className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center"
+                        >
+                            {/* Properties CTA */}
+                            <Link
+                                href={`/${language}/properties`}
+                                className={cn(
+                                    "inline-flex items-center justify-center gap-2",
+                                    "px-6 py-3 sm:px-8 sm:py-4",
+                                    "bg-cyan-500/60 text-white",
+                                    "font-bold uppercase tracking-[1px]",
+                                    "text-xs sm:text-sm",
+                                    "transition-all duration-400 ease-btn-ease",
+                                    "hover:brightness-[1.05] hover:-translate-y-px hover:text-black"
+                                )}
+                            >
+                                {t.home.cta}
+                                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                            </Link>
+
+                            {/* Services CTA */}
+                            <Link
+                                href={`/${language}/services`}
+                                className={cn(
+                                    "inline-flex items-center justify-center gap-2",
+                                    "px-6 py-3 sm:px-8 sm:py-4",
+                                    "border border-(--primary-gold) bg-white",
+                                    "text-(--primary-gold)",
+                                    "font-bold uppercase tracking-[1px]",
+                                    "text-xs sm:text-sm",
+                                    "transition-all duration-400 ease-btn-ease",
+                                    "hover:bg-(--primary-gold) hover:text-black hover:-translate-y-px"
+                                )}
+                            >
+                                {t.home.cta2}
+                                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                            </Link>
                         </motion.div>
+                    </motion.div>
 
-                        {/* REVIEWS - Only shown on desktop */}
-                        <div className="w-full max-w-4xl hidden lg:block">
-                            <ReviewsCarousel />
-                        </div>
-
-                    </div>
                 </div>
+
             </section>
 
-            {/* REVIEWS SECTION - Mobile only */}
-            <section className="lg:hidden relative py-8 sm:py-10 md:py-12 px-4 sm:px-6 bg-linear-to-br from-cyan-900 via-cyan-800 to-cyan-900">
-                <div className="w-full max-w-4xl mx-auto">
+            <section className="relative py-12 sm:py-16 md:py-24 lg:py-40 px-3 sm:px-4 md:px-6 lg:px-8 min-h-auto md:min-h-screen flex items-center justify-center">
+                {/* linear background */}
+                <div className="absolute inset-0 bg-linear-to-b from-slate-900 via-slate-800 to-slate-900 -z-20" />
+
+                {/* Animated linear orbs - hidden on small screens for better performance */}
+                <div className="absolute top-1/4 -left-32 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl -z-10 animate-pulse hidden sm:block" />
+                <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-cyan-600/10 rounded-full blur-3xl -z-10 animate-pulse animation-delay-2000 hidden sm:block" />
+
+                {/* Reviews */}
+                <motion.div
+                    className="w-full max-w-6xl z-10"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.8 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                >
                     <ReviewsCarousel />
-                </div>
+                </motion.div>
             </section>
-
             {/* FINAL CTA SECTION */}
-            <section className="relative py-12 sm:py-16 md:py-20 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
-                {/* Blurry background image */}
-                <div
-                    className="absolute inset-0 bg-cover bg-center blur-xl"
-                    style={{
-                        backgroundImage: "url('/house-bg.jpg')",
-                        opacity: 0.9, // optional, can reduce for more transparency
-                    }}
-                ></div>
+            <section className="relative py-16 sm:py-24 md:py-32 lg:py-40 px-4 sm:px-6 lg:px-8 overflow-hidden">
+                <img
+                    src="/hero-bg-new.jpg"
+                    alt="Hero background"
+                    className="absolute inset-0 w-full h-full object-cover opacity-70 blur-lg" />
+                <div className="absolute inset-0 bg-black/45" />
+                {/* Clean gradient background */}
+                <div className="absolute inset-0 bg-linear-to-r from-slate-900 via-slate-800 to-slate-900 -z-20" />
 
-                {/* Dark overlay */}
-                <div className="absolute inset-0 bg-black/50"></div> {/* 50% black overlay */}
-                {/* Background decorative elements */}
-                <div className="absolute inset-0 opacity-10 pointer-events-none hidden sm:block">
-                    <div className="absolute bottom-10 sm:bottom-20 left-10 sm:left-20 w-40 sm:w-72 h-40 sm:h-72 bg-gold rounded-full blur-3xl" />
-                </div>
+                {/* Dark overlay only - no decorative glowing elements */}
+                <div className="absolute inset-0 bg-black/30 -z-10"></div>
 
                 <div className="max-w-4xl mx-auto relative z-10 text-center px-2 sm:px-4">
                     {/* Main content */}
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        viewport={{ once: true, margin: "-100px" }}
                     >
-                        <h2 className="font-['Playfair_Display',serif] text-xl sm:text-2xl md:text-3xl lg:text-5xl font-bold text-white mb-3 sm:mb-4 md:mb-6 lg:mb-8">
+                        <motion.h2
+                            className="font-['Playfair_Display',serif] text-xl sm:text-2xl md:text-3xl lg:text-5xl font-bold text-white mb-3 sm:mb-4 md:mb-6 lg:mb-8"
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.1 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                        >
                             {t.home.dreamTitle}
-                        </h2>
-                        <p className="font-['Inter',sans-serif] text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-gray-300 max-w-2xl mx-auto mb-4 sm:mb-6 md:mb-8 lg:mb-10 leading-relaxed">
+                        </motion.h2>
+                        <motion.p
+                            className="font-['Inter',sans-serif] text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-gray-300 max-w-2xl mx-auto mb-4 sm:mb-6 md:mb-8 lg:mb-10 leading-relaxed"
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                        >
                             {t.home.dreamDesc}
-                        </p>
-                        <motion.div {...buttonPress} className="inline-block">
+                        </motion.p>
+                        <motion.div
+                            {...buttonPress}
+                            className="inline-block"
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.6, delay: 0.3 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                        >
                             <Link
                                 href={`/${language}/properties`}
                                 className="inline-flex items-center justify-center px-5 sm:px-7 md:px-9 lg:px-10 py-2.5 sm:py-3 md:py-4 lg:py-5 bg-cyan-500 hover:bg-cyan-600 text-white no-underline font-['Inter',sans-serif] font-bold uppercase tracking-[0.5px] text-xs sm:text-xs md:text-sm lg:text-base rounded-lg transition-all duration-400 ease-out hover:-translate-y-1 hover:shadow-lg shadow-cyan-500/30"

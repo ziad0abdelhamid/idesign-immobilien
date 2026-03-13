@@ -13,7 +13,7 @@ export function Footer() {
         <footer className="relative py-12 sm:py-16">
             {/* Background */}
             <div
-                className="absolute inset-0 bg-cover bg-center -z-10 blur-xs bg-blue-950"
+                className="absolute inset-0 bg-cover bg-center -z-10 bg-blue-950"
             >
                 <div className="absolute inset-0 bg-black/70" />
             </div>
