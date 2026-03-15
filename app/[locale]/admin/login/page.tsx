@@ -68,7 +68,7 @@ export default function AdminLoginPage() {
             <div className="min-h-screen bg-linear-to-br from-gray-950 via-gray-900 to-gray-800 flex items-center justify-center p-4">
                 <div className="text-center">
                     <div className="inline-block animate-spin rounded-full h-14 w-14 border-4 border-gray-700 border-t-blue-600 shadow-lg mb-4"></div>
-                    <p className="text-black font-medium text-lg">Initializing Admin Portal...</p>
+                    <p className="text-white font-medium text-lg">Initializing Admin Portal...</p>
                 </div>
             </div>
         );

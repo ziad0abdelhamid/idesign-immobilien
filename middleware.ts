@@ -19,9 +19,15 @@ export function middleware(request: NextRequest) {
   );
 
   if (pathnameHasLocale) {
+    for (const locale of SUPPORTED_LOCALES) {
+      if (pathname === `/${locale}/admin`) {
+        return NextResponse.redirect(
+          new URL(`/${locale}/admin/login`, request.url),
+        );
+      }
+    }
     return NextResponse.next();
   }
-
   // Redirect root to default locale
   if (pathname === "/") {
     return NextResponse.redirect(new URL(`/${DEFAULT_LOCALE}`, request.url));

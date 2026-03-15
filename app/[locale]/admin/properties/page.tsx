@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { Plus, Edit2, Trash2, Bed, Bath, Ruler, ChevronLeft, ChevronRight, LogOut, Copy, Loader2 } from "lucide-react";
+import { Plus, Edit2, Trash2, Bed, Bath, Ruler, ChevronLeft, ChevronRight, LogOut, Copy, Loader2, Grid3x3, LayoutGrid } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLanguageStore } from "@/lib/store";
 import { translations } from "@/lib/i18n/translations";
@@ -45,6 +45,7 @@ export default function AdminPropertiesPage() {
     const [draggedId, setDraggedId] = useState<string | null>(null);
     const [dragOverId, setDragOverId] = useState<string | null>(null);
     const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
+    const [viewMode, setViewMode] = useState<"cards" | "grid">("cards");
     const { locale } = useParams<{ locale: string }>();
     const router = useRouter();
     const { language } = useLanguageStore();
@@ -247,7 +248,27 @@ export default function AdminPropertiesPage() {
                             `Anzahl der aufgelisteten Grundstücke: ${properties.length}`}
                     </p>
                 </div>
-                <div>
+                <div className="flex flex-col sm:flex-row gap-2">
+                    <div className="flex gap-2 border rounded-lg p-1 bg-gray-100 dark:bg-neutral-800 items-center">
+                        <button
+                            onClick={() => setViewMode("cards")}
+                            className={`px-4 py-2 rounded font-semibold transition cursor-pointer ${viewMode === "cards"
+                                ? "bg-blue-600 text-white"
+                                : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"}`}
+                            title={language === "en" ? "Card View" : "Kartenansicht"}
+                        >
+                            <Grid3x3 size={18} className="sm:w-5 sm:h-5" />
+                        </button>
+                        <button
+                            onClick={() => setViewMode("grid")}
+                            className={`px-4 py-2 rounded font-semibold transition cursor-pointer ${viewMode === "grid"
+                                ? "bg-blue-600 text-white"
+                                : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 "}`}
+                            title={language === "en" ? "Grid View" : "Gitteransicht"}
+                        >
+                            <LayoutGrid size={18} className="sm:w-5 sm:h-5" />
+                        </button>
+                    </div>
                     <Link href={`/${locale}/admin/properties/new`} className="btn btn-primary p-2 m-1 items-center gap-2">
                         <Plus size={15} />
                         {language === "en" ? "New Property" : "Neues Grundstück"}
@@ -256,220 +277,358 @@ export default function AdminPropertiesPage() {
             </div>
 
 
-            {/* Properties Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 m-5">
-                {properties.length === 0 ? (
-                    <div className="col-span-full p-10 bg-card rounded-2xl text-center border border-border">
-                        <p className="text-foreground text-lg mb-6">
-                            {language === "en" ? "No properties yet. Create your first property!" :
-                                "Noch keine Grundstücke. Erstellen Sie Ihr erstes Grundstück!"}
-                        </p>
-                        <Link href={`/${locale}/admin/properties/new`} className="btn btn-primary">
-                            <Plus size={20} /> {language === "en" ? "Create Property" : "Grundstück erstellen"}
-                        </Link>
-                    </div>
-                ) : properties.map(property => {
-                    const hasImages = property.images && property.images.length > 0;
-                    const displayImage = hasImages ? property.images![carouselIndexes[property.id] || 0] : "/placeholder.jpg";
+            {/* Properties Display */}
+            {viewMode === "cards" ? (
+                /* Card View */
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 m-5">
+                    {properties.length === 0 ? (
+                        <div className="col-span-full p-10 bg-card rounded-2xl text-center border border-border">
+                            <p className="text-foreground text-lg mb-6">
+                                {language === "en" ? "No properties yet. Create your first property!" :
+                                    "Noch keine Grundstücke. Erstellen Sie Ihr erstes Grundstück!"}
+                            </p>
+                            <Link href={`/${locale}/admin/properties/new`} className="btn btn-primary">
+                                <Plus size={20} /> {language === "en" ? "Create Property" : "Grundstück erstellen"}
+                            </Link>
+                        </div>
+                    ) : properties.map(property => {
+                        const hasImages = property.images && property.images.length > 0;
+                        const displayImage = hasImages ? property.images![carouselIndexes[property.id] || 0] : "/placeholder.jpg";
 
-                    return (
-                        <div
-                            key={property.id}
-                            draggable
-                            onDragStart={(e) => handleDragStart(e, property.id)}
-                            onDragOver={(e) => handleDragOver(e, property.id)}
-                            onDragLeave={handleDragLeave}
-                            onDrop={(e) => handleDrop(e, property.id)}
-                            onDragEnd={handleDragEnd}
-                            className={`bg-white dark:bg-neutral-800 rounded-2xl shadow-lg overflow-hidden flex flex-col w-full transition-all duration-200 ${draggedId === property.id ? 'opacity-50 scale-95' : ''
-                                } ${dragOverId === property.id && draggedId ? 'ring-2 ring-blue-500 scale-105' : ''
-                                } ${draggedId ? 'cursor-grab' : 'cursor-grab'
-                                }`}
-                        >
-                            {/* Image Carousel */}
-                            <div className="relative w-full aspect-video bg-neutral-200 dark:bg-neutral-700 overflow-hidden group">
-                                {displayImage ? (
-                                    <Image
-                                        src={displayImage}
-                                        alt={getTitle(property) || "Untitled"}
-                                        fill
-                                        className="object-cover transition-transform duration-300"
-                                        sizes="100vw"
-                                    />
-                                ) : (
-                                    <div className="w-full h-full flex items-center justify-center bg-neutral-200 dark:bg-neutral-700">
-                                        <span className="text-neutral-500 dark:text-neutral-400 text-lg font-semibold">
-                                            {language === "de" ? "Keine Bilder" : "No Images"}
-                                        </span>
-                                    </div>
-                                )}
-
-                                {hasImages && property.images!.length > 1 && (
-                                    <>
-                                        <button
-                                            onClick={() => prevImage(property.id, property.images!.length)}
-                                            className="absolute top-1/2 transform -translate-y-1/2 p-3 rounded-full bg-black/40 text-white hover:bg-black/60 transition-opacity opacity-0 group-hover:opacity-100 left-4"
-                                            aria-label="Previous Image"
-                                        >
-                                            <ChevronLeft className="w-6 h-6" />
-                                        </button>
-
-                                        <button
-                                            onClick={() => nextImage(property.id, property.images!.length)}
-                                            className="absolute top-1/2 transform -translate-y-1/2 p-3 rounded-full bg-black/40 text-white hover:bg-black/60 transition-opacity opacity-0 group-hover:opacity-100 right-4"
-                                            aria-label="Next Image"
-                                        >
-                                            <ChevronRight className="w-6 h-6" />
-                                        </button>
-
-                                        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
-                                            {(carouselIndexes[property.id] || 0) + 1} / {property.images!.length}
-                                        </div>
-                                    </>
-                                )}
-
-                                {/* Display Index Badge */}
-                                <div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-bold">
-                                    #{property.display_order}
-                                </div>
-                            </div>
-
-                            {/* Content */}
-                            <div className="p-4 sm:p-6 flex flex-col grow">
-                                {/* Title & Status */}
-                                <div className="flex justify-center items-start mb-2">
-                                    <h3 className="text-base sm:text-lg font-bold justify-center text-center text-neutral-900 dark:text-neutral-50 line-clamp-2">{getTitle(property) || "Untitled"}</h3>
-                                </div>
-                                {/* <span className={`px-3 py-1 justify-center text-center rounded-full text-xs font-bold inline-block mb-3 ${getStatusBadgeColor(property.status)}`}>
-                                    {getStatusLabel(property.status)}
-                                </span> */}
-
-                                {/* Features */}
-                                <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-neutral-200 dark:border-neutral-700 text-center text-xs sm:text-sm text-muted font-medium">
-                                    <div className="flex flex-col items-center gap-1">
-                                        <Bed className="w-4 sm:w-5 h-4 sm:h-5 text-primary-500" />
-                                        <span className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-50">{property.bedrooms || "—"}</span>
-                                        <span className="text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400">
-                                            {language === "de" ? "Zimmer" : "Beds"}
-                                        </span>
-                                    </div>
-
-                                    <div className="flex flex-col items-center gap-1">
-                                        <Ruler className="w-4 sm:w-5 h-4 sm:h-5 text-primary-500" />
-                                        <span className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-50">{property.area || "—"}</span>
-                                        <span className="text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400">
-                                            {language === "de" ? "qm" : "sqm"}
-                                        </span>
-                                    </div>
-
-                                    {property.land_area && (
-                                        <div className="flex flex-col items-center gap-1">
-                                            <Ruler className="w-4 sm:w-5 h-4 sm:h-5 text-primary-500" />
-                                            <span className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-50">{property.land_area || "—"}</span>
-                                            <span className="text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400">
-                                                {language === "de" ? "Grundstück" : "Land"}
+                        return (
+                            <div
+                                key={property.id}
+                                draggable
+                                onDragStart={(e) => handleDragStart(e, property.id)}
+                                onDragOver={(e) => handleDragOver(e, property.id)}
+                                onDragLeave={handleDragLeave}
+                                onDrop={(e) => handleDrop(e, property.id)}
+                                onDragEnd={handleDragEnd}
+                                className={`bg-white dark:bg-neutral-800 rounded-2xl shadow-lg overflow-hidden flex flex-col w-full transition-all duration-200 ${draggedId === property.id ? 'opacity-50 scale-95' : ''
+                                    } ${dragOverId === property.id && draggedId ? 'ring-2 ring-blue-500 scale-105' : ''
+                                    } ${draggedId ? 'cursor-grab' : 'cursor-grab'
+                                    }`}
+                            >
+                                {/* Image Carousel */}
+                                <div className="relative w-full aspect-video bg-neutral-200 dark:bg-neutral-700 overflow-hidden group">
+                                    {displayImage ? (
+                                        <Image
+                                            src={displayImage}
+                                            alt={getTitle(property) || "Untitled"}
+                                            fill
+                                            className="object-cover transition-transform duration-300"
+                                            sizes="100vw"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center bg-neutral-200 dark:bg-neutral-700">
+                                            <span className="text-neutral-500 dark:text-neutral-400 text-lg font-semibold">
+                                                {language === "de" ? "Keine Bilder" : "No Images"}
                                             </span>
                                         </div>
                                     )}
+
+                                    {hasImages && property.images!.length > 1 && (
+                                        <>
+                                            <button
+                                                onClick={() => prevImage(property.id, property.images!.length)}
+                                                className="absolute top-1/2 transform -translate-y-1/2 p-3 rounded-full bg-black/40 text-white hover:bg-black/60 transition-opacity opacity-0 group-hover:opacity-100 left-4"
+                                                aria-label="Previous Image"
+                                            >
+                                                <ChevronLeft className="w-6 h-6" />
+                                            </button>
+
+                                            <button
+                                                onClick={() => nextImage(property.id, property.images!.length)}
+                                                className="absolute top-1/2 transform -translate-y-1/2 p-3 rounded-full bg-black/40 text-white hover:bg-black/60 transition-opacity opacity-0 group-hover:opacity-100 right-4"
+                                                aria-label="Next Image"
+                                            >
+                                                <ChevronRight className="w-6 h-6" />
+                                            </button>
+
+                                            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+                                                {(carouselIndexes[property.id] || 0) + 1} / {property.images!.length}
+                                            </div>
+                                        </>
+                                    )}
+
+                                    {/* Display Index Badge */}
+                                    <div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-bold">
+                                        #{property.display_order}
+                                    </div>
                                 </div>
 
-                                {/* Price */}
-                                <p className="text-2xl sm:text-3xl font-bold text-primary-600 dark:text-primary-400 mb-1 sm:mb-2">
-                                    {property.price ? `€${property.price.toLocaleString(language === 'de' ? 'de-DE' : 'en-US', { maximumFractionDigits: 0 })}` : '—'}
-                                </p>
-                                {/* Down Payment Indicator */}
-                                {property.down_payments && property.down_payments.length > 0 && (
-                                    <div className="mb-3 sm:mb-4 p-3 bg-green-100 dark:bg-green-900 rounded-lg">
-                                        <p className="text-[10px] sm:text-xs font-semibold text-green-800 dark:text-green-200 mb-2">
-                                            {language === 'en' ? 'Down Payments Available' : 'Zahlungsoptionen verfügbar'}
-                                        </p>
-                                        <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                                            {property.down_payments.map((dp: any, idx: number) => (
-                                                <span key={idx} className="text-[10px] sm:text-xs bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200 px-2 py-1 rounded">{dp.percentage}% → {dp.years}yrs</span>
-                                            ))}
-                                        </div>
+                                {/* Content */}
+                                <div className="p-4 sm:p-6 flex flex-col grow">
+                                    {/* Title & Status */}
+                                    <div className="flex justify-center items-start mb-2">
+                                        <h3 className="text-base sm:text-lg font-bold justify-center text-center text-neutral-900 dark:text-neutral-50 line-clamp-2">{getTitle(property) || "Untitled"}</h3>
                                     </div>
-                                )}
+                                    {/* <span className={`px-3 py-1 justify-center text-center rounded-full text-xs font-bold inline-block mb-3 ${getStatusBadgeColor(property.status)}`}>
+                                        {getStatusLabel(property.status)}
+                                    </span> */}
 
+                                    {/* Features */}
+                                    <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-neutral-200 dark:border-neutral-700 text-center text-xs sm:text-sm text-muted font-medium">
+                                        <div className="flex flex-col items-center gap-1">
+                                            <Bed className="w-4 sm:w-5 h-4 sm:h-5 text-primary-500" />
+                                            <span className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-50">{property.bedrooms || "—"}</span>
+                                            <span className="text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400">
+                                                {language === "de" ? "Zimmer" : "Beds"}
+                                            </span>
+                                        </div>
 
+                                        <div className="flex flex-col items-center gap-1">
+                                            <Ruler className="w-4 sm:w-5 h-4 sm:h-5 text-primary-500" />
+                                            <span className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-50">{property.area || "—"}</span>
+                                            <span className="text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400">
+                                                {language === "de" ? "qm" : "sqm"}
+                                            </span>
+                                        </div>
 
-                                {/* Optional Fields Indicators */}
-                                {(property.floor || property.view || property.maintenance || property.cash_discount ||
-                                    property.object_number || property.load_factor || property.facilities) && (
-                                        <div className="mb-3 sm:mb-4 pb-3 sm:pb-4 border-t border-neutral-200 dark:border-neutral-700 pt-3 sm:pt-4">
-                                            <p className="text-[10px] sm:text-xs font-semibold text-neutral-500 dark:text-neutral-400 mb-2">
-                                                {language === "en" ? "Additional Info:" : "Zusätzliche Info:"}
+                                        {property.land_area && (
+                                            <div className="flex flex-col items-center gap-1">
+                                                <Ruler className="w-4 sm:w-5 h-4 sm:h-5 text-primary-500" />
+                                                <span className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-50">{property.land_area || "—"}</span>
+                                                <span className="text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400">
+                                                    {language === "de" ? "Grundstück" : "Land"}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Price */}
+                                    <p className="text-2xl sm:text-3xl font-bold text-primary-600 dark:text-primary-400 mb-1 sm:mb-2">
+                                        {property.price ? `€${property.price.toLocaleString(language === 'de' ? 'de-DE' : 'en-US', { maximumFractionDigits: 0 })}` : '—'}
+                                    </p>
+                                    {/* Down Payment Indicator */}
+                                    {property.down_payments && property.down_payments.length > 0 && (
+                                        <div className="mb-3 sm:mb-4 p-3 bg-green-100 dark:bg-green-900 rounded-lg">
+                                            <p className="text-[10px] sm:text-xs font-semibold text-green-800 dark:text-green-200 mb-2">
+                                                {language === 'en' ? 'Down Payments Available' : 'Zahlungsoptionen verfügbar'}
                                             </p>
                                             <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                                                {property.floor && <span className="text-[10px] sm:text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">Floor: {property.floor}</span>}
-                                                {property.view && <span className="text-[10px] sm:text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded">{property.view}</span>}
-                                                {property.cash_discount && <span className="text-[10px] sm:text-xs bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded">Discount: {property.cash_discount}%</span>}
-                                                {property.object_number && <span className="text-[10px] sm:text-xs bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 px-2 py-1 rounded">Obj: {property.object_number}</span>}
+                                                {property.down_payments.map((dp: any, idx: number) => (
+                                                    <span key={idx} className="text-[10px] sm:text-xs bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200 px-2 py-1 rounded">{dp.percentage}% → {dp.years}yrs</span>
+                                                ))}
                                             </div>
                                         </div>
                                     )}
 
-                                {/* Status and Sold Status */}
-                                <div className="mb-3 sm:mb-4 pb-3 sm:pb-4 border-t border-neutral-200 dark:border-neutral-700 pt-3 sm:pt-4 flex flex-wrap gap-2">
-                                    <div className="flex items-center gap-2 flex-1">
-                                        <select
-                                            value={property.status || "shown"}
-                                            onChange={(e) => updatePropertyField(property.id, "status", e.target.value)}
-                                            disabled={updatingStatus === property.id}
-                                            className="flex-1 px-2 py-1 text-xs sm:text-sm bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded hover:border-blue-500 cursor-pointer disabled:opacity-50"
-                                        >
-                                            <option value="shown">{language === "en" ? "Shown" : "Angezeigt"}</option>
-                                            <option value="hidden">{language === "en" ? "Hidden" : "Verborgen"}</option>
-                                        </select>
-                                    </div>
-                                    <button
-                                        onClick={() => updatePropertyField(property.id, "sold", !property.sold)}
-                                        disabled={updatingStatus === property.id}
-                                        className={`px-2 py-1 text-xs sm:text-sm rounded font-semibold transition ${property.sold
-                                            ? "bg-red-600 text-white hover:bg-red-700"
-                                            : "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-600"
-                                            } disabled:opacity-50`}
-                                    >
-                                        {property.sold ? (language === "en" ? "✓ Sold" : "✓ Verkauft") : (language === "en" ? "Not Sold" : "Nicht verkauft")}
-                                    </button>
-                                </div>
 
-                                {/* Edit/Delete/Duplicate Actions */}
-                                <div className="flex flex-col sm:flex-col gap-2 sm:gap-3 mt-auto">
-                                    <Link
-                                        href={`/${locale}/admin/properties/edit/${property.id}`}
-                                        className="flex-1 px-3 sm:px-4 py-2.5 sm:py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center gap-2 text-sm sm:text-base"
-                                    >
-                                        <Edit2 size={16} className="sm:w-4.5 sm:h-4.5" /> {language === "en" ? "Edit" : "Bearbeiten"}
-                                    </Link>
-                                    <button
-                                        onClick={() => handleDuplicate(property.id)}
-                                        disabled={duplicating === property.id}
-                                        title={language === "en" ? "Duplicate this property" : "Diese Eigenschaft duplizieren"}
-                                        className="flex-1 px-3 sm:px-4 py-2.5 sm:py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition flex items-center justify-center gap-2 cursor-pointer text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
-                                    >
-                                        {duplicating === property.id ? (
-                                            <Loader2 size={16} className="animate-spin sm:w-4.5 sm:h-4.5" />
-                                        ) : (
-                                            <Copy size={16} className="sm:w-4.5 sm:h-4.5" />
+
+                                    {/* Optional Fields Indicators */}
+                                    {(property.floor || property.view || property.maintenance || property.cash_discount ||
+                                        property.object_number || property.load_factor || property.facilities) && (
+                                            <div className="mb-3 sm:mb-4 pb-3 sm:pb-4 border-t border-neutral-200 dark:border-neutral-700 pt-3 sm:pt-4">
+                                                <p className="text-[10px] sm:text-xs font-semibold text-neutral-500 dark:text-neutral-400 mb-2">
+                                                    {language === "en" ? "Additional Info:" : "Zusätzliche Info:"}
+                                                </p>
+                                                <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                                                    {property.floor && <span className="text-[10px] sm:text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">Floor: {property.floor}</span>}
+                                                    {property.view && <span className="text-[10px] sm:text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded">{property.view}</span>}
+                                                    {property.cash_discount && <span className="text-[10px] sm:text-xs bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded">Discount: {property.cash_discount}%</span>}
+                                                    {property.object_number && <span className="text-[10px] sm:text-xs bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 px-2 py-1 rounded">Obj: {property.object_number}</span>}
+                                                </div>
+                                            </div>
                                         )}
-                                        {language === "en" ? "Duplicate" : "Duplizieren"}
-                                    </button>
-                                    <button
-                                        onClick={() => deleteProperty(property.id)}
-                                        className="flex-1 px-3 sm:px-4 py-2.5 sm:py-2 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition flex items-center justify-center gap-2 cursor-pointer text-sm sm:text-base"
-                                    >
-                                        <Trash2 size={16} className="sm:w-4.5 sm:h-4.5" /> {language === "en" ? "Delete" : "Löschen"}
-                                    </button>
+
+                                    {/* Status and Sold Status */}
+                                    <div className="mb-3 sm:mb-4 pb-3 sm:pb-4 border-t border-neutral-200 dark:border-neutral-700 pt-3 sm:pt-4 flex flex-wrap gap-2">
+                                        <div className="flex items-center gap-2 flex-1">
+                                            <select
+                                                value={property.status || "shown"}
+                                                onChange={(e) => updatePropertyField(property.id, "status", e.target.value)}
+                                                disabled={updatingStatus === property.id}
+                                                className="flex-1 px-2 py-1 text-xs sm:text-sm bg-white dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded hover:border-blue-500 cursor-pointer disabled:opacity-50"
+                                            >
+                                                <option value="shown">{language === "en" ? "Shown" : "Angezeigt"}</option>
+                                                <option value="hidden">{language === "en" ? "Hidden" : "Verborgen"}</option>
+                                            </select>
+                                        </div>
+                                        <button
+                                            onClick={() => updatePropertyField(property.id, "sold", !property.sold)}
+                                            disabled={updatingStatus === property.id}
+                                            className={`px-2 py-1 text-xs sm:text-sm rounded font-semibold transition ${property.sold
+                                                ? "bg-red-600 text-white hover:bg-red-700"
+                                                : "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-600"
+                                                } disabled:opacity-50`}
+                                        >
+                                            {property.sold ? (language === "en" ? "✓ Sold" : "✓ Verkauft") : (language === "en" ? "Not Sold" : "Nicht verkauft")}
+                                        </button>
+                                    </div>
+
+                                    {/* Edit/Delete/Duplicate Actions */}
+                                    <div className="flex flex-col sm:flex-col gap-2 sm:gap-3 mt-auto">
+                                        <Link
+                                            href={`/${locale}/admin/properties/edit/${property.id}`}
+                                            className="flex-1 px-3 sm:px-4 py-2.5 sm:py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center gap-2 text-sm sm:text-base"
+                                        >
+                                            <Edit2 size={16} className="sm:w-4.5 sm:h-4.5" /> {language === "en" ? "Edit" : "Bearbeiten"}
+                                        </Link>
+                                        <button
+                                            onClick={() => handleDuplicate(property.id)}
+                                            disabled={duplicating === property.id}
+                                            title={language === "en" ? "Duplicate this property" : "Diese Eigenschaft duplizieren"}
+                                            className="flex-1 px-3 sm:px-4 py-2.5 sm:py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition flex items-center justify-center gap-2 cursor-pointer text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            {duplicating === property.id ? (
+                                                <Loader2 size={16} className="animate-spin sm:w-4.5 sm:h-4.5" />
+                                            ) : (
+                                                <Copy size={16} className="sm:w-4.5 sm:h-4.5" />
+                                            )}
+                                            {language === "en" ? "Duplicate" : "Duplizieren"}
+                                        </button>
+                                        <button
+                                            onClick={() => deleteProperty(property.id)}
+                                            className="flex-1 px-3 sm:px-4 py-2.5 sm:py-2 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition flex items-center justify-center gap-2 cursor-pointer text-sm sm:text-base"
+                                        >
+                                            <Trash2 size={16} className="sm:w-4.5 sm:h-4.5" /> {language === "en" ? "Delete" : "Löschen"}
+                                        </button>
+                                    </div>
+
                                 </div>
+                            </div >
 
-                            </div>
-                        </div >
+                        );
+                    })}
+                </div>
+            ) : (
+                /* Grid View - Excel Style Table */
+                <div className="m-5 overflow-x-auto">
+                    {properties.length === 0 ? (
+                        <div className="p-10 bg-card rounded-2xl text-center border border-border">
+                            <p className="text-foreground text-lg mb-6">
+                                {language === "en" ? "No properties yet. Create your first property!" :
+                                    "Noch keine Grundstücke. Erstellen Sie Ihr erstes Grundstück!"}
+                            </p>
+                            <Link href={`/${locale}/admin/properties/new`} className="btn btn-primary">
+                                <Plus size={20} /> {language === "en" ? "Create Property" : "Grundstück erstellen"}
+                            </Link>
+                        </div>
+                    ) : (
+                        <table className="w-full border-collapse bg-white dark:bg-neutral-800 rounded-lg shadow-md overflow-hidden">
+                            <thead>
+                                <tr className="bg-gray-100 dark:bg-neutral-700 border-b border-gray-300 dark:border-neutral-600">
+                                    <th className="px-4 py-3 text-left text-xs sm:text-sm font-bold text-gray-900 dark:text-gray-100 w-12">#</th>
+                                    <th className="px-4 py-3 text-left text-xs sm:text-sm font-bold text-gray-900 dark:text-gray-100 flex-1">{language === "en" ? "Name" : "Name"}</th>
+                                    <th className="px-4 py-3 text-center text-xs sm:text-sm font-bold text-gray-900 dark:text-gray-100 w-20 sm:w-24">{language === "en" ? "Image" : "Bild"}</th>
+                                    <th className="px-4 py-3 text-center text-xs sm:text-sm font-bold text-gray-900 dark:text-gray-100 w-32">{language === "en" ? "Actions" : "Aktionen"}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {properties.map((property, idx) => {
+                                    const hasImages = property.images && property.images.length > 0;
+                                    const displayImage = hasImages ? property.images![0] : "/placeholder.jpg";
 
-                    );
-                })}
-            </div >
+                                    return (
+                                        <tr
+                                            key={property.id}
+                                            draggable
+                                            onDragStart={(e) => handleDragStart(e, property.id)}
+                                            onDragOver={(e) => handleDragOver(e, property.id)}
+                                            onDragLeave={handleDragLeave}
+                                            onDrop={(e) => handleDrop(e, property.id)}
+                                            onDragEnd={handleDragEnd}
+                                            className={`border-b border-gray-200 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-700 transition ${dragOverId === property.id && draggedId ? 'ring-2 ring-blue-500 ring-inset' : ''
+                                                } ${draggedId === property.id ? 'opacity-50' : ''} ${draggedId ? 'cursor-grab' : 'cursor-grab'}`}
+                                        >
+                                            {/* Index Column */}
+                                            <td className="px-4 py-3 text-sm font-bold text-gray-900 dark:text-gray-100">
+                                                #{property.display_order}
+                                            </td>
 
-        </div >
+                                            {/* Name Column */}
+                                            <td className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 font-medium">
+                                                <div className="line-clamp-2">{getTitle(property) || "Untitled"}</div>
+                                            </td>
+
+                                            {/* Image Column */}
+                                            <td className="px-4 py-3">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="relative w-24 h-16 bg-neutral-200 dark:bg-neutral-700 rounded-lg overflow-hidden group">
+                                                        {displayImage && displayImage !== "/placeholder.jpg" ? (
+                                                            <Image
+                                                                src={displayImage}
+                                                                alt={getTitle(property) || "Untitled"}
+                                                                fill
+                                                                className=""
+                                                                sizes="80px"
+                                                            />
+                                                        ) : (
+                                                            <div className="w-full h-full flex items-center justify-center bg-neutral-200 dark:bg-neutral-700">
+                                                                <span className="text-neutral-500 dark:text-neutral-400 text-xs font-semibold">
+                                                                    {language === "de"
+                                                                        ? "Keine Bilder"
+                                                                        : "No Images"}
+                                                                </span>
+                                                            </div>
+                                                        )}
+
+                                                        {/* Navigation Buttons */}
+                                                        {hasImages && property.images!.length > 1 && (
+                                                            <>
+                                                                <button
+                                                                    onClick={() =>
+                                                                        prevImage(property.id, property.images!.length)
+                                                                    }
+                                                                    className="absolute top-1/2 transform -translate-y-1/2 p-1 rounded-full bg-black/40 text-white hover:bg-black/60 transition-opacity opacity-0 group-hover:opacity-100 left-1"
+                                                                    aria-label="Previous Image"
+                                                                >
+                                                                    <ChevronLeft className="w-4 h-4" />
+                                                                </button>
+
+                                                                <button
+                                                                    onClick={() =>
+                                                                        nextImage(property.id, property.images!.length)
+                                                                    }
+                                                                    className="absolute top-1/2 transform -translate-y-1/2 p-1 rounded-full bg-black/40 text-white hover:bg-black/60 transition-opacity opacity-0 group-hover:opacity-100 right-1"
+                                                                    aria-label="Next Image"
+                                                                >
+                                                                    <ChevronRight className="w-4 h-4" />
+                                                                </button>
+
+                                                                <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-2 py-0.5 rounded text-xs">
+                                                                    {(carouselIndexes[property.id] || 0) + 1} /{" "}
+                                                                    {property.images!.length}
+                                                                </div>
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            {/* Actions Column */}
+                                            <td className="px-2 sm:px-4 py-3 text-center">
+                                                <div className="flex gap-1 sm:gap-2 justify-center flex-wrap">
+                                                    <Link
+                                                        href={`/${locale}/admin/properties/edit/${property.id}`}
+                                                        className="px-2 sm:px-3 py-1 bg-blue-600 text-white rounded text-xs font-semibold hover:bg-blue-700 transition whitespace-nowrap"
+                                                    >
+                                                        {language === "en" ? "Edit" : "Bearbeiten"}
+                                                    </Link>
+                                                    <button
+                                                        onClick={() => handleDuplicate(property.id)}
+                                                        disabled={duplicating === property.id}
+                                                        className="px-2 sm:px-3 py-1 bg-green-600 text-white rounded text-xs font-semibold hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap cursor-pointer"
+                                                    >
+                                                        {duplicating === property.id ? "..." : (language === "en" ? "Duplicate" : "Kopieren")}
+                                                    </button>
+                                                    <button
+                                                        onClick={() => deleteProperty(property.id)}
+                                                        className="px-2 sm:px-3 py-1 bg-red-500 text-white rounded text-xs font-semibold hover:bg-red-600 transition whitespace-nowrap cursor-pointer"
+                                                    >
+                                                        {language === "en" ? "Delete" : "Löschen"}
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    )}
+                </div>
+            )}
+        </div>
     );
 }
