@@ -271,9 +271,9 @@ function FilterContent({
             </div>
 
             {/* Search Button */}
-            <button className="w-full cursor-pointer bg-linear-to-r from-blue-400 to-blue-500 text-white py-3 rounded-xl font-bold text-sm shadow-md shadow-blue-200 hover:shadow-lg hover:from-blue-500 hover:to-blue-600 transition-all active:scale-[0.98]">
+            {/* <button className="w-full cursor-pointer bg-linear-to-r from-blue-400 to-blue-500 text-white py-3 rounded-xl font-bold text-sm shadow-md shadow-blue-200 hover:shadow-lg hover:from-blue-500 hover:to-blue-600 transition-all active:scale-[0.98]">
                 {language === "de" ? "Immobilien anzeigen" : "Show Properties"}
-            </button>
+            </button> */}
         </div>
     );
 }

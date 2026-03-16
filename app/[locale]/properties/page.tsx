@@ -203,7 +203,7 @@ export default function PropertiesPage() {
 
             {/* Content */}
             <section className="bg-white py-12">
-                <div className="max-w-[1600px] mx-auto flex flex-col lg:flex-row gap-8 p-8">
+                <div className="max-w-400 mx-auto flex flex-col lg:flex-row gap-8 p-8">
                     {/* Filters */}
                     <PropertyFilters
                         isOpen={filtersOpen}

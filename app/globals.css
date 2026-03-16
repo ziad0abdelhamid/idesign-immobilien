@@ -18,13 +18,11 @@
     --color-surface: #ffffff;
     --color-text: #0f172a;
     --color-muted: #475569;
-
     --color-primary: #06b6d4;
     /* Cyan */
     --color-secondary: #0a1f44;
     /* Dark blue */
     --color-accent: #67e8f9;
-
     --color-border: #e0f2fe;
   }
 
@@ -52,7 +50,7 @@
   body {
     background-color: var(--color-bg);
     color: var(--color-text);
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     @apply transition-colors duration-300;
   }
 
