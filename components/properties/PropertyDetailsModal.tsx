@@ -54,6 +54,13 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
             ? property[`${key}_de`]
             : property[`${key}_en`];
 
+    // Strip HTML tags and convert to plain text
+    const stripHtml = (html: string): string => {
+        const tmp = document.createElement("DIV");
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText || "";
+    };
+
     const images = property.images?.filter((i: string) => i && i.trim() !== "") || ["/placeholder.jpg"];
 
     const formatPrice = (value: number) =>
@@ -208,13 +215,9 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                                 <h2 className="text-lg sm:text-xl lg:text-2xl font-light mb-4 sm:mb-6 lg:mb-8 tracking-tight">
                                     {t.objectDescription}
                                 </h2>
-                                <div className="text-base sm:text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed space-y-3 sm:space-y-4">
+                                <div className="text-base sm:text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed space-y-3 sm:space-y-4 whitespace-pre-line">
                                     {getText("description") ? (
-                                        <div
-                                            dangerouslySetInnerHTML={{
-                                                __html: getText("description").replace(/\n/g, '<br/>')
-                                            }}
-                                        />
+                                        <p>{stripHtml(getText("description"))}</p>
                                     ) : (
                                         <p>Keine Beschreibung verfügbar</p>
                                     )}
