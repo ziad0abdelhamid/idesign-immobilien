@@ -56,9 +56,7 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
 
     // Strip HTML tags and convert to plain text
     const stripHtml = (html: string): string => {
-        const tmp = document.createElement("DIV");
-        tmp.innerHTML = html;
-        return tmp.textContent || tmp.innerText || "";
+        return html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
     };
 
     const images = property.images?.filter((i: string) => i && i.trim() !== "") || ["/placeholder.jpg"];
