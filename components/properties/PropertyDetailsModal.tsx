@@ -54,9 +54,12 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
             ? property[`${key}_de`]
             : property[`${key}_en`];
 
-    // Strip HTML tags and convert to plain text
+    // Strip HTML tags and decode HTML entities to plain text
     const stripHtml = (html: string): string => {
-        return html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+        if (!html) return "";
+        // Decode entities like &ouml; to ö and remove tags
+        const decoded = new DOMParser().parseFromString(html, "text/html").documentElement.textContent || "";
+        return decoded.replace(/<[^>]*>/g, "");
     };
 
     const images = property.images?.filter((i: string) => i && i.trim() !== "") || ["/placeholder.jpg"];
