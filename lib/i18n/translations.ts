@@ -41,14 +41,9 @@ export const translations = {
       greeting: "DB ImmoDesign",
       subtitle:
         "Innovatives Immobilienmarketing – We make your property come alive",
-      titleServices: [
-        "Home Staging",
-        "Professional Photography",
-        "Drone Photography",
-        "Much more for optimal marketing",
-      ],
-      cta: "Explore Investments",
-      ctaTwo: "Mehr erfahren",
+      basedinAustria: "Based in Austria",
+      cta: "Explore Appartments",
+      ctaTwo: "Our Services",
       featured: "Why DB ImmoDesign?",
       featuredDesc:
         "Your trusted partner for premium investment properties in Hurghada and the red sea region",
@@ -63,7 +58,7 @@ export const translations = {
         "Over 10 years of experience in the Austrian real estate market and deep knowledge of investment opportunities in Hurghada",
       ctaTitle: "Start Your Property Journey Today",
       ctaDesc: "Discover hundreds of premium properties available now",
-      cta2: "Get in Touch",
+      cta2: "Our Services",
       reviewsTitle: "Was unsere Kunden sagen",
       reviewsDesc:
         "Hear from satisfied customers who found their perfect properties with us",
@@ -262,13 +257,8 @@ export const translations = {
       greeting: "DB ImmoDesign",
       subtitle:
         "Innovatives Immobilienmarketing – Wir machen Ihre Immobilie erlebbar",
-      titleServices: [
-        "Home Staging",
-        "professioneller Fotografie",
-        "Drohnenaufnahmen",
-        "und vielem mehr zur optimalen Vermarktung",
-      ],
-      cta: "Investments entdecken",
+      basedinAustria: "Based in Austria",
+      cta: "Immobilien entdecken",
       cta2: "Mehr erfahren",
       featured: "Warum DB ImmoDesign?",
       featuredDesc:

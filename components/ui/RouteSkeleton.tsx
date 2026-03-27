@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 interface RouteSkeletonProps {
     duration?: number;
@@ -10,6 +11,7 @@ interface RouteSkeletonProps {
 export default function RouteSkeleton({ duration = 600 }: RouteSkeletonProps) {
     const pathname = usePathname();
     const [visible, setVisible] = useState(false);
+    const cards = Array.from({ length: 6 });
 
     // Lock body scroll when skeleton is visible
     useEffect(() => {
@@ -17,17 +19,19 @@ export default function RouteSkeleton({ duration = 600 }: RouteSkeletonProps) {
         if (!shouldShow) return;
 
         setVisible(true);
+
         // Lock scrolling
+        const originalStyle = window.getComputedStyle(document.body).overflow;
         document.body.style.overflow = "hidden";
 
         const timer = setTimeout(() => {
             setVisible(false);
-            document.body.style.overflow = ""; // restore scroll
+            document.body.style.overflow = originalStyle;
         }, duration);
 
         return () => {
             clearTimeout(timer);
-            document.body.style.overflow = "";
+            document.body.style.overflow = originalStyle;
         };
     }, [pathname, duration]);
 
@@ -35,50 +39,56 @@ export default function RouteSkeleton({ duration = 600 }: RouteSkeletonProps) {
 
     return (
         <div
-            className="fixed inset-0 z-999999 bg-white"
-            onTouchMove={(e) => e.preventDefault()}
+            className="fixed inset-0 w-full h-full z-9999 bg-white flex flex-col animate-pulse overflow-hidden"
+            style={{ backdropFilter: "blur(4px)" }} // optional: slight blur behind skeleton
         >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-14 pointer-events-none">
-
-                {/* Hero Skeleton */}
-                <div className="h-90 w-full rounded-3xl skeleton-shimmer" />
-
-                {/* Filters Skeleton */}
-                <div className="space-y-3">
-                    <div className="h-4 w-40 rounded skeleton-shimmer" />
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {Array.from({ length: 4 }).map((_, i) => (
-                            <div key={i} className="h-12 rounded-xl skeleton-shimmer" />
-                        ))}
-                    </div>
+            {/* Header Skeleton */}
+            <section className="relative py-16 shrink-0">
+                <div className="absolute inset-0 bg-gray-300/70 -z-10 rounded-md"></div>
+                <div className="relative max-w-7xl mx-auto px-4 text-center space-y-4">
+                    <div className="h-10 md:h-12 bg-gray-300 rounded w-1/3 mx-auto"></div>
+                    <div className="h-6 bg-gray-300 rounded w-1/2 mx-auto"></div>
                 </div>
+            </section>
 
-                {/* Cards Skeleton */}
-                <div className="space-y-4">
-                    <div className="h-5 w-48 rounded skeleton-shimmer" />
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {Array.from({ length: 6 }).map((_, i) => (
-                            <div
-                                key={i}
-                                className="rounded-2xl border border-neutral-200 bg-white p-4 space-y-4 shadow-sm"
+            {/* Filters + Main Skeleton */}
+            <section className="bg-white py-12 flex-1 overflow-auto">
+                <div className="max-w-400 mx-auto flex flex-col lg:flex-row gap-8 p-8">
+                    {/* Filters Skeleton */}
+                    <div className="hidden lg:block w-1/4 space-y-4">
+                        <div className="h-10 bg-gray-200 rounded"></div>
+                        <div className="h-10 bg-gray-200 rounded"></div>
+                        <div className="h-10 bg-gray-200 rounded"></div>
+                    </div>
+
+                    {/* Mobile Filters Button Skeleton */}
+                    <div className="lg:hidden mb-6">
+                        <div className="h-10 bg-gray-200 rounded w-32 mx-auto"></div>
+                    </div>
+
+                    {/* Property Cards Skeleton */}
+                    <main className="w-full lg:w-3/4 xl:w-3/4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-8">
+                        {cards.map((_, idx) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: idx * 0.05 }}
+                                className="bg-white rounded-xl shadow p-4 space-y-4"
                             >
-                                <div className="h-48 rounded-xl skeleton-shimmer" />
-                                <div className="space-y-2">
-                                    <div className="h-5 w-5/6 rounded skeleton-shimmer" />
-                                    <div className="h-4 w-2/3 rounded skeleton-shimmer opacity-60" />
+                                <div className="h-40 bg-gray-200 rounded-md w-full"></div>
+                                <div className="h-5 bg-gray-300 rounded w-3/4"></div>
+                                <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+                                <div className="flex gap-2">
+                                    <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                                    <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                                    <div className="h-4 bg-gray-200 rounded w-1/4"></div>
                                 </div>
-                                <div className="h-6 w-1/3 rounded skeleton-shimmer" />
-                                <div className="grid grid-cols-2 gap-3">
-                                    {Array.from({ length: 4 }).map((_, j) => (
-                                        <div key={j} className="h-10 rounded-lg skeleton-shimmer opacity-70" />
-                                    ))}
-                                </div>
-                            </div>
+                            </motion.div>
                         ))}
-                    </div>
+                    </main>
                 </div>
-
-            </div>
+            </section>
         </div>
     );
 }

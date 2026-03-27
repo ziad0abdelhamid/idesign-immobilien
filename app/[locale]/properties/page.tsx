@@ -193,7 +193,7 @@ export default function PropertiesPage() {
                     </h1>
                     <p className="text-xl text-neutral-300 max-w-2xl mx-auto">
                         {language === "de"
-                            ? "Renditestarke Investment Immobilien am roten Meer"
+                            ? "Renditestarke Immobilien am roten Meer"
                             : "Browse our comprehensive collection of premium properties"}
                     </p>
                 </motion.div>
