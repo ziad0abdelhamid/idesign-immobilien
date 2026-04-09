@@ -21,7 +21,7 @@ interface FormData {
     price: number | null;
     area: number | null;
     bedrooms: number | null;
-
+    land_area: number | null;
     location_en: string;
     location_de: string;
     // Optional fields
@@ -78,7 +78,7 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
         price: null,
         area: null,
         bedrooms: null,
-
+        land_area: null,
         location_en: "",
         location_de: "",
         facilities: [],
@@ -218,7 +218,7 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                     price: data.price || null,
                     area: data.area || null,
                     bedrooms: data.bedrooms || null,
-
+                    land_area: data.land_area || null,
                     location_en: data.location_en || "",
                     location_de: data.location_de || "",
                     facilities: Array.isArray(data.facilities) ? data.facilities : [],
@@ -335,7 +335,7 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                 price: formData.price,
                 area: formData.area,
                 bedrooms: formData.bedrooms,
-
+                land_area: formData.land_area,
                 location_en: formData.location_en,
                 location_de: formData.location_de,
                 facilities: formData.hasFacilities ? formData.facilities : null,
@@ -483,6 +483,17 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                             type="number"
                             value={formData.area || ""}
                             onChange={(e) => handleChange(e, "area")}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            {language === "en" ? "Land Area (m²)" : "Grundstück (m²)"}
+                        </label>
+                        <input
+                            type="number"
+                            value={formData.land_area || ""}
+                            onChange={(e) => handleChange(e, "land_area")}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
                     </div>
@@ -1012,19 +1023,19 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
             </div >
 
             {/* Submit Button */}
-            < div className="border-t pt-6 flex flex-col sm:flex-row justify-end gap-3" >
+            <div className="fixed top-0 right-0 h-screen flex flex-col justify-center gap-3 p-4 z-50 bg-white dark:bg-neutral-900 shadow-lg border-l border-gray-200 dark:border-gray-700">
                 <button
                     type="button"
                     onClick={() => router.back()}
-                    className="w-full sm:w-auto px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium"
+                    className="w-full px-6 py-2 border border-gray-300 cursor-pointer text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium"
                 >
                     {language === "en" ? "Cancel" : "Abbrechen"}
                 </button>
+
                 <button
                     type="submit"
                     disabled={loading || uploading}
-                    className="w-full sm:w-auto px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium cursor-pointer flex items-center justify-center gap-2"
-
+                    className="w-full px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium cursor-pointer flex items-center justify-center gap-2"
                 >
                     {loading || uploading ? (
                         <>
@@ -1035,7 +1046,7 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                         propertyId ? "Update Property" : "Create Property"
                     )}
                 </button>
-            </div >
+            </div>
         </form >
     );
 }

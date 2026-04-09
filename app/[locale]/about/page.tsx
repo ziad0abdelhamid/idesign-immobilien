@@ -158,12 +158,11 @@ export default function UnternehmenFullSplit() {
                         Kontaktieren Sie Uns
                     </h2>
                     <p className="mb-10 text-lg md:text-xl opacity-90 max-w-2xl mx-auto">
-                        Bereit, Ihre Immobilienreise zu starten? Kontaktieren Sie uns noch
-                        heute!
+                        du möchtest deine Immobilie optimal präsentieren? Wir sind für dich da!
                     </p>
                     <div className="flex flex-col md:flex-row justify-center gap-8 font-medium text-lg">
-                        <p>📞 +43 662 46 69-0</p>
-                        <p>📍 Salzburg, Austria</p>
+                        <p>📞 +43 676 41 83 78-2</p>
+                        <p>📍 Graz, Austria</p>
                     </div>
                 </div>
             </motion.section>

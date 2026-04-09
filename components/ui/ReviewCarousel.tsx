@@ -126,7 +126,7 @@ export function ReviewsCarousel() {
                     >
                         {title}
                     </motion.h2>
-                    <motion.p
+                    {/* <motion.p
                         className="text-gray-300 text-sm sm:text-base max-w-2xl mx-auto"
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
@@ -134,7 +134,7 @@ export function ReviewsCarousel() {
                         viewport={{ once: true }}
                     >
                         {subtitle}
-                    </motion.p>
+                    </motion.p> */}
                 </motion.div>
 
                 {/* Desktop View - Grid */}

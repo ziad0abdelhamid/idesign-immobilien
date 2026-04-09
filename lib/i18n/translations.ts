@@ -246,7 +246,7 @@ export const translations = {
       properties: "Immobilien",
       services: "Leistungen",
       about: "Über uns",
-      partnership: "Partnerschaft",
+      partnership: "Partnerschaften",
       contact: "Kontakt",
       admin: "Verwaltung",
       imprint: "Impressum",

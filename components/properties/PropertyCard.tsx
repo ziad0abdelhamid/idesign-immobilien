@@ -75,7 +75,7 @@ export function PropertyCard({
                 {/* Title and Description */}
                 <div className="grow">
                     <p className="text-blue-600 text-[10px] font-bold uppercase tracking-[0.2em] mb-3">
-                        {status === "available" ? "Property" : "Property"}
+                        {location}
                     </p>
                     <h3 className="text-xl font-bold text-gray-900 leading-tight group-hover:text-blue-600 transition-colors">
                         {title}

@@ -1,6 +1,6 @@
 "use client";
 import { FaBed, FaRulerCombined, FaMap, FaPhone, FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { useEffect, useRef, useState } from "react";
+import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,7 +31,7 @@ const TEXT = {
     },
     de: {
         contact: "Anfrage senden",
-        area: "Fläche",
+        area: "Wohnfläche",
         landArea: "Grundstücksfläche",
         bedrooms: "Zimmer",
         objectDescription: "Objektbeschreibung",
@@ -203,7 +203,7 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                                         {t.bedrooms}
                                     </div>
                                     <div className="text-xl sm:text-2xl lg:text-3xl font-light">
-                                        {Math.round(property.bedrooms)}.0
+                                        {Math.round(property.bedrooms)}
                                     </div>
                                 </div>
                             )}
@@ -211,7 +211,8 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
 
                         {/* CONTENT & SIDEBAR */}
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
-                            {/* DESCRIPTION - Left side (takes 2 columns on desktop) */}
+
+                            {/* DESCRIPTION */}
                             <div className="lg:col-span-2">
                                 <h2 className="text-lg sm:text-xl lg:text-2xl font-light mb-4 sm:mb-6 lg:mb-8 tracking-tight">
                                     {t.objectDescription}
@@ -225,27 +226,82 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                                 </div>
                             </div>
 
-                            {/* CONTACT SIDEBAR - Right side (sticky on desktop, full-width on mobile) */}
-                            <div className="lg:col-span-1">
-                                <div className="lg:sticky lg:top-8 bg-neutral-50 dark:bg-neutral-800 p-6 sm:p-8 rounded-lg">
-                                    <h3 className="text-lg sm:text-xl font-light mb-4 sm:mb-6 tracking-tight">
-                                        {t.interested}
-                                    </h3>
+                            {/* CONTACT SIDEBAR */}
+                            <div>
+                                <div className="lg:sticky lg:top-8 bg-neutral-50 dark:bg-neutral-800 p-6 sm:p-8 rounded-lg w-full max-w-sm">
 
-                                    <button
-                                        onClick={() => {
-                                            setPrefill({
-                                                subject: `${getText("title")} - ${property.object_number ? `(${property.object_number})` : ""}`,
-                                                message: `${t.agentMessage}. ${t.agentMessage2}`,
-                                            });
-                                            router.push("/contact");
-                                        }}
-                                        className="w-full cursor-pointer px-6 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-semibold uppercase tracking-wider text-sm sm:text-base rounded-sm hover:opacity-90 transition"
-                                    >
-                                        {t.inquiry}
-                                    </button>
+                                    <div className="flex flex-col gap-6">
+
+                                        {/* Image + Info */}
+                                        <div className="flex items-center gap-4">
+                                            <Image
+                                                src="/dani-contact.jpg"
+                                                alt="Agent"
+                                                width={80}
+                                                height={80}
+                                                className="rounded-full"
+                                            />
+                                            <div>
+                                                <h3 className="text-sm text-gray-500 tracking-tight">Ihr Makler</h3>
+                                                <h1 className="text-xl font-bold">Daniel Betros</h1>
+                                                <h1 className="text-base font-semibold">06764183782</h1>
+                                            </div>
+                                        </div>
+
+                                        {/* Inquiry Button */}
+                                        <button
+                                            onClick={() => {
+                                                setPrefill({
+                                                    subject: `${getText("title")} - ${property.object_number ? `(${property.object_number})` : ""}`,
+                                                    message: `${t.agentMessage}. ${t.agentMessage2}`,
+                                                });
+                                                router.push("/contact");
+                                            }}
+                                            className="w-full px-6 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-semibold uppercase tracking-wider text-sm sm:text-base rounded-sm hover:opacity-90 transition"
+                                        >
+                                            {t.inquiry}
+                                        </button>
+
+                                    </div>
+
+                                    {/* Facilities Box */}
+                                    <div className="mt-6 bg-neutral-50 dark:bg-neutral-800 p-6 sm:p-8 rounded-lg w-full max-w-sm border-t border-gray-200 dark:border-gray-700">
+                                        <div className="flex flex-col gap-4">
+
+                                            {/* Title */}
+                                            <h2 className="text-sm font-semibold uppercase tracking-wider text-gray-500">
+                                                Ausstattung
+                                            </h2>
+
+                                            {/* Has Pool */}
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-sm text-gray-600 dark:text-gray-300">Pool</span>
+                                                <span className={`text-sm font-semibold ${property.has_pool ? "text-green-600" : "text-red-500"}`}>
+                                                    {property.has_pool ? "Ja" : "Nein"}
+                                                </span>
+                                            </div>
+
+                                            {/* Facilities List as Bullet Points */}
+                                            {property.facilities && (
+                                                <div className="mt-3">
+                                                    <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">
+                                                        Weitere Ausstattung:
+                                                    </span>
+                                                    <ul className="list-disc list-inside mt-2 space-y-1 text-gray-700 dark:text-gray-300 text-sm">
+                                                        {(Array.isArray(property.facilities)
+                                                            ? property.facilities
+                                                            : JSON.parse(property.facilities || "[]")
+                                                        ).map((facility: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined, index: Key | null | undefined) => (
+                                                            <li key={index}>{facility}</li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </motion.div>

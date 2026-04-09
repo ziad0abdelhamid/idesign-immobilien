@@ -62,8 +62,8 @@ export function Footer() {
                 <div className="border-t border-white/20 pt-6 text-center text-xs text-white/70">
                     <p dir="ltr">
                         {language === "en"
-                            ? "© 2026 DB ImmoDesign by DB ImmoDesign e.U. All rights reserved."
-                            : "© 2026 DB ImmoDesign by DB ImmoDesign e.U. Alle Rechte vorbehalten."}
+                            ? "© 2026 DB ImmoDesign e.U. All rights reserved."
+                            : "© 2026 DB ImmoDesign e.U. Alle Rechte vorbehalten"}
                     </p>
                 </div>
             </div>

@@ -178,7 +178,6 @@ export default function HomePage() {
             </section>
             {/* FINAL CTA SECTION */}
 
-
         </div >
     );
 }

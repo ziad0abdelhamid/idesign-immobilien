@@ -171,36 +171,6 @@ export default function PropertiesPage() {
     /* ====================== JSX ====================== */
     return (
         <div className="w-full">
-            {/* Header */}
-            <section className="relative py-16">
-                {/* Background Image + Frosted Glass Overlay */}
-                <div
-                    className="absolute inset-0 bg-cover bg-center -z-10"
-                    style={{ backgroundImage: `url('/headers-bg.jpg')` }}
-                >
-                    {/* Overlay for frosted effect */}
-                    <div className="absolute inset-0 bg-black/40 backdrop-blur-md"></div>
-                </div>
-
-                <motion.div
-                    className="relative max-w-7xl mx-auto px-4 text-center"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    <h1 className="text-3xl md:text-3xl font-bold text-white mb-4 overflow-hidden text-ellipsis">
-                        {t.properties.title}
-                    </h1>
-                    <p className="text-xl text-neutral-300 max-w-2xl mx-auto">
-                        {language === "de"
-                            ? "Renditestarke Immobilien am roten Meer"
-                            : "Browse our comprehensive collection of premium properties"}
-                    </p>
-                </motion.div>
-            </section>
-
-
-
             {/* Content */}
             <section className="bg-white py-12">
                 <div className="max-w-400 mx-auto flex flex-col lg:flex-row gap-8 p-8">

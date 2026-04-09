@@ -47,6 +47,8 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
 
     // State
     const [priceRange, setPriceRange] = useState<[number, number]>([minPriceEUR, maxPriceEUR]);
+    const [bedroomsRange, setBedroomsRange] = useState<[number, number]>([1, 15]);
+    const [areaRange, setAreaRange] = useState<[number, number]>([20, 400]);
     const [selectedRegion, setSelectedRegion] = useState<string>("");
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [filteredCount, setFilteredCount] = useState(properties.length);
@@ -61,6 +63,12 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
             const filtered = properties.filter(p => {
                 const price = p.price;
                 if (price < priceRange[0] || price > priceRange[1]) return false;
+
+                const bedrooms = p.bedrooms;
+                if (bedrooms < bedroomsRange[0] || bedrooms > bedroomsRange[1]) return false;
+
+                const area = p.area;
+                if (area < areaRange[0] || area > areaRange[1]) return false;
 
                 if (selectedRegion) {
                     const propertyLocation = language === "de" ? p.location_de : p.location_en || p.location;
@@ -83,10 +91,12 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
         }, 100);
 
         return () => clearTimeout(timeout);
-    }, [priceRange, selectedRegion, searchQuery, properties, setFilteredProperties, language]);
+    }, [priceRange, bedroomsRange, areaRange, selectedRegion, searchQuery, properties, setFilteredProperties, language]);
 
     const resetFilters = () => {
         setPriceRange([minPriceEUR, maxPriceEUR]);
+        setBedroomsRange([1, 15]);
+        setAreaRange([20, 300]);
         setSelectedRegion("");
         setSearchQuery("");
     };
@@ -108,6 +118,10 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
                                 setPriceRange={setPriceRange}
                                 minPriceEUR={minPriceEUR}
                                 maxPriceEUR={maxPriceEUR}
+                                bedroomsRange={bedroomsRange}
+                                setBedroomsRange={setBedroomsRange}
+                                areaRange={areaRange}
+                                setAreaRange={setAreaRange}
                                 language={language}
                                 resetFilters={resetFilters}
                                 selectedRegion={selectedRegion}
@@ -141,6 +155,10 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
                         setPriceRange={setPriceRange}
                         minPriceEUR={minPriceEUR}
                         maxPriceEUR={maxPriceEUR}
+                        bedroomsRange={bedroomsRange}
+                        setBedroomsRange={setBedroomsRange}
+                        areaRange={areaRange}
+                        setAreaRange={setAreaRange}
                         language={language}
                         resetFilters={resetFilters}
                         selectedRegion={selectedRegion}
@@ -162,6 +180,10 @@ interface FilterContentProps {
     setPriceRange: (range: [number, number]) => void;
     minPriceEUR: number;
     maxPriceEUR: number;
+    bedroomsRange: [number, number];
+    setBedroomsRange: (range: [number, number]) => void;
+    areaRange: [number, number];
+    setAreaRange: (range: [number, number]) => void;
     language: "de" | "en" | "ar";
     resetFilters: () => void;
     selectedRegion: string;
@@ -178,6 +200,10 @@ function FilterContent({
     setPriceRange,
     minPriceEUR,
     maxPriceEUR,
+    bedroomsRange,
+    setBedroomsRange,
+    areaRange,
+    setAreaRange,
     language,
     resetFilters,
     selectedRegion,
@@ -267,6 +293,66 @@ function FilterContent({
                 <div className="flex justify-between text-xs text-gray-500 mt-2">
                     <span>€0</span>
                     <span>{formatPrice(maxPriceEUR)}</span>
+                </div>
+            </div>
+
+            {/* Bedrooms Range Slider */}
+            <div>
+                <div className="flex justify-between items-center mb-3">
+                    <label className="text-[10px] font-bold uppercase text-blue-400 tracking-widest">
+                        {language === "de" ? "Zimmer" : "Rooms"}
+                    </label>
+                    <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                        {bedroomsRange[0]} - {bedroomsRange[1]}
+                    </span>
+                </div>
+                <Slider.Root
+                    className="relative flex items-center select-none touch-none w-full h-5 mb-4"
+                    value={bedroomsRange}
+                    min={1}
+                    max={15}
+                    step={1}
+                    onValueChange={(val: number[]) => setBedroomsRange([val[0], val[1]])}
+                >
+                    <Slider.Track className="bg-blue-100 relative flex-1 h-2 rounded-full">
+                        <Slider.Range className="absolute bg-blue-400 h-full rounded-full" />
+                    </Slider.Track>
+                    <Slider.Thumb className="block w-5 h-5 bg-blue-400 rounded-full shadow-md hover:shadow-lg hover:scale-110 transition-all cursor-pointer border-2 border-white" />
+                    <Slider.Thumb className="block w-5 h-5 bg-blue-400 rounded-full shadow-md hover:shadow-lg hover:scale-110 transition-all cursor-pointer border-2 border-white" />
+                </Slider.Root>
+                <div className="flex justify-between text-xs text-gray-500 mt-2">
+                    <span>1</span>
+                    <span>15</span>
+                </div>
+            </div>
+
+            {/* Area Range Slider */}
+            <div>
+                <div className="flex justify-between items-center mb-3">
+                    <label className="text-[10px] font-bold uppercase text-blue-400 tracking-widest">
+                        {language === "de" ? "Wohnfläche (m²)" : "Living Area (m²)"}
+                    </label>
+                    <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                        {areaRange[0]}m² - {areaRange[1]}m²
+                    </span>
+                </div>
+                <Slider.Root
+                    className="relative flex items-center select-none touch-none w-full h-5 mb-4"
+                    value={areaRange}
+                    min={20}
+                    max={300}
+                    step={10}
+                    onValueChange={(val: number[]) => setAreaRange([val[0], val[1]])}
+                >
+                    <Slider.Track className="bg-blue-100 relative flex-1 h-2 rounded-full">
+                        <Slider.Range className="absolute bg-blue-400 h-full rounded-full" />
+                    </Slider.Track>
+                    <Slider.Thumb className="block w-5 h-5 bg-blue-400 rounded-full shadow-md hover:shadow-lg hover:scale-110 transition-all cursor-pointer border-2 border-white" />
+                    <Slider.Thumb className="block w-5 h-5 bg-blue-400 rounded-full shadow-md hover:shadow-lg hover:scale-110 transition-all cursor-pointer border-2 border-white" />
+                </Slider.Root>
+                <div className="flex justify-between text-xs text-gray-500 mt-2">
+                    <span>20m²</span>
+                    <span>300m²</span>
                 </div>
             </div>
 
