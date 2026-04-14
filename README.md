@@ -38,5 +38,3 @@ A modern, fully-featured real estate website built with **Next.js 16**, **TypeSc
 - Image upload and ordering
 - Property status tracking (available/sold/rented)
 - Clean, functional interface
-
-v1.2
