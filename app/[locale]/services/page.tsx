@@ -49,8 +49,8 @@ export default function PremiumServicesDE() {
                 title: "Marktwertanalyse",
                 description:
                     "Die Ermittlung des richtigen Verkaufspreises ist eines der wichtigsten Entscheidung rund um den Verkauf. Wir verlassen uns nicht nur auf die Kaufvertragsinformationen der letzten Verkäufe - stattdessen setzen wir ebenfalls auf unsere Erfahrung und das Gespräch mit dem Eigentümer um den perfekten Preis zu ermitteln.",
-                image: "/services/Marktwertanalyse/2.png",
-                image2: "/services/Marktwertanalyse/2.jpg",
+                image: "/services/Marktwertanalyse/2.jpg",
+                image2: "/services/Marktwertanalyse/2.png",
             },
             {
                 id: "virtual-staging",
