@@ -6,7 +6,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { ReviewsCarousel } from "@/components/ui/ReviewCarousel";
+import { ReviewsCinematic } from "@/components/ui/ReviewCarousel";
 import RouteSkeleton from "@/components/ui/RouteSkeleton";
 import "flag-icons/css/flag-icons.min.css";
 
@@ -104,8 +104,6 @@ export default function HomePage() {
                         <motion.p
                             className="relative mt-4 text-lg sm:text-xl md:text-2xl text-(--primary-gold) drop-shadow-md z-10"
                         >
-                            {t.home.basedinAustria}
-                            <span className="fi fi-at ml-2" />
                         </motion.p>
                     </motion.div>
 
@@ -152,31 +150,11 @@ export default function HomePage() {
                             </Link>
                         </motion.div>
                     </motion.div>
-
                 </div>
-
             </section >
-
-            <section className="relative py-12 sm:py-16 md:py-24 lg:py-40 px-3 sm:px-4 md:px-6 lg:px-8 min-h-auto md:min-h-screen flex items-center justify-center">
-                {/* linear background */}
-                <div className="absolute inset-0 bg-linear-to-b from-slate-900 via-slate-800 to-slate-900 -z-20" />
-
-                {/* Animated linear orbs - hidden on small screens for better performance */}
-                <div className="absolute top-1/4 -left-32 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl -z-10 animate-pulse hidden sm:block" />
-                <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-cyan-600/10 rounded-full blur-3xl -z-10 animate-pulse animation-delay-2000 hidden sm:block" />
-
-                {/* Reviews */}
-                <motion.div
-                    className="w-full max-w-6xl z-10"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.8 }}
-                    viewport={{ once: true, margin: "-100px" }}
-                >
-                    <ReviewsCarousel />
-                </motion.div>
-            </section>
-            {/* FINAL CTA SECTION */}
+            <div className="relative">
+                <ReviewsCinematic />
+            </div>
 
         </div >
     );

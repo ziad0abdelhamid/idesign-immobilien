@@ -16,22 +16,28 @@ export default function RouteSkeleton({ duration = 600 }: RouteSkeletonProps) {
     // Lock body scroll when skeleton is visible
     useEffect(() => {
         const shouldShow = /^\/(en|ar|de)\/(properties|contact)(\/)?$/.test(pathname);
-        if (!shouldShow) return;
+        if (!shouldShow) {
+            // Ensure scroll is unlocked when leaving these pages
+            document.body.style.overflow = "";
+            setVisible(false);
+            return;
+        }
 
         setVisible(true);
 
-        // Lock scrolling
-        const originalStyle = window.getComputedStyle(document.body).overflow;
+        // Lock scrolling by setting overflow to hidden
         document.body.style.overflow = "hidden";
 
         const timer = setTimeout(() => {
             setVisible(false);
-            document.body.style.overflow = originalStyle;
+            // Unlock scrolling
+            document.body.style.overflow = "";
         }, duration);
 
         return () => {
             clearTimeout(timer);
-            document.body.style.overflow = originalStyle;
+            // Always unlock on cleanup
+            document.body.style.overflow = "";
         };
     }, [pathname, duration]);
 

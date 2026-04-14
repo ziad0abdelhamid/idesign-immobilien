@@ -8,6 +8,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Keyboard } from "swiper/modules";
 import { useRouter } from "next/navigation";
 import { useContactStore } from "@/lib/store/contactStore";
+import { useLanguageStore } from "@/lib/store";
+import { translations } from "@/lib/i18n/translations";
 import { X } from "lucide-react";
 
 interface Props {
@@ -16,35 +18,8 @@ interface Props {
     language: "en" | "de";
 }
 
-const TEXT = {
-    en: {
-        contact: "Send Inquiry",
-        area: "Floor Area",
-        landArea: "Land Area",
-        bedrooms: "Rooms",
-        objectDescription: "Property Description",
-        interested: "Interested?",
-        propertyConsultant: "Property Consultant",
-        inquiry: "Send Inquiry",
-        agentMessage: "Hello, I am interested in the property",
-        agentMessage2: "Could you please contact me with further details?"
-    },
-    de: {
-        contact: "Anfrage senden",
-        area: "Wohnfläche",
-        landArea: "Grundstücksfläche",
-        bedrooms: "Zimmer",
-        objectDescription: "Objektbeschreibung",
-        interested: "Interesse?",
-        propertyConsultant: "Immobilienberater",
-        inquiry: "Anfrage senden",
-        agentMessage: "Hallo! Ich interessiere mich für diese Immobilie",
-        agentMessage2: "Bitte schicken Sie mir weitere Details zu."
-    },
-};
-
 export function PropertyDetailsModal({ property, onClose, language }: Props) {
-    const t = TEXT[language];
+    const t = translations[language]?.propertyModal || translations.en.propertyModal;
     const modalRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
     const setPrefill = useContactStore((state) => state.setPrefill);
@@ -114,7 +89,7 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                     </button>
 
                     {/* Scrollable Content */}
-                    <div className="flex-1 overflow-y-auto">
+                    <div className="flex-1 overflow-y-auto overflow-x-hidden modal-scrollbar">
                         {/* PAGE HEADER */}
                         <div className="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-10 lg:py-12 text-center border-b border-neutral-200 dark:border-neutral-700">
                             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight uppercase mb-2 sm:mb-3">
@@ -221,7 +196,7 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                                     {getText("description") ? (
                                         <p>{stripHtml(getText("description"))}</p>
                                     ) : (
-                                        <p>Keine Beschreibung verfügbar</p>
+                                        <p>{t.noDescription}</p>
                                     )}
                                 </div>
                             </div>
@@ -242,7 +217,7 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                                                 className="rounded-full"
                                             />
                                             <div>
-                                                <h3 className="text-sm text-gray-500 tracking-tight">Ihr Makler</h3>
+                                                <h3 className="text-sm text-gray-500 tracking-tight">{t.yourAgent}</h3>
                                                 <h1 className="text-xl font-bold">Daniel Betros</h1>
                                                 <h1 className="text-base font-semibold">06764183782</h1>
                                             </div>
@@ -270,22 +245,24 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
 
                                             {/* Title */}
                                             <h2 className="text-sm font-semibold uppercase tracking-wider text-gray-500">
-                                                Ausstattung
+                                                {t.facilities}
                                             </h2>
 
                                             {/* Has Pool */}
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-sm text-gray-600 dark:text-gray-300">Pool</span>
-                                                <span className={`text-sm font-semibold ${property.has_pool ? "text-green-600" : "text-red-500"}`}>
-                                                    {property.has_pool ? "Ja" : "Nein"}
-                                                </span>
-                                            </div>
+                                            {property.has_pool && (
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-sm text-gray-600 dark:text-gray-300">{t.pool}</span>
+                                                    <span className={`text-sm font-semibold ${property.has_pool ? "text-green-600" : "text-red-500"}`}>
+                                                        {property.has_pool ? t.yes : t.no}
+                                                    </span>
+                                                </div>
+                                            )}
 
                                             {/* Facilities List as Bullet Points */}
                                             {property.facilities && (
                                                 <div className="mt-3">
                                                     <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">
-                                                        Weitere Ausstattung:
+                                                        {t.furtherFacilities}
                                                     </span>
                                                     <ul className="list-disc list-inside mt-2 space-y-1 text-gray-700 dark:text-gray-300 text-sm">
                                                         {(Array.isArray(property.facilities)
@@ -296,6 +273,7 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                                                         ))}
                                                     </ul>
                                                 </div>
+
                                             )}
                                         </div>
                                     </div>
@@ -306,6 +284,6 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                     </div>
                 </motion.div>
             </motion.div>
-        </AnimatePresence>
+        </AnimatePresence >
     );
 }

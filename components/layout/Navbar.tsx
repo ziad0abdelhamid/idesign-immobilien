@@ -76,12 +76,7 @@ export function Navbar({ isTransparent = true }: NavbarProps) {
                                 height={600}
                                 priority
                                 className={cn(
-                                    "object-contain transition-all duration-500 ease-in-out opacity-90 pt-0.5",
-
-                                    // MOBILE (default)
-                                    isScrolled
-                                        ? "w-20 h-20"
-                                        : "w-36 h-36",
+                                    "object-contain transition-all duration-500 ease-in-out opacity-90 pt-0.5 w-36 h-36",
 
                                     // TABLET
                                     "md:w-24 md:h-24",
@@ -133,7 +128,7 @@ export function Navbar({ isTransparent = true }: NavbarProps) {
                             className={cn(
                                 "md:hidden rounded-lg m-2 p-2 transition-colors backdrop-blur-2xl",
                                 showGlass
-                                    ? "bg-gray-400/50 backdrop-blur-xl shadow-xl border-b border-white/10"
+                                    ? "bg-blue-400/50 backdrop-blur-xl shadow-xl border-b border-blue-500/10"
                                     : "bg-transparent backdrop-blur-none shadow-none border-none",
                             )}
                         >
@@ -147,7 +142,7 @@ export function Navbar({ isTransparent = true }: NavbarProps) {
                             {/* Language Switcher for Mobile */}
                             <div className="px-5 py-4 border-t border-neutral-200 dark:border-neutral-800">
                                 <div className="text-xs font-semibold text-neutral-600 dark:text-neutral-400 mb-2">
-                                    {language === "en" ? "Language" : "Sprache"}
+                                    {t.common.language}
                                 </div>
                                 <LanguageSwitcher />
                             </div>

@@ -15,7 +15,7 @@ interface FiltersProps {
 
 export function PropertyFilters({ isOpen, onClose, properties, setFilteredProperties }: FiltersProps) {
     const { language } = useLanguageStore();
-
+    const t = translations[language] || translations.en;
     // Dynamic price range from properties
     const getPriceRange = () => {
         if (!properties || properties.length === 0) {
@@ -110,7 +110,7 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
                     <div className="lg:hidden fixed left-0 top-0 h-full w-80 bg-white z-50 overflow-y-auto shadow-xl">
                         <div className="p-6 space-y-6">
                             <div className="flex justify-between items-center">
-                                <h2 className="text-xl font-bold tracking-tight">{language === "de" ? "Suche verfeinern" : "Refine Search"}</h2>
+                                <h2 className="text-xl font-bold tracking-tight">{t.filter.title}</h2>
                                 <button onClick={onClose} className="text-gray-500 hover:text-gray-700 text-2xl">×</button>
                             </div>
                             <FilterContent
@@ -141,12 +141,12 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
             <aside className="hidden lg:block w-1/3 xl:w-1/4">
                 <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 sticky top-28">
                     <div className="flex justify-between items-center mb-8">
-                        <h2 className="text-xl font-bold tracking-tight">{language === "de" ? "Suche verfeinern" : "Refine Search"}</h2>
+                        <h2 className="text-xl font-bold tracking-tight">{t.filter.title}</h2>
                         <button
                             onClick={resetFilters}
                             className="text-xs font-bold text-blue-400 hover:text-blue-500 cursor-pointer"
                         >
-                            {language === "de" ? "Zurücksetzen" : "Reset"}
+                            {t.filter.reset}
                         </button>
                     </div>
 

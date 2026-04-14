@@ -100,11 +100,10 @@ export default function ContactPage() {
                         <div className="space-y-8">
                             <div>
                                 <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800 mb-4">
-                                    Kontakt & Standort
+                                    {t.contact.contactInfo}
                                 </h2>
                                 <p className="text-gray-600 leading-relaxed mb-6">
-                                    Haben Sie Fragen oder benötigen Sie Unterstützung? Kontaktieren Sie uns
-                                    gerne über das Formular oder direkt über unsere Kontaktdaten.
+                                    {t.contact.contactDescription}
                                 </p>
 
                                 <div className="space-y-5">

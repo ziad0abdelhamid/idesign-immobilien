@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
 import { useState, useRef } from "react";
+import { useLanguageStore } from "@/lib/store";
+import { translations } from "@/lib/i18n/translations";
 
 // ===== GlareHover Component =====
 function GlareHover({
@@ -70,6 +72,9 @@ const fadeInRight: Variants = {
 };
 
 export default function UnternehmenFullSplit() {
+    const { language } = useLanguageStore();
+    const t = translations[language] || translations.en;
+
     return (
         <main className="w-full overflow-x-hidden snap-y snap-mandatory scroll-smooth text-gray-800 font-sans">
             {/* ===== Hero Section ===== */}
@@ -85,13 +90,12 @@ export default function UnternehmenFullSplit() {
                 <div className="absolute inset-0 bg-black/60"></div>
                 <div className="relative z-10 max-w-4xl px-6 text-white">
                     <h1 className="text-4xl md:text-6xl font-extrabold mb-6 drop-shadow-lg">
-                        Über Uns
+                        {t.aboutPage.title}
                     </h1>
                     <blockquote className="text-lg md:text-2xl italic font-light leading-relaxed drop-shadow-md text-center mb-6">
-                        „Innovation entsteht, wenn man Dinge anders denkt und den Mut hat,
-                        sie umzusetzen.“
+                        „{t.aboutPage.heroQuote}"
                         <footer className="mt-4 text-base md:text-xl not-italic font-semibold opacity-80">
-                            – Brehm, Alexander & Vahs, Dietmar, Innovationsmanagement, 2015
+                            – {t.aboutPage.heroQuoteAuthor}
                         </footer>
                     </blockquote>
                     <div className="w-20 h-1 bg-blue-500 mx-auto rounded-full"></div>
@@ -111,7 +115,7 @@ export default function UnternehmenFullSplit() {
                     <GlareHover glareColor="#ffffff" glareOpacity={0.35}>
                         <Image
                             src="/Dani.png"
-                            alt="Daniel BETROS"
+                            alt={t.aboutPage.personName}
                             fill
                             className="object-contain"
                             style={{ pointerEvents: "none" }}
@@ -129,43 +133,17 @@ export default function UnternehmenFullSplit() {
                 >
                     <div className="max-w-lg space-y-6">
                         <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-                            Daniel BETROS
+                            {t.aboutPage.personName}
                         </h2>
                         <p className="text-sm uppercase tracking-wide text-gray-900">
-                            Inhaber
+                            {t.aboutPage.personTitle}
                         </p>
-                        <p className="text-gray-700 leading-relaxed text-lg">
-                            Herzlich willkommen bei ImmoDesign e.U.! Mein Name ist Daniel Betros und ich vermittle seit mehr als 10Jahren Immobilien im Auftrag meiner Kunden. <br />
-                            <br />
-                            Von Anfang an und bis heute bin ich stets sehr interessiert an neuen Wegen und Ideen um Immobilien noch wirkungsvoller zu präsentieren und erfolgreicher zu vermarkten gewesen. Im Laufe der Jahre habe ich den Einsatz von Home Staging, Drohnenaufnahmen, 3D-Visualisierungen, virtuellem Staging und vielen weiteren Methoden auf die Anforderungen des Immobilienvertriebs optimiert. Heute freue ich mich, diese Fähigkeiten an meine Kundinnen und Kunden weiterzugeben.
-                            <br />
-                            <br />
-                            Jede Immobilie und jede Verkaufssituation ist einzigartig – deshalb ist Zuhören die wichtigste aller Fähigkeiten; In einem persönlichen Gespräch finden wir gemeinsam das richtige Konzept für Ihre Immobilie und Ihre Bedürfnisse.
+                        <p className="text-gray-700 leading-relaxed text-lg whitespace-pre-wrap">
+                            {t.aboutPage.personBio}
                         </p>
                     </div>
                 </motion.div>
             </section>
-
-            {/* ===== Contact Section ===== */}
-            <motion.section
-                className="bg-gray-900 py-20 text-white text-center snap-start overflow-hidden"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-            >
-                <div className="max-w-7xl mx-auto px-6">
-                    <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                        Kontaktieren Sie Uns
-                    </h2>
-                    <p className="mb-10 text-lg md:text-xl opacity-90 max-w-2xl mx-auto">
-                        du möchtest deine Immobilie optimal präsentieren? Wir sind für dich da!
-                    </p>
-                    <div className="flex flex-col md:flex-row justify-center gap-8 font-medium text-lg">
-                        <p>📞 +43 676 41 83 78-2</p>
-                        <p>📍 Graz, Austria</p>
-                    </div>
-                </div>
-            </motion.section>
         </main>
     );
 }

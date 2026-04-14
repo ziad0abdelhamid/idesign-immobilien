@@ -83,34 +83,55 @@ export function PropertyCard({
                 </div>
 
                 {/* Bottom Section with Specs and Arrow */}
-                <div className="flex justify-between items-center pt-8 mt-6 border-t border-gray-50">
-                    {/* Specs */}
-                    <div className="flex space-x-6">
-                        {/* Area */}
-                        <div className="text-center">
-                            <FaRulerCombined className="text-blue-500 text-sm block mb-1 mx-auto" />
-                            <span className="text-xs font-bold text-gray-800">{Math.round(area)}m²</span>
-                        </div>
+                <div className="mt-6 pt-6 border-t border-gray-100 space-y-4">
 
-                        {/* Land Area */}
-                        {land_area && (
-                            <div className="text-center border-l border-gray-100 pl-6">
-                                <FaMap className="text-blue-500 text-sm block mb-1 mx-auto" />
-                                <span className="text-xs font-bold text-gray-800">{Math.round(land_area)}m²</span>
+                    {/* Area */}
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3 text-black">
+                            <FaRulerCombined className="text-blue-600 text-base" />
+                            <span className="text-m font-medium">
+                                {language === "de" ? "Fläche" : "Area"}
+                            </span>
+                        </div>
+                        <span className="text-m font-semibold text-black">
+                            {Math.round(area)} m²
+                        </span>
+                    </div>
+
+                    {/* Land Area */}
+                    {land_area && (
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3 text-black">
+                                <FaMap className="text-blue-600 text-base" />
+                                <span className="text-m font-medium">
+                                    {language === "de" ? "Grundstück" : "Land Area"}
+                                </span>
                             </div>
-                        )}
-
-                        {/* Rooms/Bedrooms */}
-                        <div className={`text-center ${land_area ? "border-l border-gray-100 pl-6" : ""}`}>
-                            <FaDoorOpen className="text-blue-500 text-sm block mb-1 mx-auto" />
-                            <span className="text-xs font-bold text-gray-800">{Math.round(bedrooms)} Zi.</span>
+                            <span className="text-m font-semibold text-black">
+                                {Math.round(land_area)} m²
+                            </span>
                         </div>
+                    )}
+
+                    {/* Rooms (plural-aware) */}
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3 text-black">
+                            <FaDoorOpen className="text-blue-600 text-base" />
+                            <span className="text-m font-medium">
+                                {language === "de"
+                                    ? (Math.round(bedrooms) === 1 ? "Zimmer" : "Zimmer")
+                                    : (Math.round(bedrooms) === 1 ? "Room" : "Rooms")}
+                            </span>
+                        </div>
+
+                        <span className="text-m font-semibold text-black">
+                            {Math.round(bedrooms)}{" "}
+                            {language === "de"
+                                ? (Math.round(bedrooms) === 1 ? "Zi." : "Zi.")
+                                : (Math.round(bedrooms) === 1 ? "Room" : "Rooms")}
+                        </span>
                     </div>
 
-                    {/* Arrow Icon */}
-                    <div className="h-10 w-10 bg-gray-50 rounded-full flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all">
-                        <ArrowRight className="w-4 h-4" />
-                    </div>
                 </div>
             </div>
         </div>
