@@ -414,24 +414,6 @@ export default function AdminPropertiesPage() {
                                         </div>
                                     )}
 
-
-
-                                    {/* Optional Fields Indicators */}
-                                    {(property.floor || property.view || property.maintenance || property.cash_discount ||
-                                        property.object_number || property.load_factor || property.facilities) && (
-                                            <div className="mb-3 sm:mb-4 pb-3 sm:pb-4 border-t border-neutral-200 dark:border-neutral-700 pt-3 sm:pt-4">
-                                                <p className="text-[10px] sm:text-xs font-semibold text-neutral-500 dark:text-neutral-400 mb-2">
-                                                    {language === "en" ? "Additional Info:" : "Zusätzliche Info:"}
-                                                </p>
-                                                <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                                                    {property.floor && <span className="text-[10px] sm:text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">Floor: {property.floor}</span>}
-                                                    {property.view && <span className="text-[10px] sm:text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded">{property.view}</span>}
-                                                    {property.cash_discount && <span className="text-[10px] sm:text-xs bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded">Discount: {property.cash_discount}%</span>}
-                                                    {property.object_number && <span className="text-[10px] sm:text-xs bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 px-2 py-1 rounded">Obj: {property.object_number}</span>}
-                                                </div>
-                                            </div>
-                                        )}
-
                                     {/* Status and Sold Status */}
                                     <div className="mb-3 sm:mb-4 pb-3 sm:pb-4 border-t border-neutral-200 dark:border-neutral-700 pt-3 sm:pt-4 flex flex-wrap gap-2">
                                         <div className="flex items-center gap-2 flex-1">
@@ -448,7 +430,7 @@ export default function AdminPropertiesPage() {
                                         <button
                                             onClick={() => updatePropertyField(property.id, "sold", !property.sold)}
                                             disabled={updatingStatus === property.id}
-                                            className={`px-2 py-1 text-xs sm:text-sm rounded font-semibold transition ${property.sold
+                                            className={`px-2 py-1 text-xs sm:text-sm rounded font-semibold transition cursor-pointer ${property.sold
                                                 ? "bg-red-600 text-white hover:bg-red-700"
                                                 : "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-600"
                                                 } disabled:opacity-50`}
@@ -511,6 +493,7 @@ export default function AdminPropertiesPage() {
                                 <tr className="bg-gray-100 dark:bg-neutral-700 border-b border-gray-300 dark:border-neutral-600">
                                     <th className="px-4 py-3 text-left text-xs sm:text-sm font-bold text-gray-900 dark:text-gray-100 w-12">#</th>
                                     <th className="px-4 py-3 text-left text-xs sm:text-sm font-bold text-gray-900 dark:text-gray-100 flex-1">{language === "en" ? "Name" : "Name"}</th>
+                                    <th className="px-4 py-3 text-left text-xs sm:text-sm font-bold text-gray-900 dark:text-gray-100 flex-1">{language === "en" ? "Price" : "Preis"}</th>
                                     <th className="px-4 py-3 text-center text-xs sm:text-sm font-bold text-gray-900 dark:text-gray-100 w-20 sm:w-24">{language === "en" ? "Image" : "Bild"}</th>
                                     <th className="px-4 py-3 text-center text-xs sm:text-sm font-bold text-gray-900 dark:text-gray-100 w-32">{language === "en" ? "Actions" : "Aktionen"}</th>
                                 </tr>
@@ -540,6 +523,10 @@ export default function AdminPropertiesPage() {
                                             {/* Name Column */}
                                             <td className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 font-medium">
                                                 <div className="line-clamp-2">{getTitle(property) || "Untitled"}</div>
+                                            </td>
+                                            {/* Price Column */}
+                                            <td className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 font-medium">
+                                                <div className="line-clamp-2">{property.price ? `${property.price.toLocaleString()} €` : "N/A"}</div>
                                             </td>
 
                                             {/* Image Column */}
@@ -599,7 +586,7 @@ export default function AdminPropertiesPage() {
 
                                             {/* Actions Column */}
                                             <td className="px-2 sm:px-4 py-3 text-center">
-                                                <div className="flex gap-1 sm:gap-2 justify-center flex-wrap">
+                                                <div className="flex gap-1 sm:gap-2 justify-center flex-wrap min-w-max">
                                                     <Link
                                                         href={`/${locale}/admin/properties/edit/${property.id}`}
                                                         className="px-2 sm:px-3 py-1 bg-blue-600 text-white rounded text-xs font-semibold hover:bg-blue-700 transition whitespace-nowrap"
