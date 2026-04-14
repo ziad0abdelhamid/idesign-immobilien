@@ -40,15 +40,36 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
         return [...new Set(locations)].sort();
     };
 
+    // Dynamic Grundflache (land area) range from properties
+    const getGrundflacheRange = () => {
+        if (!properties || properties.length === 0) {
+            return { min: 400, max: 10000 };
+        }
+        const areas = properties.map(p => p.land_area).filter((a) => a > 0);
+        if (areas.length === 0) {
+            return { min: 400, max: 10000 };
+        }
+        const minArea = Math.floor(Math.min(...areas) / 100) * 100;
+        const maxArea = Math.ceil(Math.max(...areas) / 100) * 100;
+        return {
+            min: Math.min(minArea, 400),
+            max: Math.max(maxArea, 10000),
+        };
+    };
+
     const dynamicPriceRange = getPriceRange();
     const minPriceEUR = dynamicPriceRange.min;
     const maxPriceEUR = dynamicPriceRange.max;
+    const dynamicGrundflacheRange = getGrundflacheRange();
+    const minGrundflache = dynamicGrundflacheRange.min;
+    const maxGrundflache = dynamicGrundflacheRange.max;
     const uniqueLocations = getUniqueLocations();
 
     // State
     const [priceRange, setPriceRange] = useState<[number, number]>([minPriceEUR, maxPriceEUR]);
     const [bedroomsRange, setBedroomsRange] = useState<[number, number]>([1, 15]);
     const [areaRange, setAreaRange] = useState<[number, number]>([20, 400]);
+    const [grundflacheRange, setGrundflacheRange] = useState<[number, number]>([minGrundflache, maxGrundflache]);
     const [selectedRegion, setSelectedRegion] = useState<string>("");
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [filteredCount, setFilteredCount] = useState(properties.length);
@@ -56,6 +77,39 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
     useEffect(() => {
         setPriceRange([minPriceEUR, maxPriceEUR]);
     }, [minPriceEUR, maxPriceEUR]);
+
+    useEffect(() => {
+        setGrundflacheRange([minGrundflache, maxGrundflache]);
+    }, [minGrundflache, maxGrundflache]);
+
+    // Effect to expand ranges only when properties change
+    useEffect(() => {
+        let shouldExpandPrice = false;
+        let shouldExpandBedrooms = false;
+        let shouldExpandArea = false;
+        let shouldExpandGrundflache = false;
+
+        properties.forEach(p => {
+            if (p.price < priceRange[0] || p.price > priceRange[1]) shouldExpandPrice = true;
+            if (p.bedrooms < bedroomsRange[0] || p.bedrooms > bedroomsRange[1]) shouldExpandBedrooms = true;
+            if (p.area < areaRange[0] || p.area > areaRange[1]) shouldExpandArea = true;
+            if (p.land_area && (p.land_area < grundflacheRange[0] || p.land_area > grundflacheRange[1])) shouldExpandGrundflache = true;
+        });
+
+        // Only expand if needed
+        if (shouldExpandPrice) {
+            setPriceRange([minPriceEUR, maxPriceEUR]);
+        }
+        if (shouldExpandBedrooms) {
+            setBedroomsRange([1, 15]);
+        }
+        if (shouldExpandArea) {
+            setAreaRange([20, 400]);
+        }
+        if (shouldExpandGrundflache) {
+            setGrundflacheRange([minGrundflache, maxGrundflache]);
+        }
+    }, [properties]);
 
     // Filtering logic
     useEffect(() => {
@@ -69,6 +123,9 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
 
                 const area = p.area;
                 if (area < areaRange[0] || area > areaRange[1]) return false;
+
+                const grundflache = p.land_area || 0;
+                if (grundflache < grundflacheRange[0] || grundflache > grundflacheRange[1]) return false;
 
                 if (selectedRegion) {
                     const propertyLocation = language === "de" ? p.location_de : p.location_en || p.location;
@@ -91,12 +148,13 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
         }, 100);
 
         return () => clearTimeout(timeout);
-    }, [priceRange, bedroomsRange, areaRange, selectedRegion, searchQuery, properties, setFilteredProperties, language]);
+    }, [priceRange, bedroomsRange, areaRange, grundflacheRange, selectedRegion, searchQuery, properties, setFilteredProperties, language]);
 
     const resetFilters = () => {
         setPriceRange([minPriceEUR, maxPriceEUR]);
         setBedroomsRange([1, 15]);
-        setAreaRange([20, 300]);
+        setAreaRange([20, 400]);
+        setGrundflacheRange([minGrundflache, maxGrundflache]);
         setSelectedRegion("");
         setSearchQuery("");
     };
@@ -122,6 +180,10 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
                                 setBedroomsRange={setBedroomsRange}
                                 areaRange={areaRange}
                                 setAreaRange={setAreaRange}
+                                grundflacheRange={grundflacheRange}
+                                setGrundflacheRange={setGrundflacheRange}
+                                minGrundflache={minGrundflache}
+                                maxGrundflache={maxGrundflache}
                                 language={language}
                                 resetFilters={resetFilters}
                                 selectedRegion={selectedRegion}
@@ -159,6 +221,10 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
                         setBedroomsRange={setBedroomsRange}
                         areaRange={areaRange}
                         setAreaRange={setAreaRange}
+                        grundflacheRange={grundflacheRange}
+                        setGrundflacheRange={setGrundflacheRange}
+                        minGrundflache={minGrundflache}
+                        maxGrundflache={maxGrundflache}
                         language={language}
                         resetFilters={resetFilters}
                         selectedRegion={selectedRegion}
@@ -184,6 +250,10 @@ interface FilterContentProps {
     setBedroomsRange: (range: [number, number]) => void;
     areaRange: [number, number];
     setAreaRange: (range: [number, number]) => void;
+    grundflacheRange: [number, number];
+    setGrundflacheRange: (range: [number, number]) => void;
+    minGrundflache: number;
+    maxGrundflache: number;
     language: "de" | "en" | "ar";
     resetFilters: () => void;
     selectedRegion: string;
@@ -204,6 +274,10 @@ function FilterContent({
     setBedroomsRange,
     areaRange,
     setAreaRange,
+    grundflacheRange,
+    setGrundflacheRange,
+    minGrundflache,
+    maxGrundflache,
     language,
     resetFilters,
     selectedRegion,
@@ -353,6 +427,36 @@ function FilterContent({
                 <div className="flex justify-between text-xs text-gray-500 mt-2">
                     <span>20m²</span>
                     <span>300m²</span>
+                </div>
+            </div>
+
+            {/* Grundflache Range Slider */}
+            <div>
+                <div className="flex justify-between items-center mb-3">
+                    <label className="text-[10px] font-bold uppercase text-blue-400 tracking-widest">
+                        {language === "de" ? "Grundfläche (m²)" : "Land Area (m²)"}
+                    </label>
+                    <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                        {grundflacheRange[0]}m² - {grundflacheRange[1]}m²
+                    </span>
+                </div>
+                <Slider.Root
+                    className="relative flex items-center select-none touch-none w-full h-5 mb-4"
+                    value={grundflacheRange}
+                    min={minGrundflache}
+                    max={maxGrundflache}
+                    step={100}
+                    onValueChange={(val: number[]) => setGrundflacheRange([val[0], val[1]])}
+                >
+                    <Slider.Track className="bg-blue-100 relative flex-1 h-2 rounded-full">
+                        <Slider.Range className="absolute bg-blue-400 h-full rounded-full" />
+                    </Slider.Track>
+                    <Slider.Thumb className="block w-5 h-5 bg-blue-400 rounded-full shadow-md hover:shadow-lg hover:scale-110 transition-all cursor-pointer border-2 border-white" />
+                    <Slider.Thumb className="block w-5 h-5 bg-blue-400 rounded-full shadow-md hover:shadow-lg hover:scale-110 transition-all cursor-pointer border-2 border-white" />
+                </Slider.Root>
+                <div className="flex justify-between text-xs text-gray-500 mt-2">
+                    <span>{minGrundflache}m²</span>
+                    <span>{maxGrundflache}m²</span>
                 </div>
             </div>
 

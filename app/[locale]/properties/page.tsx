@@ -185,12 +185,14 @@ export default function PropertiesPage() {
                     {/* Main */}
                     <main className="w-full lg:w-2/3 xl:w-3/4">
                         {/* Mobile Filters Button */}
-                        <div className="lg:hidden mb-6">
+                        <div className="fixed bottom-6 right-6 z-50 lg:hidden">
                             <button
-                                onClick={() => setFiltersOpen(true)}
-                                className="px-4 py-2 rounded-lg bg-blue-600 text-white font-bold text-sm hover:bg-blue-700 transition"
+                                onClick={() => { filtersOpen ? setFiltersOpen(false) : setFiltersOpen(true) }}
+                                className="px-5 py-3 rounded-full bg-blue-600 text-white font-bold text-sm shadow-lg
+                   hover:bg-blue-700 active:scale-95 transition-all duration-200
+                   flex items-center gap-2"
                             >
-                                {language === "de" ? "Filter öffnen" : "Open Filters"}
+                                {language === "de" ? "Filter" : "Filters"}
                             </button>
                         </div>
 
