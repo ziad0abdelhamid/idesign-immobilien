@@ -164,11 +164,11 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
             {/* Mobile overlay & drawer */}
             {isOpen && (
                 <>
-                    <div className="lg:hidden fixed inset-0 bg-black/50 z-40" onClick={onClose} />
-                    <div className="lg:hidden fixed left-0 top-0 h-full w-80 bg-white z-50 overflow-y-auto shadow-xl">
-                        <div className="p-6 space-y-6">
+                    <div className="md:hidden fixed inset-0 bg-black/50 z-40" onClick={onClose} />
+                    <div className="md:hidden fixed left-0 top-0 h-full w-80 bg-white z-50 overflow-y-auto shadow-xl">
+                        <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
                             <div className="flex justify-between items-center">
-                                <h2 className="text-xl font-bold tracking-tight">{t.filter.title}</h2>
+                                <h2 className="text-lg sm:text-xl font-bold tracking-tight">{t.filter.title}</h2>
                                 <button onClick={onClose} className="text-gray-500 hover:text-gray-700 text-2xl">×</button>
                             </div>
                             <FilterContent
@@ -200,10 +200,10 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
             )}
 
             {/* Desktop sidebar */}
-            <aside className="hidden lg:block w-1/3 xl:w-1/4">
-                <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 sticky top-28">
-                    <div className="flex justify-between items-center mb-8">
-                        <h2 className="text-xl font-bold tracking-tight">{t.filter.title}</h2>
+            <aside className="hidden md:block lg:w-1/3 xl:w-1/4 max-w-sm lg:max-w-none">
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 lg:p-6 sticky md:top-20 lg:top-28 max-h-[calc(100vh-120px)] overflow-y-auto">
+                    <div className="flex justify-between items-center mb-4 lg:mb-6">
+                        <h2 className="text-base lg:text-lg font-bold tracking-tight">{t.filter.title}</h2>
                         <button
                             onClick={resetFilters}
                             className="text-xs font-bold text-blue-400 hover:text-blue-500 cursor-pointer"
@@ -296,10 +296,10 @@ function FilterContent({
     };
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-3 md:space-y-4 lg:space-y-5">
             {/* Search Bar */}
             <div>
-                <label className="text-[10px] font-bold uppercase text-blue-400 tracking-widest block mb-3">
+                <label className="text-[10px] font-bold uppercase text-blue-400 tracking-widest block mb-2">
                     {language === "de" ? "Suche" : "Search"}
                 </label>
                 <div className="relative">
@@ -316,7 +316,7 @@ function FilterContent({
 
             {/* Region Filter */}
             <div>
-                <label className="text-[10px] font-bold uppercase text-blue-400 tracking-widest block mb-3">
+                <label className="text-[10px] font-bold uppercase text-blue-400 tracking-widest block mb-2">
                     {language === "de" ? "Region" : "Region"}
                 </label>
                 <div className="relative">
@@ -342,16 +342,16 @@ function FilterContent({
 
             {/* Price Range Slider */}
             <div>
-                <div className="flex justify-between items-center mb-3">
+                <div className="flex justify-between items-center mb-2 gap-2">
                     <label className="text-[10px] font-bold uppercase text-blue-400 tracking-widest">
                         {language === "de" ? "Preisbereich" : "Price Range"}
                     </label>
-                    <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                    <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full text-right whitespace-nowrap">
                         {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
                     </span>
                 </div>
                 <Slider.Root
-                    className="relative flex items-center select-none touch-none w-full h-5 mb-4"
+                    className="relative flex items-center select-none touch-none w-full h-5 mb-3"
                     value={priceRange}
                     min={minPriceEUR}
                     max={maxPriceEUR}
@@ -372,16 +372,16 @@ function FilterContent({
 
             {/* Bedrooms Range Slider */}
             <div>
-                <div className="flex justify-between items-center mb-3">
+                <div className="flex justify-between items-center mb-2 gap-2">
                     <label className="text-[10px] font-bold uppercase text-blue-400 tracking-widest">
                         {language === "de" ? "Zimmer" : "Rooms"}
                     </label>
-                    <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                    <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full whitespace-nowrap">
                         {bedroomsRange[0]} - {bedroomsRange[1]}
                     </span>
                 </div>
                 <Slider.Root
-                    className="relative flex items-center select-none touch-none w-full h-5 mb-4"
+                    className="relative flex items-center select-none touch-none w-full h-5 mb-3"
                     value={bedroomsRange}
                     min={1}
                     max={15}
@@ -402,16 +402,16 @@ function FilterContent({
 
             {/* Area Range Slider */}
             <div>
-                <div className="flex justify-between items-center mb-3">
+                <div className="flex justify-between items-center mb-2 gap-2">
                     <label className="text-[10px] font-bold uppercase text-blue-400 tracking-widest">
                         {language === "de" ? "Wohnfläche (m²)" : "Living Area (m²)"}
                     </label>
-                    <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-                        {areaRange[0]}m² - {areaRange[1]}m²
+                    <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full whitespace-nowrap">
+                        {areaRange[0]}-{areaRange[1]}m²
                     </span>
                 </div>
                 <Slider.Root
-                    className="relative flex items-center select-none touch-none w-full h-5 mb-4"
+                    className="relative flex items-center select-none touch-none w-full h-5 mb-3"
                     value={areaRange}
                     min={20}
                     max={300}
@@ -432,16 +432,16 @@ function FilterContent({
 
             {/* Grundflache Range Slider */}
             <div>
-                <div className="flex justify-between items-center mb-3">
+                <div className="flex justify-between items-center mb-2 gap-2">
                     <label className="text-[10px] font-bold uppercase text-blue-400 tracking-widest">
                         {language === "de" ? "Grundfläche (m²)" : "Land Area (m²)"}
                     </label>
-                    <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-                        {grundflacheRange[0]}m² - {grundflacheRange[1]}m²
+                    <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full whitespace-nowrap">
+                        {grundflacheRange[0]}-{grundflacheRange[1]}m²
                     </span>
                 </div>
                 <Slider.Root
-                    className="relative flex items-center select-none touch-none w-full h-5 mb-4"
+                    className="relative flex items-center select-none touch-none w-full h-5 mb-3"
                     value={grundflacheRange}
                     min={minGrundflache}
                     max={maxGrundflache}
