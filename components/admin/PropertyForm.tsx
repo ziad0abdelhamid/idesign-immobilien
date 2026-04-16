@@ -48,6 +48,7 @@ interface FormData {
     hasLoadFactor: boolean;
     hasCashDiscount: boolean;
     hasDownPayments: boolean;
+    hasLandArea: boolean;
 }
 
 interface PropertyImage {
@@ -103,6 +104,7 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
         hasLoadFactor: false,
         hasCashDiscount: false,
         hasDownPayments: false,
+        hasLandArea: false,
     });
 
     const [downPayments, setDownPayments] = useState<DownPaymentOption[]>([]);
@@ -243,6 +245,7 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                     hasLoadFactor: data.load_factor !== null,
                     hasCashDiscount: data.cash_discount !== null,
                     hasDownPayments: Array.isArray(data.down_payments) && data.down_payments.length > 0,
+                    hasLandArea: data.land_area !== null,
                 });
 
                 if (data.down_payments && Array.isArray(data.down_payments)) {
@@ -335,7 +338,7 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                 price: formData.price,
                 area: formData.area,
                 bedrooms: formData.bedrooms,
-                land_area: formData.land_area,
+                land_area: formData.hasLandArea ? formData.land_area : 0,
                 location_en: formData.location_en,
                 location_de: formData.location_de,
                 facilities: formData.hasFacilities ? formData.facilities : null,
@@ -488,17 +491,6 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                            {language === "en" ? "Land Area (m²)" : "Grundstück (m²)"}
-                        </label>
-                        <input
-                            type="number"
-                            value={formData.land_area || ""}
-                            onChange={(e) => handleChange(e, "land_area")}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
                             {language === "en" ? "Bedrooms" : "Schlafzimmer"}
                         </label>
                         <input
@@ -551,6 +543,30 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                     {language === "en" ? "Optional Fields" : "Optionale Felder"}
                 </h3>
 
+
+                {/* Land Area */}
+                <div className="mb-6 p-4 border rounded-lg">
+                    <label className="flex items-center gap-3 cursor-pointer mb-3">
+                        <input
+                            type="checkbox"
+                            checked={formData.hasLandArea}
+                            onChange={(e) => setFormData(prev => ({ ...prev, hasLandArea: e.target.checked }))}
+                            className="w-4 h-4 rounded"
+                        />
+                        <span className="font-medium text-gray-700">
+                            {language === "en" ? "Land Area (m²)" : "Grundstück (m²)"}
+                        </span>
+                    </label>
+                    {formData.hasLandArea && (
+                        <input
+                            type="number"
+                            value={formData.land_area || ""}
+                            onChange={(e) => setFormData(prev => ({ ...prev, land_area: e.target.value ? parseInt(e.target.value) : null }))}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder={language === "en" ? "Land area in m²" : "Grundstück in m²"}
+                        />
+                    )}
+                </div>
                 {/* Floor */}
                 <div className="mb-6 p-4 border rounded-lg">
                     <label className="flex items-center gap-3 cursor-pointer mb-3">
@@ -659,6 +675,7 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                         </div>
                     )}
                 </div>
+
 
                 {/* Pool */}
                 <div className="mb-6 p-4 border rounded-lg">

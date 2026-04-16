@@ -48,7 +48,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         <>
             {/* Show skeleton on specific pages only (doesn't block content) */}
             <RouteSkeleton
-                duration={1500}
+                duration={500}
             />
 
             {/* Always render content */}

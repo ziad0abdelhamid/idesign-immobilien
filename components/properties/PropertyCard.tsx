@@ -99,7 +99,7 @@ export function PropertyCard({
                     </div>
 
                     {/* Land Area */}
-                    {land_area && (
+                    {land_area !== undefined && land_area !== null && land_area > 0 && (
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3 text-black">
                                 <FaMap className="text-blue-600 text-base" />

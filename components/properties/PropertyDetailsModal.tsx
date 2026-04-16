@@ -149,9 +149,11 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                                 </div>
                             </div>
                         </div>
-
-                        {/* SPECS BAR */}
-                        <div className="grid grid-cols-1 sm:grid-cols-3 w-full border-b border-neutral-200 dark:border-neutral-700">
+                        {/* SPECS - Area, Land Area (if exists), Bedrooms */}
+                        <div
+                            className={`grid grid-cols-1 ${property.land_area != 0 ? "sm:grid-cols-3" : "sm:grid-cols-2"
+                                } w-full border-b border-neutral-200 dark:border-neutral-700`}
+                        >
                             {property.area && (
                                 <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 text-center border-b sm:border-b-0 sm:border-r border-neutral-200 dark:border-neutral-700">
                                     <div className="text-xs sm:text-sm text-neutral-500 uppercase tracking-widest mb-1 sm:mb-2">
@@ -162,7 +164,8 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                                     </div>
                                 </div>
                             )}
-                            {property.land_area && (
+
+                            {property.land_area != 0 && (
                                 <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 text-center border-b sm:border-b-0 sm:border-r border-neutral-200 dark:border-neutral-700">
                                     <div className="text-xs sm:text-sm text-neutral-500 uppercase tracking-widest mb-1 sm:mb-2">
                                         {t.landArea}
@@ -172,8 +175,14 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                                     </div>
                                 </div>
                             )}
+
                             {property.bedrooms && (
-                                <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 text-center">
+                                <div
+                                    className={`px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 text-center ${property.land_area != 0
+                                        ? ""
+                                        : "sm:border-l border-neutral-200 dark:border-neutral-700"
+                                        }`}
+                                >
                                     <div className="text-xs sm:text-sm text-neutral-500 uppercase tracking-widest mb-1 sm:mb-2">
                                         {t.bedrooms}
                                     </div>
@@ -227,12 +236,12 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                                         <button
                                             onClick={() => {
                                                 setPrefill({
-                                                    subject: `${getText("title")} - ${property.object_number ? `(${property.object_number})` : ""}`,
+                                                    subject: `${getText("title")} (${getText("location")})`,
                                                     message: `${t.agentMessage}. ${t.agentMessage2}`,
                                                 });
                                                 router.push("/contact");
                                             }}
-                                            className="w-full px-6 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-semibold uppercase tracking-wider text-sm sm:text-base rounded-sm hover:opacity-90 transition"
+                                            className="w-full px-6 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-semibold uppercase tracking-wider text-sm sm:text-base rounded-sm hover:opacity-90 transition cursor-pointer"
                                         >
                                             {t.inquiry}
                                         </button>

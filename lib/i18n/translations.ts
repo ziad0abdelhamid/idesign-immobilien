@@ -252,7 +252,7 @@ export const translations = {
       interested: "Interested?",
       propertyConsultant: "Property Consultant",
       inquiry: "Send Inquiry",
-      agentMessage: "Hello, I am interested in the property",
+      agentMessage: "Hello, I am interested in this property",
       agentMessage2: "Could you please contact me with further details?",
       yourAgent: "Your Agent",
       facilities: "Facilities",

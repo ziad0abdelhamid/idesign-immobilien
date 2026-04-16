@@ -7,7 +7,6 @@ import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { ReviewsCinematic } from "@/components/ui/ReviewCarousel";
-import RouteSkeleton from "@/components/ui/RouteSkeleton";
 import "flag-icons/css/flag-icons.min.css";
 
 

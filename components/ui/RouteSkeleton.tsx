@@ -8,7 +8,7 @@ interface RouteSkeletonProps {
     duration?: number;
 }
 
-export default function RouteSkeleton({ duration = 600 }: RouteSkeletonProps) {
+export default function RouteSkeleton({ duration = 500 }: RouteSkeletonProps) {
     const pathname = usePathname();
     const [visible, setVisible] = useState(false);
     const cards = Array.from({ length: 6 });
@@ -45,11 +45,11 @@ export default function RouteSkeleton({ duration = 600 }: RouteSkeletonProps) {
 
     return (
         <div
-            className="fixed inset-0 w-full h-full z-9999 bg-white flex flex-col animate-pulse overflow-hidden"
+            className="fixed inset-0 w-full h-full z-99999999 bg-white flex flex-col animate-pulse overflow-hidden"
             style={{ backdropFilter: "blur(4px)" }} // optional: slight blur behind skeleton
         >
             {/* Header Skeleton */}
-            <section className="relative py-16 shrink-0">
+            <section className="relative py-16 shrink-0 overflow-hidden">
                 <div className="absolute inset-0 bg-gray-300/70 -z-10 rounded-md"></div>
                 <div className="relative max-w-7xl mx-auto px-4 text-center space-y-4">
                     <div className="h-10 md:h-12 bg-gray-300 rounded w-1/3 mx-auto"></div>
@@ -58,7 +58,7 @@ export default function RouteSkeleton({ duration = 600 }: RouteSkeletonProps) {
             </section>
 
             {/* Filters + Main Skeleton */}
-            <section className="bg-white py-12 flex-1 overflow-auto">
+            <section className="bg-white py-12 flex-1 overflow-hidden">
                 <div className="max-w-400 mx-auto flex flex-col lg:flex-row gap-8 p-8">
                     {/* Filters Skeleton */}
                     <div className="hidden lg:block w-1/4 space-y-4">
@@ -68,12 +68,12 @@ export default function RouteSkeleton({ duration = 600 }: RouteSkeletonProps) {
                     </div>
 
                     {/* Mobile Filters Button Skeleton */}
-                    <div className="lg:hidden mb-6">
+                    <div className="lg:hidden mb-6 overflow-hidden">
                         <div className="h-10 bg-gray-200 rounded w-32 mx-auto"></div>
                     </div>
 
                     {/* Property Cards Skeleton */}
-                    <main className="w-full lg:w-3/4 xl:w-3/4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-8">
+                    <main className="w-full lg:w-3/4 xl:w-3/4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-8 overflow-hidden">
                         {cards.map((_, idx) => (
                             <motion.div
                                 key={idx}

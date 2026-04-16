@@ -93,7 +93,7 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
             if (p.price < priceRange[0] || p.price > priceRange[1]) shouldExpandPrice = true;
             if (p.bedrooms < bedroomsRange[0] || p.bedrooms > bedroomsRange[1]) shouldExpandBedrooms = true;
             if (p.area < areaRange[0] || p.area > areaRange[1]) shouldExpandArea = true;
-            if (p.land_area && (p.land_area < grundflacheRange[0] || p.land_area > grundflacheRange[1])) shouldExpandGrundflache = true;
+            if (p.land_area && p.land_area > 0 && (p.land_area < grundflacheRange[0] || p.land_area > grundflacheRange[1])) shouldExpandGrundflache = true;
         });
 
         // Only expand if needed
@@ -124,8 +124,9 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
                 const area = p.area;
                 if (area < areaRange[0] || area > areaRange[1]) return false;
 
+                // Only apply land_area filter if land_area is greater than 0
                 const grundflache = p.land_area || 0;
-                if (grundflache < grundflacheRange[0] || grundflache > grundflacheRange[1]) return false;
+                if (grundflache > 0 && (grundflache < grundflacheRange[0] || grundflache > grundflacheRange[1])) return false;
 
                 if (selectedRegion) {
                     const propertyLocation = language === "de" ? p.location_de : p.location_en || p.location;

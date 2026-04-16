@@ -136,10 +136,10 @@ export default function AdminContactPage() {
 
                         {/* LIST */}
                         <div
-                            className={`w-full md:w-1/3 border-r overflow-y-auto bg-white dark:bg-neutral-900 transition-all
+                            className={`w-full md:w-1/3 border-r overflow-auto bg-white dark:bg-neutral-900 transition-all
               ${showList ? "block" : "hidden"} md:block`}
                         >
-                            <div className="p-3 flex gap-2 border-b">
+                            <div className="p-3 flex gap-2 border-b max-h-max">
                                 <div className="relative flex-1">
                                     <Search className="absolute left-2 top-2.5 w-4 h-4 text-neutral-400" />
                                     <input

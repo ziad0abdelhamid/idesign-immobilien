@@ -526,7 +526,7 @@ export default function AdminPropertiesPage() {
                                             </td>
                                             {/* Price Column */}
                                             <td className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 font-medium">
-                                                <div className="line-clamp-2">{property.price ? `${property.price.toLocaleString()} €` : "N/A"}</div>
+                                                <div className="line-clamp-2">{property.price ? `${property.price.toLocaleString()}€` : "N/A"}</div>
                                             </td>
 
                                             {/* Image Column */}

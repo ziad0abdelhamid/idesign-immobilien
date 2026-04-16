@@ -33,7 +33,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={montserrat.variable}>
       <body className="font-(--font-montserrat)">
-        <RouteSkeleton duration={3000} />
+        <RouteSkeleton
+          duration={500} />
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
