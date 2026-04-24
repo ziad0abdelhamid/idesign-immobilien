@@ -22,7 +22,7 @@ export const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Idesign Immobilien - Premium Real Estate in Austria",
   description:
-    "Discover your dream property with Idesign Immobilien. We offer a curated selection of premium real estate in Austria, including apartments, houses, and commercial spaces. Our expert team is dedicated to providing personalized service and expert guidance to help you find the perfect property that meets your needs and exceeds your expectations.",
+    "Wir machen Ihre Immobilie erlebbar. Mit professionellen Foto, Drohnenaufnahmen, Home Staging uvm.",
 };
 
 export default function RootLayout({
