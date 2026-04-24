@@ -40,9 +40,9 @@ export const translations = {
       title: "Based in Austria",
       greeting: "DB ImmoDesign",
       subtitle:
-        "Innovatives Immobilienmarketing – We make your property come alive",
+        "Innovatives Real Estate Marketing – We make your property come alive",
       basedinAustria: "Based in Austria",
-      cta: "Explore Appartments",
+      cta: "Explore Properties",
       ctaTwo: "Our Services",
       featured: "Why DB ImmoDesign?",
       featuredDesc:
@@ -163,9 +163,9 @@ export const translations = {
       sending: "Sending...",
       success: "Message sent successfully!",
       error: "Failed to send message. Please try again.",
-      contactInfo: "Contact Information",
+      contactInfo: "Get in touch",
       contactDescription:
-        "Have questions or need assistance? We're here to help with any inquiries about buying or selling your property. Contact us through the form or directly via our contact details.",
+        "We are happy to support you with all your real estate needs, whether you are looking to buy or sell.",
       address: "Address",
       emailLabel: "Email",
       phoneLabel: "Phone",
@@ -245,9 +245,9 @@ export const translations = {
     },
     propertyModal: {
       contact: "Send Inquiry",
-      area: "Floor Area",
+      area: "Living Area",
       landArea: "Land Area",
-      bedrooms: "Bedrooms",
+      bedrooms: "Rooms",
       objectDescription: "Property Description",
       interested: "Interested?",
       propertyConsultant: "Property Consultant",
@@ -264,45 +264,112 @@ export const translations = {
       swipeToNavigate: "Swipe to navigate",
     },
     aboutPage: {
-      title: "About Us",
+      title: "About",
       heroQuote:
-        "Innovation emerges when you think differently and have the courage to act on it.",
+        "Innovation emerges when you think differently and have the courage to act.",
       heroQuoteAuthor:
         "Brehm, Alexander & Vahs, Dietmar, Innovationsmanagement, 2015",
       personName: "Daniel BETROS",
       personTitle: "Owner",
-      personBio:
-        "Welcome to ImmoDesign e.U.! My name is Daniel Betros and I have been marketing properties on behalf of my clients for over 10 years. From the beginning and to this day, I have been very interested in new ways and ideas to present properties more effectively and market them more successfully. Over the years, I have optimized the use of home staging, drone photography, 3D visualizations, virtual staging and many other methods to meet real estate sales requirements. Today, I am delighted to pass on these skills to my customers.\n\nEvery property and every sales situation is unique – that's why listening is the most important of all skills; In a personal conversation, we find the right concept for your property and your needs together.",
+      personBio: `Welcome to ImmoDesign e.U. I’m Daniel Betros, and I have been helping clients navigate the real estate market for over ten years. From the very beginning, I’ve been fascinated by the potential of new ideas to make property marketing more eAective. For me, it has never been just about "selling a house", but about finding the best possible way to present it.Over the years, I have carefully refined my use of Home Staging, Drone Imagery, 3D Visualizations, and Virtual Staging to perfectly align with the demands of the modern market. Today, I am happy to share this expertise and these specialized tools with my clients. \n\nEvery property and every sale is unique - which is why I believe that listening is the most 
+important part of my job. In a personal conversation, we will develop a concept that is 
+perfectly tailored to your property and your specific needs. `,
       contactTitle: "Contact Us",
       contactDesc:
         "Do you want to present your property optimally? We are here for you!",
       contactPhone: "+43 676 41 83 78-2",
-      contactLocation: "Graz, Austria",
     },
     servicesPage: {
       title: "Our Services",
-      subtitle: "Comprehensive real estate solutions tailored to your needs",
-      photography: "Professional Photography",
-      photographyDesc:
-        "High-quality photos highlight your property in the best light. With optimal perspective, lighting and attention to detail, we showcase every object from its strongest side and increase the interest of potential buyers.",
-      drones: "Drone Photography",
-      dronesDesc:
-        "With professional drone photography, we present your property and entire plot from impressive perspectives. Aerial shots show the surroundings, neighborhood and special features of your property at a glance. We offer this service free of charge as part of our marketing.",
-      staging: "Home Staging",
-      stagingDesc:
-        "We skillfully stage your property. Through targeted use of furniture, lighting and decoration, we create an atmosphere of well-being that highlights the strengths of your rooms. Statistics show that home staging reduces time to sale by up to 73% and results in a significantly higher price in 85% of sales.",
-      marketAnalysis: "Market Valuation Analysis",
-      marketAnalysisDesc:
-        "Finding the right sales price is one of the most important decisions around selling. We not only rely on purchase agreement information from recent sales - we also rely on our experience and conversations with the owner to determine the perfect price.",
-      virtualStaging: "Virtual Staging",
-      virtualStagingDesc:
-        "With state-of-the-art software, we stage your property digitally at the highest level. Especially suitable for properties where traditional home staging is not possible.",
-      visualization3D: "3D Visualization",
-      visualization3DDesc:
-        "With our 3D visualizations, interested parties experience your property virtually in real life. Spaces become tangible, furnishing ideas become visible and buyers can already digitally imagine their future home – a strong advantage.",
-      quote:
-        "Marketing is too important to leave to the marketing department alone.",
-      quoteAuthor: "David Packard",
+      services: [
+        {
+          id: "photography",
+          name: "Professional Photography",
+          description:
+            "High-quality photography presents your property in the best possible light. Using optimal perspectives, lighting, and attention to detail, we showcase every property’s strongest features to maximize interest from potential buyers.",
+        },
+        {
+          id: "drone-photography",
+          name: "Drone Photography",
+          description:
+            "Professional drone shots present your property from impressive perspectives.",
+        },
+        {
+          id: "home-staging",
+          name: "Home Staging",
+          description:
+            "We skillfully stage your property with targeted use of furniture, lighting and decoration.",
+        },
+        {
+          id: "market-analysis",
+          name: "Market Value Analysis",
+          description:
+            "Finding the right sales price is one of the most important selling decisions.",
+        },
+        {
+          id: "virtual-staging",
+          name: "Virtual Staging",
+          description:
+            "With cutting-edge software, we stage your property digitally at the highest level.",
+        },
+        {
+          id: "3d-visualization",
+          name: "3D Visualization",
+          description:
+            "With our 3D visualizations, interested parties experience your property virtually.",
+        },
+      ],
+      heroQuote:
+        "Marketing is too important to be left to the marketing department.",
+      heroQuoteAuthor: "David Packard",
+      heroDesc: "Our services to ensure your property stands out:",
+    },
+    partnershipPage: {
+      title: "Our Partners",
+      heroQuote:
+        "Great things in business are never done by one person; they're done by a team of people.",
+      heroQuoteAuthor: "Steve Jobs",
+      heroDesc:
+        "We are proud to work with a network of dedicated partners who bring invaluable expertise to every project",
+      partners: [
+        {
+          id: "1",
+          name: "Maria Matthäus",
+          title: "Architecture",
+          description:
+            "Specialist in sustainable architecture and innovative spatial concepts.",
+        },
+        {
+          id: "2",
+          name: "Konstantin Prabitz",
+          title: "Drone Photography",
+          description: "Expert in professional drone and aerial photography.",
+        },
+        {
+          id: "3",
+          name: "Thomas Lippitz",
+          title: "Financial Advisory",
+          description:
+            "Specialist in real estate financing and investment consulting.",
+        },
+        {
+          id: "4",
+          name: "Anna Starhemberg",
+          title: "Professional Photography",
+          description: "Master of real estate and architectural photography.",
+        },
+        {
+          id: "5",
+          name: "Mark Ekladious",
+          title: "3D Rendering",
+          description:
+            "Specialist in high-quality 3D visualizations and renderings.",
+        },
+      ],
+    },
+    contactPage: {
+      title: "Get in Touch",
+      desc: "We are happy to support you with all your real estate needs.",
     },
   },
   de: {
@@ -566,6 +633,99 @@ export const translations = {
       furtherFacilities: "Weitere Ausstattung:",
       noDescription: "Keine Beschreibung verfügbar",
       swipeToNavigate: "Wischen zum Navigieren",
+    },
+    servicesPage: {
+      title: "Unsere Dienstleistungen",
+      services: [
+        {
+          id: "photography",
+          name: "Professionelle Fotografie",
+          description:
+            "Hochwertige Fotos präsentieren Ihre Immobilie im besten Licht.",
+        },
+        {
+          id: "drone-photography",
+          name: "Drohnenaufnahmen",
+          description:
+            "Professionelle Drohnenaufnahmen zeigen Ihre Immobilie aus beeindruckenden Perspektiven.",
+        },
+        {
+          id: "home-staging",
+          name: "Home Staging",
+          description:
+            "Wir inszenieren Ihre Immobilie geschickt mit gezieltem Einsatz von Möbeln, Beleuchtung und Dekoration.",
+        },
+        {
+          id: "market-analysis",
+          name: "Marktwertanalyse",
+          description:
+            "Die richtige Verkaufspreisfindung ist eine der wichtigsten Entscheidungen beim Verkauf.",
+        },
+        {
+          id: "virtual-staging",
+          name: "Virtuelles Staging",
+          description:
+            "Mit modernster Software inszenieren wir Ihre Immobilie digital auf höchstem Niveau.",
+        },
+        {
+          id: "3d-visualization",
+          name: "3D-Visualisierung",
+          description:
+            "Mit unseren 3D-Visualisierungen erleben interessierte Parteien Ihre Immobilie virtuell.",
+        },
+      ],
+      heroQuote:
+        "Marketing ist zu wichtig, um es der Marketingabteilung allein zu überlassen.",
+      heroQuoteAuthor: "David Packard",
+      heroDesc:
+        "Unsere umfassenden Dienstleistungen helfen Ihnen, Ihre Immobilien effektiv zu vermarkten.",
+    },
+    partnershipPage: {
+      title: "Unsere Partner",
+      heroQuote: "Zusammenarbeit ist der Schlüssel zum Erfolg.",
+      heroQuoteAuthor: "DB ImmoDesign",
+      heroDesc:
+        "Wir arbeiten mit erfahrenen Fachleuten zusammen, um Ihnen die besten Dienstleistungen zu bieten.",
+      partners: [
+        {
+          id: "1",
+          name: "Maria Matthäus",
+          title: "Architektur",
+          description:
+            "Spezialistin für nachhaltige Architektur und innovative Raumkonzepte.",
+        },
+        {
+          id: "2",
+          name: "Konstantin Prabitz",
+          title: "Drohnenaufnahmen",
+          description:
+            "Experte für professionelle Drohnen- und Luftfotografie.",
+        },
+        {
+          id: "3",
+          name: "Thomas Lippitz",
+          title: "Finanzberatung",
+          description:
+            "Spezialist für Immobilienfinanzierung und Investitionsberatung.",
+        },
+        {
+          id: "4",
+          name: "Anna Starhemberg",
+          title: "Professionelle Fotografie",
+          description: "Meisterin der Immobilien- und Architekturfotografie.",
+        },
+        {
+          id: "5",
+          name: "Mark Ekladious",
+          title: "3D-Rendering",
+          description:
+            "Spezialist für hochwertige 3D-Visualisierungen und Renderings.",
+        },
+      ],
+    },
+    contactPage: {
+      title: "Kontaktieren Sie uns",
+      desc: "Wir helfen Ihnen gerne bei all Ihren Immobilienbedürfnissen.",
     },
   },
 };

@@ -1,8 +1,10 @@
-"use client";
+﻿"use client";
 import { useEffect, useState } from "react";
 import { FaGlobe } from "react-icons/fa";
 import { motion, Variants } from "framer-motion";
 import Image from "next/image";
+import { useLanguageStore } from "@/lib/store";
+import { translations } from "@/lib/i18n/translations";
 
 interface Partner {
     id: string;
@@ -16,58 +18,106 @@ interface Partner {
 export default function OurPartners() {
     const [partners, setPartners] = useState<Partner[]>([]);
     const [loading, setLoading] = useState(true);
+    const { language } = useLanguageStore();
+    const t = translations[language];
 
     useEffect(() => {
-        const data: Partner[] = [
-            {
-                id: "1",
-                name: "DI Maria Matthäus",
-                title: "Expertin für technische Zeichnungen",
-                description:
-                    "Maria ist frischgebackene Architektin und unsere Spezialistin für technische Zeichnungen.Sie unterstützt unsere Kunden bei der Erstellung präziser, professioneller Pläne – sei es für Energieausweise oder die optimale Verkaufspräsentation Ihrer Immobilie.Mit ihrem Fachwissen über die aktuellsten Neuerungen im Bauwesen ist sie Ihre verlässliche Begleiterin für alle rechtlichen und technischen Fragen rund um Ihr Projekt.",
-                logo: "/Maria.jpeg",
-            },
-            {
-                id: "2",
-                name: "Dr. Konstantin Prabitz",
-                title: "Hochwertige Drohnenaufnahmen",
-                description:
-                    "Dominik hebt mit seinen sehr anspruchsvollen Aufnahmen Ihre Immobilie auf ein ganz neues Level. Er schafft beeindruckende Luftbilder und sogar Indoor-Drohnenaufnahmen.",
-                logo: "/Konstantin.jpg",
-                website: "https://oesterreich.wtf",
-            },
-            {
-                id: "3",
-                name: "Thomas Lippitz",
-                title: "Ihr Ansprechpartner für Finanzierung & Immobilieninvestitionen",
-                description:
-                    "Wenn es um Immobilienfinanzierung geht, sorgt Thomas für Klarheit, Struktur und maßgeschneiderte Lösungen.",
-                logo: "/Thomas.jpeg",
-                website: "https://www.clever-finanziert.at/lippitz-thomas/",
-            },
-            {
-                id: "4",
-                name: "Anna Starhemberg",
-                title: "Professionelle Immobilienfotografie mit Immo Capture",
-                description:
-                    "Ob Altbau, Neubau oder Gewerbeobjekt – Anna sorgt für aussagekräftige Aufnahmen, die Eindruck hinterlassen.",
-                logo: "/Anna.jpg",
-                website: "https://immocapture.at/kontakt/",
-            },
-            {
-                id: "5",
-                name: "DI Mark Ekladious",
-                title: "Experte für 3D-Renderings",
-                description:
-                    "Mark ist unser Spezialist für 3D-Renderings und erstellt für unsere Kunden professionelle 3D-Visualisierungen.",
-                logo: "/Mark.jpg",
-                website: "https://h-ev.net/",
-            },
-        ];
+        const data: Partner[] = language === 'de' ?
+            [
+                {
+                    id: "1",
+                    name: "DI Maria Matthäus",
+                    title: "Expertin für technische Zeichnungen",
+                    description:
+                        "Maria ist frischgebackene Architektin und unsere Spezialistin für technische Zeichnungen.Sie unterstützt unsere Kunden bei der Erstellung präziser, professioneller Pläne – sei es für Energieausweise oder die optimale Verkaufspräsentation Ihrer Immobilie.Mit ihrem Fachwissen über die aktuellsten Neuerungen im Bauwesen ist sie Ihre verlässliche Begleiterin für alle rechtlichen und technischen Fragen rund um Ihr Projekt.",
+                    logo: "/Maria.jpeg",
+                },
+                {
+                    id: "2",
+                    name: "Dr. Konstantin Prabitz",
+                    title: "Hochwertige Drohnenaufnahmen",
+                    description:
+                        "Dominik hebt mit seinen sehr anspruchsvollen Aufnahmen Ihre Immobilie auf ein ganz neues Level. Er schafft beeindruckende Luftbilder und sogar Indoor-Drohnenaufnahmen.",
+                    logo: "/Konstantin.jpg",
+                    website: "https://oesterreich.wtf",
+                },
+                {
+                    id: "3",
+                    name: "Thomas Lippitz",
+                    title: "Ihr Ansprechpartner für Finanzierung & Immobilieninvestitionen",
+                    description:
+                        "Wenn es um Immobilienfinanzierung geht, sorgt Thomas für Klarheit, Struktur und maßgeschneiderte Lösungen.",
+                    logo: "/Thomas.jpeg",
+                    website: "https://www.clever-finanziert.at/lippitz-thomas/",
+                },
+                {
+                    id: "4",
+                    name: "Anna Starhemberg",
+                    title: "Professionelle Immobilienfotografie mit Immo Capture",
+                    description:
+                        "Ob Altbau, Neubau oder Gewerbeobjekt – Anna sorgt für aussagekräftige Aufnahmen, die Eindruck hinterlassen.",
+                    logo: "/Anna.jpg",
+                    website: "https://immocapture.at/kontakt/",
+                },
+                {
+                    id: "5",
+                    name: "DI Mark Ekladious",
+                    title: "Experte für 3D-Renderings",
+                    description:
+                        "Mark ist unser Spezialist für 3D-Renderings und erstellt für unsere Kunden professionelle 3D-Visualisierungen.",
+                    logo: "/Mark.jpg",
+                    website: "https://h-ev.net/",
+                },
+            ] : [
+                {
+                    id: "1",
+                    name: "DI Maria Matthäus",
+                    title: "Architecture & Technical Design",
+                    description:
+                        "Maria combines architectural vision with technical precision. As our specialist for technical drawings, she provides our clients with the professional documentation necessary for a successful sale - fromdetailed floor plans to energy performance certificates. With an expert eye on the latest building regulations and technical standards, Maria ensures your project is both legally sound and perfectly presented.",
+                    logo: "/Maria.jpeg",
+                },
+                {
+                    id: "2",
+                    name: "Dr. Konstantin Prabitz",
+                    title: "Premium Drone Imagery ",
+                    description:
+                        "Konstantin elevates property marketing to new heights. His sophisticated aerial photography and specialized indoor drone tours provide breathtaking perspectives, capturing the full scale and unique character of every home from angles that were once impossible to reach. ",
+                    logo: "/Konstantin.jpg",
+                    website: "https://oesterreich.wtf",
+                },
+                {
+                    id: "3",
+                    name: "Thomas Lippitz",
+                    title: "Finance & Investment Strategy ",
+                    description:
+                        "Thomas is your expert for navigating the complexities of real estate financing. He brings clarity and structure to every transaction, delivering bespoke financial solutions designed to secure your investment and maximize your long- term success. ",
+                    logo: "/Thomas.jpeg",
+                    website: "https://www.clever-finanziert.at/lippitz-thomas/",
+                },
+                {
+                    id: "4",
+                    name: "Anna Starhemberg",
+                    title: "Professional Photography | Immo Capture ",
+                    description:
+                        "From historic architecture to modern commercial spaces, Anna’s photography is about more than just pictures—it’s about impact. She captures the essence of a property, creating compelling visual stories that leave a lasting impression on potential buyers.",
+                    logo: "/Anna.jpg",
+                    website: "https://immocapture.at/kontakt/",
+                },
+                {
+                    id: "5",
+                    name: "DI Mark Ekladious",
+                    title: "3D Visualization Specialist",
+                    description:
+                        "Mark transforms blueprints into reality. As our 3D rendering expert, he creates hyperrealistic visualizations that allow clients to experience a property before it is even built,making him an essential asset for modern property marketing.",
+                    logo: "/Mark.jpg",
+                    website: "https://h-ev.net/",
+                },
+            ];
 
         setPartners(data);
         setLoading(false);
-    }, []);
+    }, [language]);
 
     if (loading)
         return (
@@ -108,22 +158,20 @@ export default function OurPartners() {
 
                 <div className="relative z-10 max-w-3xl sm:max-w-4xl text-white py-16 sm:py-20 md:py-0">
                     <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 sm:mb-8 drop-shadow-lg leading-tight">
-                        Unsere Partner
+                        {t.partnershipPage.title}
                     </h1>
 
                     <blockquote className="text-xl sm:text-2xl md:text-3xl italic font-light leading-relaxed drop-shadow-md text-center mb-6 px-2">
-                        „Große Dinge werden nie von einer Person allein erreicht,
-                        sie sind das Ergebnis eines Teams.“
+                        {t.partnershipPage.heroQuote}
                         <footer className="mt-4 text-base sm:text-lg md:text-xl not-italic font-semibold">
-                            – Steve Jobs
+                            – {t.partnershipPage.heroQuoteAuthor}
                         </footer>
                     </blockquote>
 
                     <div className="w-16 h-1 bg-blue-500 mx-auto mb-6 rounded-full"></div>
 
                     <p className="text-base sm:text-lg md:text-xl leading-relaxed drop-shadow-md text-center px-4">
-                        Wir sind stolz darauf, mit einem Netzwerk engagierter Partner
-                        zusammenzuarbeiten, die mit ihrem Fachwissen jedes Projekt bereichern.
+                        {t.partnershipPage.heroDesc}
                     </p>
                 </div>
             </section>
@@ -168,7 +216,7 @@ export default function OurPartners() {
                                         rel="noopener noreferrer"
                                         className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-800 transition-colors"
                                     >
-                                        <FaGlobe /> Website besuchen
+                                        <FaGlobe /> {language === "en" ? "Visit Website" : "Webseite besuchen"}
                                     </a>
                                 )}
                             </div>

@@ -90,7 +90,7 @@ export function PropertyCard({
                         <div className="flex items-center gap-3 text-black">
                             <FaRulerCombined className="text-blue-600 text-base" />
                             <span className="text-m font-medium">
-                                {language === "de" ? "Fläche" : "Area"}
+                                {language === "de" ? "Fläche" : "Living Area"}
                             </span>
                         </div>
                         <span className="text-m font-semibold text-black">
