@@ -43,6 +43,7 @@ interface Property {
     language: string;
     images: string[];
     display_order: number;
+    propertyType: string;
 }
 
 export default function PropertiesPage() {
@@ -266,6 +267,7 @@ export default function PropertiesPage() {
                                             price={prop.price}
                                             area={prop.area}
                                             land_area={prop.land_area}
+                                            propertyType={prop.propertyType}
                                             bedrooms={prop.bedrooms}
                                             images={prop.images.length ? prop.images : ["/placeholder.jpg"]}
                                             language={language}

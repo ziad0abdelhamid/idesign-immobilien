@@ -29,7 +29,7 @@ export default function OurPartners() {
                     name: "DI Maria Matthäus",
                     title: "Expertin für technische Zeichnungen",
                     description:
-                        "Maria ist frischgebackene Architektin und unsere Spezialistin für technische Zeichnungen.Sie unterstützt unsere Kunden bei der Erstellung präziser, professioneller Pläne – sei es für Energieausweise oder die optimale Verkaufspräsentation Ihrer Immobilie.Mit ihrem Fachwissen über die aktuellsten Neuerungen im Bauwesen ist sie Ihre verlässliche Begleiterin für alle rechtlichen und technischen Fragen rund um Ihr Projekt.",
+                        "Maria ist frischgebackene Architektin und unsere Spezialistin für technische Zeichnungen. Sie unterstützt unsere Kunden bei der Erstellung präziser, professioneller Pläne – sei es für Energieausweise oder die optimale Verkaufspräsentation Ihrer Immobilie. Mit ihrem Fachwissen über die aktuellsten Neuerungen im Bauwesen ist sie Ihre verlässliche Begleiterin für alle rechtlichen und technischen Fragen rund um Ihr Projekt.",
                     logo: "/Maria.jpeg",
                 },
                 {

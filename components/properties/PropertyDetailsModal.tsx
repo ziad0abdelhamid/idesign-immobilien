@@ -151,9 +151,22 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                         </div>
                         {/* SPECS - Area, Land Area (if exists), Bedrooms */}
                         <div
-                            className={`grid grid-cols-1 ${property.land_area != 0 ? "sm:grid-cols-3" : "sm:grid-cols-2"
+                            className={`grid grid-cols-1 ${(property.land_area != 0 ? 1 : 0) + (property.propertyType ? 1 : 0) > 1 ? "sm:grid-cols-4" : property.land_area != 0 || property.propertyType ? "sm:grid-cols-3" : "sm:grid-cols-2"
                                 } w-full border-b border-neutral-200 dark:border-neutral-700`}
                         >
+                            {property.propertyType && (
+                                <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 text-center border-b sm:border-b-0 sm:border-r border-neutral-200 dark:border-neutral-700">
+                                    <div className="text-xs sm:text-sm text-neutral-500 uppercase tracking-widest mb-1 sm:mb-2">
+                                        {language === "de" ? "Typ" : "Type"}
+                                    </div>
+                                    <div className="text-xl sm:text-2xl lg:text-3xl font-light">
+                                        {language === "de"
+                                            ? property.propertyType === "villa" ? "Villa" : property.propertyType === "apartment" ? "Wohnung" : "Grundstück"
+                                            : property.propertyType.charAt(0).toUpperCase() + property.propertyType.slice(1)}
+                                    </div>
+                                </div>
+                            )}
+
                             {property.area && (
                                 <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 text-center border-b sm:border-b-0 sm:border-r border-neutral-200 dark:border-neutral-700">
                                     <div className="text-xs sm:text-sm text-neutral-500 uppercase tracking-widest mb-1 sm:mb-2">
@@ -178,7 +191,7 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
 
                             {property.bedrooms && (
                                 <div
-                                    className={`px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 text-center ${property.land_area != 0
+                                    className={`px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 text-center ${property.land_area != 0 || property.propertyType
                                         ? ""
                                         : "sm:border-l border-neutral-200 dark:border-neutral-700"
                                         }`}

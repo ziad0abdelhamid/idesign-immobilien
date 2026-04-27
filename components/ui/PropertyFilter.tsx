@@ -24,7 +24,7 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
         const prices = properties.map(p => p.price).filter((p) => p > 0);
         return {
             min: 0,
-            max: Math.ceil(Math.max(...prices) / 10000) * 10000 + 50000,
+            max: Math.max(...prices),
         };
     };
 
@@ -40,76 +40,91 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
         return [...new Set(locations)].sort();
     };
 
+    // Get unique property types from properties
+    const getUniquePropertyTypes = () => {
+        if (!properties || properties.length === 0) return [];
+        const types = properties
+            .map(p => p.propertyType)
+            .filter(Boolean);
+        return [...new Set(types)].sort();
+    };
+
     // Dynamic Grundflache (land area) range from properties
     const getGrundflacheRange = () => {
         if (!properties || properties.length === 0) {
-            return { min: 400, max: 10000 };
+            return { min: 0, max: 10000 };
         }
         const areas = properties.map(p => p.land_area).filter((a) => a > 0);
         if (areas.length === 0) {
-            return { min: 400, max: 10000 };
+            return { min: 0, max: 10000 };
         }
-        const minArea = Math.floor(Math.min(...areas) / 100) * 100;
-        const maxArea = Math.ceil(Math.max(...areas) / 100) * 100;
         return {
-            min: Math.min(minArea, 400),
-            max: Math.max(maxArea, 10000),
+            min: 0,
+            max: Math.max(...areas),
+        };
+    };
+
+    // Dynamic bedrooms range from properties
+    const getBedroomsRange = () => {
+        if (!properties || properties.length === 0) {
+            return { min: 0, max: 15 };
+        }
+        const bedrooms = properties.map(p => p.bedrooms).filter((b) => b >= 0);
+        if (bedrooms.length === 0) {
+            return { min: 0, max: 15 };
+        }
+        return {
+            min: 0,
+            max: Math.max(...bedrooms),
+        };
+    };
+
+    // Dynamic area (living area) range from properties
+    const getAreaRange = () => {
+        if (!properties || properties.length === 0) {
+            return { min: 0, max: 400 };
+        }
+        const areas = properties.map(p => p.area).filter((a) => a >= 0);
+        if (areas.length === 0) {
+            return { min: 0, max: 400 };
+        }
+        return {
+            min: 0,
+            max: Math.max(...areas),
         };
     };
 
     const dynamicPriceRange = getPriceRange();
     const minPriceEUR = dynamicPriceRange.min;
     const maxPriceEUR = dynamicPriceRange.max;
+    const dynamicBedroomsRange = getBedroomsRange();
+    const minBedrooms = dynamicBedroomsRange.min;
+    const maxBedrooms = dynamicBedroomsRange.max;
+    const dynamicAreaRange = getAreaRange();
+    const minArea = dynamicAreaRange.min;
+    const maxArea = dynamicAreaRange.max;
     const dynamicGrundflacheRange = getGrundflacheRange();
     const minGrundflache = dynamicGrundflacheRange.min;
     const maxGrundflache = dynamicGrundflacheRange.max;
     const uniqueLocations = getUniqueLocations();
+    const uniquePropertyTypes = getUniquePropertyTypes();
 
     // State
     const [priceRange, setPriceRange] = useState<[number, number]>([minPriceEUR, maxPriceEUR]);
-    const [bedroomsRange, setBedroomsRange] = useState<[number, number]>([1, 15]);
-    const [areaRange, setAreaRange] = useState<[number, number]>([20, 400]);
+    const [bedroomsRange, setBedroomsRange] = useState<[number, number]>([minBedrooms, maxBedrooms]);
+    const [areaRange, setAreaRange] = useState<[number, number]>([minArea, maxArea]);
     const [grundflacheRange, setGrundflacheRange] = useState<[number, number]>([minGrundflache, maxGrundflache]);
+    const [selectedPropertyType, setSelectedPropertyType] = useState<string>("");
     const [selectedRegion, setSelectedRegion] = useState<string>("");
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [filteredCount, setFilteredCount] = useState(properties.length);
-
+    // Initialize ranges with dynamic values
     useEffect(() => {
         setPriceRange([minPriceEUR, maxPriceEUR]);
-    }, [minPriceEUR, maxPriceEUR]);
-
-    useEffect(() => {
+        setBedroomsRange([minBedrooms, maxBedrooms]);
+        setAreaRange([minArea, maxArea]);
         setGrundflacheRange([minGrundflache, maxGrundflache]);
-    }, [minGrundflache, maxGrundflache]);
-
-    // Effect to expand ranges only when properties change
-    useEffect(() => {
-        let shouldExpandPrice = false;
-        let shouldExpandBedrooms = false;
-        let shouldExpandArea = false;
-        let shouldExpandGrundflache = false;
-
-        properties.forEach(p => {
-            if (p.price < priceRange[0] || p.price > priceRange[1]) shouldExpandPrice = true;
-            if (p.bedrooms < bedroomsRange[0] || p.bedrooms > bedroomsRange[1]) shouldExpandBedrooms = true;
-            if (p.area < areaRange[0] || p.area > areaRange[1]) shouldExpandArea = true;
-            if (p.land_area && p.land_area > 0 && (p.land_area < grundflacheRange[0] || p.land_area > grundflacheRange[1])) shouldExpandGrundflache = true;
-        });
-
-        // Only expand if needed
-        if (shouldExpandPrice) {
-            setPriceRange([minPriceEUR, maxPriceEUR]);
-        }
-        if (shouldExpandBedrooms) {
-            setBedroomsRange([1, 15]);
-        }
-        if (shouldExpandArea) {
-            setAreaRange([20, 400]);
-        }
-        if (shouldExpandGrundflache) {
-            setGrundflacheRange([minGrundflache, maxGrundflache]);
-        }
-    }, [properties]);
+    }, [properties, minPriceEUR, maxPriceEUR, minBedrooms, maxBedrooms, minArea, maxArea, minGrundflache, maxGrundflache]);
 
     // Filtering logic
     useEffect(() => {
@@ -121,16 +136,21 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
                 const bedrooms = p.bedrooms;
                 if (bedrooms < bedroomsRange[0] || bedrooms > bedroomsRange[1]) return false;
 
-                const area = p.area;
-                if (area < areaRange[0] || area > areaRange[1]) return false;
+                // Allow area = 0, but filter non-zero values by range
+                const area = p.area ?? 0;
+                if (area !== 0 && (area < areaRange[0] || area > areaRange[1])) return false;
 
                 // Only apply land_area filter if land_area is greater than 0
-                const grundflache = p.land_area || 0;
+                const grundflache = p.land_area ?? 0;
                 if (grundflache > 0 && (grundflache < grundflacheRange[0] || grundflache > grundflacheRange[1])) return false;
 
                 if (selectedRegion) {
                     const propertyLocation = language === "de" ? p.location_de : p.location_en || p.location;
                     if (propertyLocation !== selectedRegion) return false;
+                }
+
+                if (selectedPropertyType) {
+                    if (p.propertyType !== selectedPropertyType) return false;
                 }
 
                 if (searchQuery.trim()) {
@@ -149,14 +169,15 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
         }, 100);
 
         return () => clearTimeout(timeout);
-    }, [priceRange, bedroomsRange, areaRange, grundflacheRange, selectedRegion, searchQuery, properties, setFilteredProperties, language]);
+    }, [priceRange, bedroomsRange, areaRange, grundflacheRange, selectedRegion, selectedPropertyType, searchQuery, properties, setFilteredProperties, language]);
 
     const resetFilters = () => {
         setPriceRange([minPriceEUR, maxPriceEUR]);
-        setBedroomsRange([1, 15]);
-        setAreaRange([20, 400]);
+        setBedroomsRange([minBedrooms, maxBedrooms]);
+        setAreaRange([minArea, maxArea]);
         setGrundflacheRange([minGrundflache, maxGrundflache]);
         setSelectedRegion("");
+        setSelectedPropertyType("");
         setSearchQuery("");
     };
 
@@ -179,8 +200,12 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
                                 maxPriceEUR={maxPriceEUR}
                                 bedroomsRange={bedroomsRange}
                                 setBedroomsRange={setBedroomsRange}
+                                minBedrooms={minBedrooms}
+                                maxBedrooms={maxBedrooms}
                                 areaRange={areaRange}
                                 setAreaRange={setAreaRange}
+                                minArea={minArea}
+                                maxArea={maxArea}
                                 grundflacheRange={grundflacheRange}
                                 setGrundflacheRange={setGrundflacheRange}
                                 minGrundflache={minGrundflache}
@@ -194,6 +219,9 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
                                 totalCount={properties.length}
                                 searchQuery={searchQuery}
                                 setSearchQuery={setSearchQuery}
+                                selectedPropertyType={selectedPropertyType}
+                                setSelectedPropertyType={setSelectedPropertyType}
+                                uniquePropertyTypes={uniquePropertyTypes}
                             />
                         </div>
                     </div>
@@ -220,8 +248,12 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
                         maxPriceEUR={maxPriceEUR}
                         bedroomsRange={bedroomsRange}
                         setBedroomsRange={setBedroomsRange}
+                        minBedrooms={minBedrooms}
+                        maxBedrooms={maxBedrooms}
                         areaRange={areaRange}
                         setAreaRange={setAreaRange}
+                        minArea={minArea}
+                        maxArea={maxArea}
                         grundflacheRange={grundflacheRange}
                         setGrundflacheRange={setGrundflacheRange}
                         minGrundflache={minGrundflache}
@@ -235,6 +267,9 @@ export function PropertyFilters({ isOpen, onClose, properties, setFilteredProper
                         totalCount={properties.length}
                         searchQuery={searchQuery}
                         setSearchQuery={setSearchQuery}
+                        selectedPropertyType={selectedPropertyType}
+                        setSelectedPropertyType={setSelectedPropertyType}
+                        uniquePropertyTypes={uniquePropertyTypes}
                     />
                 </div>
             </aside>
@@ -249,8 +284,12 @@ interface FilterContentProps {
     maxPriceEUR: number;
     bedroomsRange: [number, number];
     setBedroomsRange: (range: [number, number]) => void;
+    minBedrooms: number;
+    maxBedrooms: number;
     areaRange: [number, number];
     setAreaRange: (range: [number, number]) => void;
+    minArea: number;
+    maxArea: number;
     grundflacheRange: [number, number];
     setGrundflacheRange: (range: [number, number]) => void;
     minGrundflache: number;
@@ -264,6 +303,9 @@ interface FilterContentProps {
     totalCount: number;
     searchQuery: string;
     setSearchQuery: (query: string) => void;
+    selectedPropertyType?: string;
+    setSelectedPropertyType?: (type: string) => void;
+    uniquePropertyTypes?: string[];
 }
 
 function FilterContent({
@@ -273,8 +315,12 @@ function FilterContent({
     maxPriceEUR,
     bedroomsRange,
     setBedroomsRange,
+    minBedrooms,
+    maxBedrooms,
     areaRange,
     setAreaRange,
+    minArea,
+    maxArea,
     grundflacheRange,
     setGrundflacheRange,
     minGrundflache,
@@ -288,6 +334,9 @@ function FilterContent({
     totalCount,
     searchQuery,
     setSearchQuery,
+    selectedPropertyType = "",
+    setSelectedPropertyType,
+    uniquePropertyTypes = [],
 }: FilterContentProps) {
     const formatPrice = (price: number) => {
         if (price >= 1000000) {
@@ -295,7 +344,8 @@ function FilterContent({
         }
         return `${(price / 1000).toFixed(0)}k €`;
     };
-
+    const [DDisOpen, setDDisOpen] = useState(false);
+    const [isTypeOpen, setIsTypeOpen] = useState(false);
     return (
         <div className="space-y-3 md:space-y-4 lg:space-y-5">
             {/* Search Bar */}
@@ -320,26 +370,146 @@ function FilterContent({
                 <label className="text-[10px] font-bold uppercase text-blue-400 tracking-widest block mb-2">
                     {language === "de" ? "Region" : "Region"}
                 </label>
-                <div className="relative">
-                    <select
-                        value={selectedRegion}
-                        onChange={(e) => setSelectedRegion(e.target.value)}
-                        className="w-full bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 text-sm text-gray-700 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none appearance-none cursor-pointer hover:bg-blue-100 transition font-medium"
+                <div className="relative w-full">
+                    {/* Trigger */}
+                    <div
+                        onClick={() => setDDisOpen(!DDisOpen)}
+                        className="w-full bg-white border border-gray-300 rounded-2xl px-4 py-3 text-sm text-gray-800 
+    shadow-[0_8px_30px_rgba(0,0,0,0.06)] cursor-pointer flex justify-between items-center
+    hover:border-gray-400 focus-within:ring-2 focus-within:ring-blue-500 transition"
                     >
-                        <option value="">{language === "de" ? "Alle Regionen" : "All Regions"}</option>
-                        {uniqueLocations.map((location) => (
-                            <option key={location} value={location}>
-                                {location}
-                            </option>
-                        ))}
-                    </select>
-                    <div className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2">
-                        <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                        </svg>
+                        <span className="font-medium tracking-tight">
+                            {selectedRegion || (language === "de" ? "Alle Regionen" : "All Regions")}
+                        </span>
+
+                        <span
+                            className={`transition-transform duration-300 text-gray-500 ${DDisOpen ? "rotate-180" : ""
+                                }`}
+                        >
+                            ▼
+                        </span>
                     </div>
+
+                    {/* Dropdown */}
+                    {DDisOpen && (
+                        <div className="absolute z-50 mt-2 w-full bg-white border border-gray-200 rounded-2xl 
+                              shadow-[0_10px_40px_rgba(0,0,0,0.1)] overflow-hidden animate-[fadeIn_.2s_ease]">
+
+                            <div
+                                onClick={() => {
+                                    setSelectedRegion("");
+                                    setDDisOpen(false);
+                                }}
+                                className="px-4 py-3 text-sm hover:bg-blue-50 cursor-pointer transition"
+                            >
+                                {language === "de" ? "Alle Regionen" : "All Regions"}
+                            </div>
+
+                            {uniqueLocations.map((location) => (
+                                <div
+                                    key={location}
+                                    onClick={() => {
+                                        setSelectedRegion(location);
+                                        setDDisOpen(false);
+                                    }}
+                                    className="px-4 py-3 text-sm hover:bg-blue-50 cursor-pointer transition flex justify-between items-center"
+                                >
+                                    {location}
+
+                                    {selectedRegion === location && (
+                                        <span className="text-blue-500 text-xs">✓</span>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
+
+            {/* Property Type Filter */}
+            {uniquePropertyTypes?.length > 0 && (
+                <div>
+                    <label className="text-[10px] font-bold uppercase text-blue-400 tracking-widest block mb-2">
+                        {language === "de" ? "Immobilientyp" : "Property Type"}
+                    </label>
+                    <div className="relative w-full">
+                        {/* Trigger */}
+                        <div
+                            onClick={() => setIsTypeOpen(!isTypeOpen)}
+                            className="w-full bg-white border border-gray-300 rounded-2xl px-4 py-3 text-sm text-gray-800 
+    shadow-[0_8px_30px_rgba(0,0,0,0.06)] cursor-pointer flex justify-between items-center
+    hover:border-gray-400 focus-within:ring-2 focus-within:ring-blue-500 transition"
+                        >
+                            <span className="font-medium tracking-tight">
+                                {selectedPropertyType
+                                    ? (language === "de"
+                                        ? selectedPropertyType === "villa"
+                                            ? "Villa"
+                                            : selectedPropertyType === "apartment"
+                                                ? "Wohnung"
+                                                : "Grundstück"
+                                        : selectedPropertyType.charAt(0).toUpperCase() + selectedPropertyType.slice(1))
+                                    : (language === "de" ? "Alle Typen" : "All Types")}
+                            </span>
+
+                            <span
+                                className={`transition-transform duration-300 text-gray-500 ${isTypeOpen ? "rotate-180" : ""
+                                    }`}
+                            >
+                                ▼
+                            </span>
+                        </div>
+
+                        {/* Dropdown */}
+                        {isTypeOpen && (
+                            <div
+                                className="absolute z-50 mt-2 w-full bg-white border border-gray-200 rounded-2xl 
+      shadow-[0_10px_40px_rgba(0,0,0,0.1)] overflow-hidden animate-[fadeIn_.2s_ease]"
+                            >
+                                {/* Default option */}
+                                <div
+                                    onClick={() => {
+                                        setSelectedPropertyType?.("");
+                                        setIsTypeOpen(false);
+                                    }}
+                                    className="px-4 py-3 text-sm hover:bg-blue-50 cursor-pointer transition"
+                                >
+                                    {language === "de" ? "Alle Typen" : "All Types"}
+                                </div>
+
+                                {/* Options */}
+                                {uniquePropertyTypes.map((type) => {
+                                    const label =
+                                        language === "de"
+                                            ? type === "villa"
+                                                ? "Villa"
+                                                : type === "apartment"
+                                                    ? "Wohnung"
+                                                    : "Grundstück"
+                                            : type.charAt(0).toUpperCase() + type.slice(1);
+
+                                    return (
+                                        <div
+                                            key={type}
+                                            onClick={() => {
+                                                setSelectedPropertyType?.(type);
+                                                setIsTypeOpen(false);
+                                            }}
+                                            className="px-4 py-3 text-sm hover:bg-blue-50 cursor-pointer transition flex justify-between items-center"
+                                        >
+                                            {label}
+
+                                            {selectedPropertyType === type && (
+                                                <span className="text-blue-500 text-xs">✓</span>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
 
             {/* Price Range Slider */}
             <div>
@@ -365,10 +535,10 @@ function FilterContent({
                     <Slider.Thumb className="block w-5 h-5 bg-blue-400 rounded-full shadow-md hover:shadow-lg hover:scale-110 transition-all cursor-pointer border-2 border-white" />
                     <Slider.Thumb className="block w-5 h-5 bg-blue-400 rounded-full shadow-md hover:shadow-lg hover:scale-110 transition-all cursor-pointer border-2 border-white" />
                 </Slider.Root>
-                <div className="flex justify-between text-xs text-gray-500 mt-2">
+                {/* <div className="flex justify-between text-xs text-gray-500 mt-2">
                     <span>€0</span>
                     <span>{formatPrice(maxPriceEUR)}</span>
-                </div>
+                </div> */}
             </div>
 
             {/* Bedrooms Range Slider */}
@@ -384,8 +554,8 @@ function FilterContent({
                 <Slider.Root
                     className="relative flex items-center select-none touch-none w-full h-5 mb-3"
                     value={bedroomsRange}
-                    min={1}
-                    max={15}
+                    min={minBedrooms}
+                    max={maxBedrooms}
                     step={1}
                     onValueChange={(val: number[]) => setBedroomsRange([val[0], val[1]])}
                 >
@@ -395,10 +565,10 @@ function FilterContent({
                     <Slider.Thumb className="block w-5 h-5 bg-blue-400 rounded-full shadow-md hover:shadow-lg hover:scale-110 transition-all cursor-pointer border-2 border-white" />
                     <Slider.Thumb className="block w-5 h-5 bg-blue-400 rounded-full shadow-md hover:shadow-lg hover:scale-110 transition-all cursor-pointer border-2 border-white" />
                 </Slider.Root>
-                <div className="flex justify-between text-xs text-gray-500 mt-2">
-                    <span>1</span>
-                    <span>15</span>
-                </div>
+                {/* <div className="flex justify-between text-xs text-gray-500 mt-2">
+                    <span>{minBedrooms}</span>
+                    <span>{maxBedrooms}</span>
+                </div> */}
             </div>
 
             {/* Area Range Slider */}
@@ -414,8 +584,8 @@ function FilterContent({
                 <Slider.Root
                     className="relative flex items-center select-none touch-none w-full h-5 mb-3"
                     value={areaRange}
-                    min={20}
-                    max={300}
+                    min={minArea}
+                    max={maxArea}
                     step={10}
                     onValueChange={(val: number[]) => setAreaRange([val[0], val[1]])}
                 >
@@ -425,10 +595,10 @@ function FilterContent({
                     <Slider.Thumb className="block w-5 h-5 bg-blue-400 rounded-full shadow-md hover:shadow-lg hover:scale-110 transition-all cursor-pointer border-2 border-white" />
                     <Slider.Thumb className="block w-5 h-5 bg-blue-400 rounded-full shadow-md hover:shadow-lg hover:scale-110 transition-all cursor-pointer border-2 border-white" />
                 </Slider.Root>
-                <div className="flex justify-between text-xs text-gray-500 mt-2">
-                    <span>20m²</span>
-                    <span>300m²</span>
-                </div>
+                {/* <div className="flex justify-between text-xs text-gray-500 mt-2">
+                    <span>{minArea}m²</span>
+                    <span>{maxArea}m²</span>
+                </div> */}
             </div>
 
             {/* Grundflache Range Slider */}
@@ -455,16 +625,11 @@ function FilterContent({
                     <Slider.Thumb className="block w-5 h-5 bg-blue-400 rounded-full shadow-md hover:shadow-lg hover:scale-110 transition-all cursor-pointer border-2 border-white" />
                     <Slider.Thumb className="block w-5 h-5 bg-blue-400 rounded-full shadow-md hover:shadow-lg hover:scale-110 transition-all cursor-pointer border-2 border-white" />
                 </Slider.Root>
-                <div className="flex justify-between text-xs text-gray-500 mt-2">
+                {/* <div className="flex justify-between text-xs text-gray-500 mt-2">
                     <span>{minGrundflache}m²</span>
                     <span>{maxGrundflache}m²</span>
-                </div>
+                </div> */}
             </div>
-
-            {/* Search Button */}
-            {/* <button className="w-full cursor-pointer bg-linear-to-r from-blue-400 to-blue-500 text-white py-3 rounded-xl font-bold text-sm shadow-md shadow-blue-200 hover:shadow-lg hover:from-blue-500 hover:to-blue-600 transition-all active:scale-[0.98]">
-                {language === "de" ? "Immobilien anzeigen" : "Show Properties"}
-            </button> */}
         </div>
     );
 }

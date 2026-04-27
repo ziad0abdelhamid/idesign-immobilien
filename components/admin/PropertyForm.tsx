@@ -22,6 +22,7 @@ interface FormData {
     area: number | null;
     bedrooms: number | null;
     land_area: number | null;
+    propertyType: string;
     location_en: string;
     location_de: string;
     // Optional fields
@@ -80,6 +81,7 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
         area: null,
         bedrooms: null,
         land_area: null,
+        propertyType: "",
         location_en: "",
         location_de: "",
         facilities: [],
@@ -221,6 +223,7 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                     area: data.area || null,
                     bedrooms: data.bedrooms || null,
                     land_area: data.land_area || null,
+                    propertyType: data.propertyType || "",
                     location_en: data.location_en || "",
                     location_de: data.location_de || "",
                     facilities: Array.isArray(data.facilities) ? data.facilities : [],
@@ -339,6 +342,7 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                 area: formData.area,
                 bedrooms: formData.bedrooms,
                 land_area: formData.hasLandArea ? formData.land_area : 0,
+                propertyType: formData.propertyType,
                 location_en: formData.location_en,
                 location_de: formData.location_de,
                 facilities: formData.hasFacilities ? formData.facilities : null,
@@ -473,9 +477,10 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                         </label>
                         <input
                             type="number"
-                            value={formData.price || ""}
-                            onChange={(e) => handleChange(e, "price")}
+                            value={formData.price ?? ""}
+                            onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value !== "" ? parseInt(e.target.value) : null }))}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            min="0"
                         />
                     </div>
                     <div>
@@ -484,9 +489,10 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                         </label>
                         <input
                             type="number"
-                            value={formData.area || ""}
-                            onChange={(e) => handleChange(e, "area")}
+                            value={formData.area ?? ""}
+                            onChange={(e) => setFormData(prev => ({ ...prev, area: e.target.value !== "" ? parseInt(e.target.value) : null }))}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            min="0"
                         />
                     </div>
                     <div>
@@ -495,10 +501,26 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                         </label>
                         <input
                             type="number"
-                            value={formData.bedrooms || ""}
-                            onChange={(e) => handleChange(e, "bedrooms")}
+                            value={formData.bedrooms ?? ""}
+                            onChange={(e) => setFormData(prev => ({ ...prev, bedrooms: e.target.value !== "" ? parseInt(e.target.value) : null }))}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            min="0"
                         />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            {language === "en" ? "Property Type" : "Immobilientyp"}
+                        </label>
+                        <select
+                            value={formData.propertyType}
+                            onChange={(e) => setFormData(prev => ({ ...prev, propertyType: e.target.value }))}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                            <option value="">{language === "en" ? "Select type" : "Typ wählen"}</option>
+                            <option value="villa">{language === "en" ? "Villa" : "Villa"}</option>
+                            <option value="apartment">{language === "en" ? "Apartment" : "Wohnung"}</option>
+                            <option value="land">{language === "en" ? "Land" : "Grundstück"}</option>
+                        </select>
                     </div>
                 </div>
 
@@ -560,10 +582,11 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                     {formData.hasLandArea && (
                         <input
                             type="number"
-                            value={formData.land_area || ""}
-                            onChange={(e) => setFormData(prev => ({ ...prev, land_area: e.target.value ? parseInt(e.target.value) : null }))}
+                            value={formData.land_area ?? ""}
+                            onChange={(e) => setFormData(prev => ({ ...prev, land_area: e.target.value !== "" ? parseInt(e.target.value) : null }))}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder={language === "en" ? "Land area in m²" : "Grundstück in m²"}
+                            min="0"
                         />
                     )}
                 </div>
@@ -583,10 +606,11 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                     {formData.hasFloor && (
                         <input
                             type="number"
-                            value={formData.floor || ""}
-                            onChange={(e) => setFormData(prev => ({ ...prev, floor: e.target.value ? parseInt(e.target.value) : null }))}
+                            value={formData.floor ?? ""}
+                            onChange={(e) => setFormData(prev => ({ ...prev, floor: e.target.value !== "" ? parseInt(e.target.value) : null }))}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Floor number"
+                            min="0"
                         />
                     )}
                 </div>
@@ -663,8 +687,8 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                             ) : (
                                 <input
                                     type="number"
-                                    value={formData.maintenance_percentage || ""}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, maintenance_percentage: e.target.value ? parseFloat(e.target.value) : null }))}
+                                    value={formData.maintenance_percentage ?? ""}
+                                    onChange={(e) => setFormData(prev => ({ ...prev, maintenance_percentage: e.target.value !== "" ? parseFloat(e.target.value) : null }))}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     placeholder={language === "en" ? "Enter percentage (e.g., 5)" : "Prozentsatz eingeben (z.B. 5)"}
                                     min="0"
@@ -712,8 +736,8 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                                 min="0"
                                 max="100"
                                 step="0.1"
-                                value={formData.cash_discount || ""}
-                                onChange={(e) => setFormData(prev => ({ ...prev, cash_discount: e.target.value ? parseFloat(e.target.value) : null }))}
+                                value={formData.cash_discount ?? ""}
+                                onChange={(e) => setFormData(prev => ({ ...prev, cash_discount: e.target.value !== "" ? parseFloat(e.target.value) : null }))}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="Enter percentage (e.g., 5 for 5%)"
                             />

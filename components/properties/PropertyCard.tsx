@@ -11,6 +11,7 @@ interface PropertyCardProps {
     price: number;
     area: number;
     land_area?: number;
+    propertyType?: string;
     bedrooms: number;
     floor?: number;
     has_installments: boolean;
@@ -31,6 +32,7 @@ export function PropertyCard({
     price,
     area,
     land_area,
+    propertyType,
     bedrooms,
     floor,
     status,
@@ -77,20 +79,31 @@ export function PropertyCard({
                     <p className="text-blue-600 text-[10px] font-bold uppercase tracking-[0.2em] mb-3">
                         {location}
                     </p>
+
                     <h3 className="text-xl font-bold text-gray-900 leading-tight group-hover:text-blue-600 transition-colors">
                         {title}
                     </h3>
+                    {propertyType && (
+                        <div className="flex items-center justify-between pt-4">
+                            <span className="text-xs font-semibold text-blue-600 uppercase tracking-wide">
+                                {language === "de"
+                                    ? propertyType === "villa" ? "Villa" : propertyType === "apartment" ? "Wohnung" : "Grundstück"
+                                    : propertyType.charAt(0).toUpperCase() + propertyType.slice(1)}
+                            </span>
+                        </div>
+                    )}
                 </div>
 
                 {/* Bottom Section with Specs and Arrow */}
                 <div className="mt-6 pt-6 border-t border-gray-100 space-y-4">
 
+                    {/* 
                     {/* Area */}
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3 text-black">
                             <FaRulerCombined className="text-blue-600 text-base" />
                             <span className="text-m font-medium">
-                                {language === "de" ? "Fläche" : "Living Area"}
+                                {language === "de" ? "Wohnfläche" : "Living Area"}
                             </span>
                         </div>
                         <span className="text-m font-semibold text-black">
