@@ -151,7 +151,16 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                         </div>
                         {/* SPECS - Area, Land Area (if exists), Bedrooms */}
                         <div
-                            className={`grid grid-cols-1 ${(property.land_area != 0 ? 1 : 0) + (property.propertyType ? 1 : 0) > 1 ? "sm:grid-cols-4" : property.land_area != 0 || property.propertyType ? "sm:grid-cols-3" : "sm:grid-cols-2"
+                            className={`grid ${property.area != 0 ? "grid-cols-3" : "grid-cols-1"
+                                } ${(
+                                    (property.land_area != 0 ? 1 : 0) +
+                                    (property.propertyType ? 1 : 0) +
+                                    (property.area != 0 ? 1 : 0)
+                                ) > 2
+                                    ? "sm:grid-cols-4"
+                                    : (property.land_area != 0 || property.propertyType || property.area != 0)
+                                        ? "sm:grid-cols-3"
+                                        : "sm:grid-cols-2"
                                 } w-full border-b border-neutral-200 dark:border-neutral-700`}
                         >
                             {property.propertyType && (
@@ -167,7 +176,7 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                                 </div>
                             )}
 
-                            {property.area && (
+                            {property.area != 0 && (
                                 <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 text-center border-b sm:border-b-0 sm:border-r border-neutral-200 dark:border-neutral-700">
                                     <div className="text-xs sm:text-sm text-neutral-500 uppercase tracking-widest mb-1 sm:mb-2">
                                         {t.area}
