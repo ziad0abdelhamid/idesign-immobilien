@@ -87,8 +87,12 @@ export function PropertyCard({
                         <div className="flex items-center justify-between pt-4">
                             <span className="text-xs font-semibold text-blue-600 uppercase tracking-wide">
                                 {language === "de"
-                                    ? propertyType === "villa" ? "Villa" : propertyType === "apartment" ? "Wohnung" : "Grundstück"
-                                    : propertyType.charAt(0).toUpperCase() + propertyType.slice(1)}
+                                    ? propertyType === "villa" ? "Haus" : propertyType === "apartment" ? "Wohnung" : "Grundstück"
+                                    : propertyType === "villa"
+                                        ? "House"
+                                        : propertyType === "apartment"
+                                            ? "Apartment"
+                                            : "Land"}
                             </span>
                         </div>
                     )}

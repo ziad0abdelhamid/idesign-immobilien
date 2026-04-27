@@ -170,8 +170,12 @@ export function PropertyDetailsModal({ property, onClose, language }: Props) {
                                     </div>
                                     <div className="text-xl sm:text-2xl lg:text-3xl font-light">
                                         {language === "de"
-                                            ? property.propertyType === "villa" ? "Villa" : property.propertyType === "apartment" ? "Wohnung" : "Grundstück"
-                                            : property.propertyType.charAt(0).toUpperCase() + property.propertyType.slice(1)}
+                                            ? property.propertyType === "villa" ? "Haus" : property.propertyType === "apartment" ? "Wohnung" : "Grundstück"
+                                            : property.propertyType === "villa"
+                                                ? "House"
+                                                : property.propertyType === "apartment"
+                                                    ? "Apartment"
+                                                    : "Land"}
                                     </div>
                                 </div>
                             )}

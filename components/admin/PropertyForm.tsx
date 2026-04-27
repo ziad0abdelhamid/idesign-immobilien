@@ -517,7 +517,7 @@ export default function PropertyForm({ propertyId, onSuccess }: Props) {
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         >
                             <option value="">{language === "en" ? "Select type" : "Typ wählen"}</option>
-                            <option value="villa">{language === "en" ? "Villa" : "Villa"}</option>
+                            <option value="villa">{language === "en" ? "House" : "Haus"}</option>
                             <option value="apartment">{language === "en" ? "Apartment" : "Wohnung"}</option>
                             <option value="land">{language === "en" ? "Land" : "Grundstück"}</option>
                         </select>

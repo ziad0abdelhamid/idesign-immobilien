@@ -444,7 +444,7 @@ function FilterContent({
                                 {selectedPropertyType
                                     ? (language === "de"
                                         ? selectedPropertyType === "villa"
-                                            ? "Villa"
+                                            ? "Haus"
                                             : selectedPropertyType === "apartment"
                                                 ? "Wohnung"
                                                 : "Grundstück"
@@ -482,11 +482,15 @@ function FilterContent({
                                     const label =
                                         language === "de"
                                             ? type === "villa"
-                                                ? "Villa"
+                                                ? "Haus"
                                                 : type === "apartment"
                                                     ? "Wohnung"
                                                     : "Grundstück"
-                                            : type.charAt(0).toUpperCase() + type.slice(1);
+                                            : type === "villa"
+                                                ? "House"
+                                                : type === "apartment"
+                                                    ? "Apartment"
+                                                    : "Land";
 
                                     return (
                                         <div
